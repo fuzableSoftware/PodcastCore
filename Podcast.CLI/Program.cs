@@ -10,6 +10,8 @@ namespace Podcast.CLI
     {
         static void Main(string[] args)
         {
+            //var podcasts = GetPodcasts();
+            //podcasts.ForEach(x => x.ProcessFeed());
         }
     }
 }
