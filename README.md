@@ -16,6 +16,10 @@ Core bits for upcoming podcast app
 Visual Studio 2015, .NET Framework 4.5.1
 
 ----------
+###Acknowledgements
+- georgboe (podcast_downloader)
+
+----------
 
 ##Change Log
 ###v0.0.1
