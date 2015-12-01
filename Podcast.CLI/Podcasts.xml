@@ -4,6 +4,5 @@
     <Name>Stack Overflow</Name>
     <Url>http://rss.conversationsnetwork.org/series/stackoverflow.xml</Url>
     <EpisodesToKeep>3</EpisodesToKeep>
-    <UseTitleAsFilename>false</UseTitleAsFilename>
   </Podcast>
 </Podcasts>
