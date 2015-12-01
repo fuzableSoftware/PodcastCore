@@ -32,5 +32,12 @@ namespace Fuzable.Podcast.Models
         /// Episodes to delete during sync
         /// </summary>
         public List<Episode> EpisodesToDelete { get; set; }
+
+        /// <summary>
+        /// Process a podcast's feed
+        /// </summary>
+        public void ProcessFeed()
+        {
+        }
     }
 }

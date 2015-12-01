@@ -12,7 +12,7 @@ namespace Podcast.CLI
         static void Main(string[] args)
         {
             var podcasts = Subscription.GetPodcasts();
-            //podcasts.ForEach(x => x.ProcessFeed());
+            podcasts.ForEach(x => x.ProcessFeed());
         }
     }
 }
