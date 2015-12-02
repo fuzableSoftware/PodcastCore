@@ -22,5 +22,17 @@ namespace Podcast.CLI.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Working\\Cast2Car\\Podcasts\\")]
+        public string DownloadFolder {
+            get {
+                return ((string)(this["DownloadFolder"]));
+            }
+            set {
+                this["DownloadFolder"] = value;
+            }
+        }
     }
 }
