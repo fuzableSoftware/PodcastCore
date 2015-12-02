@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace Fuzable.Podcast.Models
+namespace Fuzable.Podcast.Entities
 {
     /// <summary>
     /// Manages subscription file (podcasts.xml)
@@ -17,7 +16,33 @@ namespace Fuzable.Podcast.Models
         /// <returns></returns>
         public static List<Podcast> GetPodcasts()
         {
-            return null;
+            var podcasts = new List<Podcast>();
+
+            try
+            {
+                var settingsDoc = XDocument.Load(string.Format(@"{0}\{1}", Environment.CurrentDirectory, "Podcasts.xml"));
+
+                var items = from item in settingsDoc.Descendants("Podcast")
+                            select new
+                            {
+                                Name = item.Element("Name")?.Value,
+                                Url = item.Element("Url")?.Value,
+                                EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
+                            };
+
+                foreach (var item in items)
+                {
+                    podcasts.Add(new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep)));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error retrieving subscriptions");
+                Console.WriteLine(ex);
+                Console.ReadLine();
+            }
+
+            return podcasts;
         }
     }
 }

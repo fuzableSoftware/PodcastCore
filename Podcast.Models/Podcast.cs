@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Fuzable.Podcast.Models
+namespace Fuzable.Podcast.Entities
 {
     /// <summary>
     /// an individual podcast
@@ -32,6 +27,21 @@ namespace Fuzable.Podcast.Models
         /// Episodes to delete during sync
         /// </summary>
         public List<Episode> EpisodesToDelete { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">Podcast name</param>
+        /// <param name="url">Podcast URL</param>
+        /// <param name="episodesToKeep">Number of episodes to keep</param>
+        public Podcast(string name, string url, int episodesToKeep)
+        {
+            Name = name;
+            Url = url;
+            EpisodesToKeep = episodesToKeep;
+            EpisodesToDownload = new List<Episode>();
+            EpisodesToDelete = new List<Episode>();
+        }
 
         /// <summary>
         /// Process a podcast's feed
