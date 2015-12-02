@@ -20,7 +20,7 @@ namespace Fuzable.Podcast.Entities
 
             try
             {
-                var settingsDoc = XDocument.Load(string.Format(@"{0}\{1}", Environment.CurrentDirectory, "Podcasts.xml"));
+                var settingsDoc = XDocument.Load($@"{Environment.CurrentDirectory}\{"Podcasts.xml"}");
 
                 var items = from item in settingsDoc.Descendants("Podcast")
                             select new
@@ -30,10 +30,7 @@ namespace Fuzable.Podcast.Entities
                                 EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
                             };
 
-                foreach (var item in items)
-                {
-                    podcasts.Add(new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep)));
-                }
+                podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
             }
             catch (Exception ex)
             {
