@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -14,8 +15,20 @@ namespace Fuzable.Podcast.Entities
         /// Returns podcasts in subscription file
         /// </summary>
         /// <returns></returns>
-        public static List<Podcast> GetPodcasts()
+        public static List<Podcast> GetPodcasts(string downloadFolder)
         {
+            //make sure we have somewhere to download to
+            try
+            {
+                VerifyDownloadFolderExists(downloadFolder);
+            }
+            catch (Exception ex)
+            {
+                var error = new ApplicationException($"Error locating download folder '{downloadFolder}'", ex);
+                throw error;
+            }
+            
+            //read podcasts.xml file and extract subscribed podcasts from and return
             var podcasts = new List<Podcast>();
 
             try
@@ -34,12 +47,19 @@ namespace Fuzable.Podcast.Entities
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error retrieving subscriptions");
-                Console.WriteLine(ex);
-                Console.ReadLine();
+                var error = new ApplicationException("Error retrieving subscriptions", ex);
+                throw error;
             }
 
             return podcasts;
+        }
+
+        private static void VerifyDownloadFolderExists(string downloadFolder)
+        {
+            if (!Directory.Exists(downloadFolder))
+            {
+                Directory.CreateDirectory(downloadFolder);
+            }
         }
     }
 }

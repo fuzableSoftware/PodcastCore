@@ -12,8 +12,9 @@ namespace Podcast.CLI
     {
         static void Main(string[] args)
         {
+            var downloadFolder = Properties.Settings.Default.DownloadFolder;
             //read podcasts.xml
-            var podcasts = Subscription.GetPodcasts();
+            var podcasts = Subscription.GetPodcasts(downloadFolder);
             Console.WriteLine($"Subscribed to {podcasts.Count} podcast(s)");
             //process each returned
             podcasts.ForEach(x => x.ProcessFeed());
