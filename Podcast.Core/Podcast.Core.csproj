@@ -49,9 +49,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Podcast.Models\Podcast.Models.csproj">
+    <ProjectReference Include="..\Podcast.Models\Podcast.Entities.csproj">
       <Project>{12ad23b4-ba38-4838-9c4d-b7630689b093}</Project>
-      <Name>Podcast.Models</Name>
+      <Name>Podcast.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

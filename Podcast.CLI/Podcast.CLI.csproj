@@ -63,9 +63,9 @@
       <Project>{a81953e9-b368-45a7-a611-4d86a8502581}</Project>
       <Name>Podcast.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Podcast.Models\Podcast.Models.csproj">
+    <ProjectReference Include="..\Podcast.Models\Podcast.Entities.csproj">
       <Project>{12ad23b4-ba38-4838-9c4d-b7630689b093}</Project>
-      <Name>Podcast.Models</Name>
+      <Name>Podcast.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

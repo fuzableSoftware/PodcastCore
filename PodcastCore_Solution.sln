@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Podcast.Core", "Podcast.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Podcast.Core.Tests", "Podcast.Core.Tests\Podcast.Core.Tests.csproj", "{66751EE7-C534-43FB-8A13-CD8DCBC145B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Podcast.Models", "Podcast.Models\Podcast.Models.csproj", "{12AD23B4-BA38-4838-9C4D-B7630689B093}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Podcast.Entities", "Podcast.Models\Podcast.Entities.csproj", "{12AD23B4-BA38-4838-9C4D-B7630689B093}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4CD6E883-50FF-4C9B-9531-CAE02209FC49}"
 	ProjectSection(SolutionItems) = preProject
