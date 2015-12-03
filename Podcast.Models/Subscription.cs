@@ -89,5 +89,14 @@ namespace Fuzable.Podcast.Entities
                 Directory.CreateDirectory(downloadFolder);
             }
         }
+
+        /// <summary>
+        /// Synchronize the subscriopt
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        public void Sync(string downloadFolder)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
