@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -25,6 +26,27 @@ namespace Fuzable.Podcast.Entities
         /// Folder to sync podcasts to
         /// </summary>
         public string DownloadFolder { get; set; }
+
+        /// <summary>
+        /// For handling progress changed events
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void ProgressHandler(object sender, ProgressChangedEventArgs e);
+
+        /// <summary>
+        /// Attach to receive progress information
+        /// </summary>
+        public event ProgressHandler ProgressChanged;
+
+        /// <summary>
+        /// Handles progress changed events
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnProgressChanged(ProgressChangedEventArgs e)
+        {
+            ProgressChanged?.Invoke(this, e);
+        }
 
         /// <summary>
         /// Default constructor
