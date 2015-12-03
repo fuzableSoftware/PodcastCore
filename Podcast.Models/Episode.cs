@@ -16,6 +16,20 @@
         /// <summary>
         /// Path to episode
         /// </summary>
-        public string  FilePath { get; set; }   
+        public string  FilePath { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="title">Podcast title</param>
+        /// <param name="url">Podcast URL</param>
+        /// <param name="filepath">Podcast path</param>
+        public Episode(string title, string url, string filepath)
+        {
+            Title = title;
+            Url = url;
+            FilePath = filepath;
+        }
     }
+
 }

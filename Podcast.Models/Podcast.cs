@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Xml.Linq;
 
 namespace Fuzable.Podcast.Entities
 {
@@ -46,8 +51,54 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Process a podcast's feed
         /// </summary>
-        public void ProcessFeed()
+        public void ProcessFeed(string downloadFolder)
         {
+            try
+            {
+                var xmlDoc = XDocument.Load(Url);
+
+                var items = from item in xmlDoc.Descendants("item")
+                            select new
+                            {
+                                Title = item.Element("title")?.Value,
+                                Link = item.Element("enclosure")?.Attribute("url").Value
+                            };
+
+                EpisodesToDownload.Clear();
+                EpisodesToDelete.Clear();
+
+                var counter = 0;
+                foreach (var item in items)
+                {
+                    var filePath = CreateFilePathFromUrl(item.Link, downloadFolder);
+
+                    if (EpisodesToKeep == 0 || counter < EpisodesToKeep)
+                    {
+                        EpisodesToDownload.Add(new Episode(item.Title, item.Link, filePath));
+                    }
+                    else
+                    {
+                        EpisodesToDelete.Add(new Episode(item.Title, item.Link, filePath));
+                    }
+                    counter++;
+                }
+            }
+            catch (WebException webex)
+            {
+                var error = new ApplicationException($"Problems downloading the feed '{Name}'", webex);
+                throw error;
+            }
+            catch (NullReferenceException nullex)
+            {
+                var error = new ApplicationException($"Problems parsing the feed '{Name}'", nullex);
+                throw error;
+            }
+        }
+
+        private static string CreateFilePathFromUrl(string fileUrl, string downloadFolder)
+        {
+            var filename = fileUrl.Split('/').Last();
+            return Path.Combine(downloadFolder, filename);
         }
     }
 }
