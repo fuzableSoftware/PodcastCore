@@ -17,15 +17,14 @@ namespace Podcast.CLI
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
             subscriptions.Sync(downloadFolder);
-            var podcasts = Subscription.GetPodcasts(downloadFolder);
-            Console.WriteLine($"Subscribed to {podcasts.Count} podcast(s)");
+            //Console.WriteLine($"Subscribed to {podcasts.Count} podcast(s)");
             //process each returned
-            foreach (var x in podcasts)
-            {
-               Console.WriteLine($"Processing {x.Name}...");
-               x.ProcessFeed(downloadFolder);
-               Console.WriteLine($"Retrieved information from {x.Url}, will download {x.EpisodesToDownload.Count} and delete up to {x.EpisodesToDelete.Count} episodes");
-            }
+            //foreach (var x in podcasts)
+            //{
+            //   //Console.WriteLine($"Processing {x.Name}...");
+            //   x.ProcessFeed(downloadFolder);
+            //   //Console.WriteLine($"Retrieved information from {x.Url}, will download {x.EpisodesToDownload.Count} and delete up to {x.EpisodesToDelete.Count} episodes");
+            //}
             //wait
             Console.Write("Press any key to continue...");
             Console.ReadKey();

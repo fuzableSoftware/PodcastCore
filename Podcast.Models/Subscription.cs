@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +22,11 @@ namespace Fuzable.Podcast.Entities
         public string SubscriptionFile { get; set; }
 
         /// <summary>
+        /// Folder to sync podcasts to
+        /// </summary>
+        public string DownloadFolder { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public Subscription()
@@ -43,16 +47,16 @@ namespace Fuzable.Podcast.Entities
         /// Returns podcasts in subscription file
         /// </summary>
         /// <returns></returns>
-        public static List<Podcast> GetPodcasts(string downloadFolder)
+        internal List<Podcast> GetPodcasts()
         {
             //make sure we have somewhere to download to
             try
             {
-                VerifyDownloadFolderExists(downloadFolder);
+                VerifyDownloadFolderExists(DownloadFolder);
             }
             catch (Exception ex)
             {
-                var error = new ApplicationException($"Error locating download folder '{downloadFolder}'", ex);
+                var error = new ApplicationException($"Error locating download folder '{DownloadFolder}'", ex);
                 throw error;
             }
             
@@ -96,7 +100,12 @@ namespace Fuzable.Podcast.Entities
         /// <exception cref="NotImplementedException"></exception>
         public void Sync(string downloadFolder)
         {
-            throw new NotImplementedException();
+            DownloadFolder = downloadFolder;
+            Podcasts = GetPodcasts();
+            foreach (var x in Podcasts)
+            {
+                x.ProcessFeed(downloadFolder);
+            }
         }
     }
 }
