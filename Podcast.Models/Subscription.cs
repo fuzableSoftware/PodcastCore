@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,33 @@ namespace Fuzable.Podcast.Entities
     /// </summary>
     public class Subscription
     {
+        /// <summary>
+        /// Podcasts in the subscription
+        /// </summary>
+        public List<Podcast> Podcasts { get; set; }
+
+        /// <summary>
+        /// Filename used to manage subscriptions
+        /// </summary>
+        public string SubscriptionFile { get; set; }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public Subscription()
+        {
+            SubscriptionFile = "podcasts/xml";
+        }
+        
+        /// <summary>
+        /// Constructor specifying subscription file
+        /// </summary>
+        /// <param name="subscriptionFile"></param>
+        public Subscription(string subscriptionFile)
+        {
+            SubscriptionFile = subscriptionFile;
+        }
+
         /// <summary>
         /// Returns podcasts in subscription file
         /// </summary>
