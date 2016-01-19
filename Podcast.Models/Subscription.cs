@@ -120,7 +120,7 @@ namespace Fuzable.Podcast.Entities
         /// Synchronize the subscriopt
         /// </summary>
         /// <exception cref="NotImplementedException"></exception>
-        public void Sync(string downloadFolder)
+        public void Synchronize(string downloadFolder)
         {
             DownloadFolder = downloadFolder;
             Podcasts = GetPodcasts();

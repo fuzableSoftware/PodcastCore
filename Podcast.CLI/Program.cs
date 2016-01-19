@@ -16,7 +16,7 @@ namespace Podcast.CLI
             var downloadFolder = Properties.Settings.Default.DownloadFolder;
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
-            subscriptions.Sync(downloadFolder);
+            subscriptions.Synchronize(downloadFolder);
             //Console.WriteLine($"Subscribed to {podcasts.Count} podcast(s)");
             //process each returned
             //foreach (var x in podcasts)
