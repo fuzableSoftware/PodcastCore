@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Xml.Linq;
 
 namespace Fuzable.Podcast.Entities
@@ -27,27 +28,13 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public string DownloadFolder { get; set; }
 
-        /// <summary>
-        /// For handling progress changed events
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public delegate void ProgressHandler(object sender, ProgressChangedEventArgs e);
+        public event SubscriptionOpenedHandler OpenSubscription;
 
-        /// <summary>
-        /// Attach to receive progress information
-        /// </summary>
-        public event ProgressHandler ProgressChanged;
-
-        /// <summary>
-        /// Handles progress changed events
-        /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnProgressChanged(ProgressChangedEventArgs e)
+        protected virtual void OnOpenSubscription(int count)
         {
-            ProgressChanged?.Invoke(this, e);
+            OpenSubscription?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
-
+        
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -96,8 +83,8 @@ namespace Fuzable.Podcast.Entities
                                 Url = item.Element("Url")?.Value,
                                 EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
                             };
-
                 podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
+                OnOpenSubscription(podcasts.Count);
             }
             catch (Exception ex)
             {

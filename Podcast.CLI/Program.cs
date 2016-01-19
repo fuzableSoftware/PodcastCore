@@ -16,6 +16,9 @@ namespace Podcast.CLI
             var downloadFolder = Properties.Settings.Default.DownloadFolder;
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
+            //attach to events
+            subscriptions.OpenSubscription += Subscription_Open;
+            //sync
             subscriptions.Synchronize(downloadFolder);
             //Console.WriteLine($"Subscribed to {podcasts.Count} podcast(s)");
             //process each returned
@@ -29,5 +32,11 @@ namespace Podcast.CLI
             Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
+
+        static void Subscription_Open(object sender, SubscriptionCountEventArgs eventArgs)
+        {
+            Console.WriteLine($"Subscribed to {eventArgs.Count} podcast(s)");
+        }
+
     }
 }
