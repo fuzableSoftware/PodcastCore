@@ -20,7 +20,6 @@ namespace Podcast.CLI
             subscriptions.OpenSubscription += Subscription_Open;
             //sync
             subscriptions.Synchronize(downloadFolder);
-            //Console.WriteLine($"Subscribed to {podcasts.Count} podcast(s)");
             //process each returned
             //foreach (var x in podcasts)
             //{
@@ -29,8 +28,8 @@ namespace Podcast.CLI
             //   //Console.WriteLine($"Retrieved information from {x.Url}, will download {x.EpisodesToDownload.Count} and delete up to {x.EpisodesToDelete.Count} episodes");
             //}
             //wait
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            //Console.Write("Press any key to continue...");
+            //Console.ReadKey();
         }
 
         static void Subscription_Open(object sender, SubscriptionCountEventArgs eventArgs)
