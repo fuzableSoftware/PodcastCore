@@ -33,6 +33,11 @@ namespace Fuzable.Podcast.Entities
         {
             SubscriptionOpened?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
+        public event SubscriptionCompletedHandler SubscriptionCompleted;
+        protected virtual void OnSubscriptionCompleted(int count)
+        {
+            SubscriptionCompleted?.Invoke(this, new SubscriptionCountEventArgs(count));
+        }
 
         public event PodcastOpenedHandler PodcastOpened;
         protected virtual void OnPodcastOpened(string name)
@@ -95,7 +100,6 @@ namespace Fuzable.Podcast.Entities
                                 EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
                             };
                 podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
-                OnSubscriptionOpened(podcasts.Count);
             }
             catch (Exception ex)
             {
@@ -122,12 +126,14 @@ namespace Fuzable.Podcast.Entities
         {
             DownloadFolder = downloadFolder;
             Podcasts = GetPodcasts();
+            OnSubscriptionOpened(Podcasts.Count);
             foreach (var x in Podcasts)
             {
                 OnPodcastOpened(x.Name);
                 x.ProcessFeed(downloadFolder);
                 OnPodcastProcessed(x.Name, x.Url, x.EpisodesToKeep, x.EpisodesToDelete.Count);
             }
+            OnSubscriptionCompleted(Podcasts.Count);
         }
     }
 }

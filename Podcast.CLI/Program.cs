@@ -18,21 +18,11 @@ namespace Podcast.CLI
             var subscriptions = new Subscription("podcast.xml");
             //attach to events
             subscriptions.SubscriptionOpened += Subscription_Opened;
+            subscriptions.SubscriptionCompleted += Subscription_Completed;
             subscriptions.PodcastOpened += Podcast_Opened;
             subscriptions.PodcastProcessed += Podcast_Processed;
-
             //sync
             subscriptions.Synchronize(downloadFolder);
-            //process each returned
-            //foreach (var x in podcasts)
-            //{
-            //   //Console.WriteLine($"Processing {x.Name}...");
-            //   x.ProcessFeed(downloadFolder);
-            //   //Console.WriteLine($"Retrieved information from {x.Url}, will download {x.EpisodesToDownload.Count} and delete up to {x.EpisodesToDelete.Count} episodes");
-            //}
-            //wait
-            //Console.Write("Press any key to continue...");
-            //Console.ReadKey();
         }
 
         static void Subscription_Opened(object sender, SubscriptionCountEventArgs eventArgs)
@@ -47,7 +37,15 @@ namespace Podcast.CLI
 
         static void Podcast_Processed(object sender, PodcastDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Retrieved information from {eventArgs.Url}, will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
+            Console.WriteLine($"Retrieved information from {eventArgs.Url}");
+            Console.WriteLine($"for {eventArgs.Name} will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
+        }
+
+        static void Subscription_Completed(object sender, SubscriptionCountEventArgs eventArgs)
+        {
+            Console.WriteLine($"Subscription with {eventArgs.Count} podcast(s) has finished processing");
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
         }
     }
 }

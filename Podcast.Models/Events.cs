@@ -40,4 +40,5 @@ namespace Fuzable.Podcast.Entities
     public delegate void SubscriptionOpenedHandler(object sender, SubscriptionCountEventArgs eventArgs);
     public delegate void PodcastOpenedHandler(object sender, PodcastDetailEventArgs eventArgs);
     public delegate void PodcastProcessingHandler(object sender, PodcastDetailEventArgs eventArgs);
+    public delegate void SubscriptionCompletedHandler(object sender, SubscriptionCountEventArgs eventArgs);
 }
