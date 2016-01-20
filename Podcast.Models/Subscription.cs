@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
 using System.Xml.Linq;
 
 namespace Fuzable.Podcast.Entities
@@ -28,27 +26,58 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public string DownloadFolder { get; set; }
 
+        /// <summary>
+        /// Event raised when subscription is opened
+        /// </summary>
         public event SubscriptionOpenedHandler SubscriptionOpened;
+        /// <summary>
+        /// Handler to raise event when opening subscription
+        /// </summary>
+        /// <param name="count">Number of podcasts in subscription</param>
         protected virtual void OnSubscriptionOpened(int count)
         {
             SubscriptionOpened?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
+        /// <summary>
+        /// Event raised when subscription is done
+        /// </summary>
         public event SubscriptionCompletedHandler SubscriptionCompleted;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="count">Number of podcasts in subscription</param>
         protected virtual void OnSubscriptionCompleted(int count)
         {
             SubscriptionCompleted?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
 
+        /// <summary>
+        /// Event raised when podcast is opened
+        /// </summary>
         public event PodcastOpenedHandler PodcastOpened;
+        /// <summary>
+        /// Handler to raise event when opening podcast
+        /// </summary>
+        /// <param name="name">Podcast name</param>
         protected virtual void OnPodcastOpened(string name)
         {
             PodcastOpened?.Invoke(this, new PodcastDetailEventArgs(name));
         }
 
+        /// <summary>
+        /// Event raised when podcast is processed
+        /// </summary>
         public event PodcastProcessingHandler PodcastProcessed;
-        protected virtual void OnPodcastProcessed(string name, string url, int episodesToKeep, int episodesToDelete)
+        /// <summary>
+        /// Handler to raise event when processing podcast
+        /// </summary>
+        /// <param name="name">Name of podcast</param>
+        /// <param name="url">Podcast address</param>
+        /// <param name="episodesToDownload">Number of episodes to download</param>
+        /// <param name="episodesToDelete">Number of episodes to delete</param>
+        protected virtual void OnPodcastProcessed(string name, string url, int episodesToDownload, int episodesToDelete)
         {
-            PodcastProcessed?.Invoke(this, new PodcastDetailEventArgs(name, url, episodesToKeep, episodesToDelete));
+            PodcastProcessed?.Invoke(this, new PodcastDetailEventArgs(name, url, episodesToDownload, episodesToDelete));
         }
 
         /// <summary>
@@ -131,7 +160,7 @@ namespace Fuzable.Podcast.Entities
             {
                 OnPodcastOpened(x.Name);
                 x.ProcessFeed(downloadFolder);
-                OnPodcastProcessed(x.Name, x.Url, x.EpisodesToKeep, x.EpisodesToDelete.Count);
+                OnPodcastProcessed(x.Name, x.Url, x.EpisodesToDownload.Count, x.EpisodesToDelete.Count);
             }
             OnSubscriptionCompleted(Podcasts.Count);
         }
