@@ -28,13 +28,24 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public string DownloadFolder { get; set; }
 
-        public event SubscriptionOpenedHandler OpenSubscription;
-
-        protected virtual void OnOpenSubscription(int count)
+        public event SubscriptionOpenedHandler SubscriptionOpened;
+        protected virtual void OnSubscriptionOpened(int count)
         {
-            OpenSubscription?.Invoke(this, new SubscriptionCountEventArgs(count));
+            SubscriptionOpened?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
-        
+
+        public event PodcastOpenedHandler PodcastOpened;
+        protected virtual void OnPodcastOpened(string name)
+        {
+            PodcastOpened?.Invoke(this, new PodcastDetailEventArgs(name));
+        }
+
+        public event PodcastProcessingHandler PodcastProcessed;
+        protected virtual void OnPodcastProcessed(string name, string url, int episodesToKeep, int episodesToDelete)
+        {
+            PodcastProcessed?.Invoke(this, new PodcastDetailEventArgs(name, url, episodesToKeep, episodesToDelete));
+        }
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -84,7 +95,7 @@ namespace Fuzable.Podcast.Entities
                                 EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
                             };
                 podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
-                OnOpenSubscription(podcasts.Count);
+                OnSubscriptionOpened(podcasts.Count);
             }
             catch (Exception ex)
             {
@@ -104,7 +115,7 @@ namespace Fuzable.Podcast.Entities
         }
 
         /// <summary>
-        /// Synchronize the subscriopt
+        /// Synchronize the subscription
         /// </summary>
         /// <exception cref="NotImplementedException"></exception>
         public void Synchronize(string downloadFolder)
@@ -113,7 +124,9 @@ namespace Fuzable.Podcast.Entities
             Podcasts = GetPodcasts();
             foreach (var x in Podcasts)
             {
+                OnPodcastOpened(x.Name);
                 x.ProcessFeed(downloadFolder);
+                OnPodcastProcessed(x.Name, x.Url, x.EpisodesToKeep, x.EpisodesToDelete.Count);
             }
         }
     }

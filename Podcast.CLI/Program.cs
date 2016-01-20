@@ -17,7 +17,10 @@ namespace Podcast.CLI
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
             //attach to events
-            subscriptions.OpenSubscription += Subscription_Open;
+            subscriptions.SubscriptionOpened += Subscription_Opened;
+            subscriptions.PodcastOpened += Podcast_Opened;
+            subscriptions.PodcastProcessed += Podcast_Processed;
+
             //sync
             subscriptions.Synchronize(downloadFolder);
             //process each returned
@@ -32,10 +35,19 @@ namespace Podcast.CLI
             //Console.ReadKey();
         }
 
-        static void Subscription_Open(object sender, SubscriptionCountEventArgs eventArgs)
+        static void Subscription_Opened(object sender, SubscriptionCountEventArgs eventArgs)
         {
             Console.WriteLine($"Subscribed to {eventArgs.Count} podcast(s)");
         }
 
+        static void Podcast_Opened(object sender, PodcastDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Opening podcast '{eventArgs.Name}'");
+        }
+
+        static void Podcast_Processed(object sender, PodcastDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Retrieved information from {eventArgs.Url}, will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
+        }
     }
 }
