@@ -42,6 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Episode.cs" />
+    <Compile Include="EpisodeDetailEventArgs.cs" />
+    <Compile Include="EpisodeDownloadFailedHandler.cs" />
+    <Compile Include="EpisodeDownloadedHandler.cs" />
+    <Compile Include="EpisodeDownloadingHandler.cs" />
     <Compile Include="SubscriptionCountEventArgs.cs" />
     <Compile Include="Podcast.cs" />
     <Compile Include="PodcastDetailEventArgs.cs" />

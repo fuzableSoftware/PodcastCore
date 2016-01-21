@@ -28,7 +28,7 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Constructor with name only
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Name of podcast</param>
         public PodcastDetailEventArgs(string name)
         {
             Name = name;
@@ -37,10 +37,10 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Constructor with all information
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="url"></param>
-        /// <param name="episodesToDownload"></param>
-        /// <param name="episodesToDelete"></param>
+        /// <param name="name">Podcast name</param>
+        /// <param name="url">Podcast address</param>
+        /// <param name="episodesToDownload">Number of episodes to download</param>
+        /// <param name="episodesToDelete">Number of episodes to potentially delete</param>
         public PodcastDetailEventArgs(string name, string url, int episodesToDownload, int episodesToDelete)
         {
             Name = name;
