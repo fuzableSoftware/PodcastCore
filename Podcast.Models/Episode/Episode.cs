@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 
-namespace Fuzable.Podcast.Entities
+namespace Fuzable.Podcast.Entities.Episode
 {
     /// <summary>
     /// A podcast episode
@@ -32,7 +32,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="url">Episode address</param>
         protected virtual void OnEpisodeDownloading(string name, string url)
         {
-            EpisodeDownloaded?.Invoke(this, new EpisodeDetailEventArgs(name, url));
+            EpisodeDownloading?.Invoke(this, new EpisodeDetailEventArgs(name, url));
         }
         /// <summary>
         /// Episode downloaded event

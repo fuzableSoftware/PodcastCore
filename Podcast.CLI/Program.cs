@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using Fuzable.Podcast.Entities;
+using Fuzable.Podcast.Entities.Podcast;
+using Fuzable.Podcast.Entities.Subscription;
+using Podcast.CLI.Properties;
 
 namespace Podcast.CLI
 {
@@ -13,7 +9,7 @@ namespace Podcast.CLI
     {
         static void Main(string[] args)
         {
-            var downloadFolder = Properties.Settings.Default.DownloadFolder;
+            var downloadFolder = Settings.Default.DownloadFolder;
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
             //attach to events

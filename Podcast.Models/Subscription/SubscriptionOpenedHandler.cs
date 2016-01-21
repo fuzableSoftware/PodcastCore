@@ -1,4 +1,4 @@
-namespace Fuzable.Podcast.Entities
+namespace Fuzable.Podcast.Entities.Subscription
 {
     /// <summary>
     /// Definition of subscription opened event signature

@@ -1,4 +1,4 @@
-namespace Fuzable.Podcast.Entities
+namespace Fuzable.Podcast.Entities.Episode
 {
     /// <summary>
     /// Definition of episode downloading event signature

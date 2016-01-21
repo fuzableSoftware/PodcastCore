@@ -1,6 +1,6 @@
 using System;
 
-namespace Fuzable.Podcast.Entities
+namespace Fuzable.Podcast.Entities.Podcast
 {
     /// <summary>
     /// Podcast detail event arguments

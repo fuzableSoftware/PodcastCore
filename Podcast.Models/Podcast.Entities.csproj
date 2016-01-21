@@ -41,20 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Episode.cs" />
-    <Compile Include="EpisodeDetailEventArgs.cs" />
-    <Compile Include="EpisodeDownloadFailedHandler.cs" />
-    <Compile Include="EpisodeDownloadedHandler.cs" />
-    <Compile Include="EpisodeDownloadingHandler.cs" />
-    <Compile Include="SubscriptionCountEventArgs.cs" />
-    <Compile Include="Podcast.cs" />
-    <Compile Include="PodcastDetailEventArgs.cs" />
-    <Compile Include="PodcastOpenedHandler.cs" />
-    <Compile Include="PodcastProcessingHandler.cs" />
+    <Compile Include="Episode\Episode.cs" />
+    <Compile Include="Episode\EpisodeDetailEventArgs.cs" />
+    <Compile Include="Episode\EpisodeDownloadFailedHandler.cs" />
+    <Compile Include="Episode\EpisodeDownloadedHandler.cs" />
+    <Compile Include="Episode\EpisodeDownloadingHandler.cs" />
+    <Compile Include="Subscription\SubscriptionCountEventArgs.cs" />
+    <Compile Include="Podcast\Podcast.cs" />
+    <Compile Include="Podcast\PodcastDetailEventArgs.cs" />
+    <Compile Include="Podcast\PodcastOpenedHandler.cs" />
+    <Compile Include="Podcast\PodcastProcessingHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Subscription.cs" />
-    <Compile Include="SubscriptionCompletedHandler.cs" />
-    <Compile Include="SubscriptionOpenedHandler.cs" />
+    <Compile Include="Subscription\Subscription.cs" />
+    <Compile Include="Subscription\SubscriptionCompletedHandler.cs" />
+    <Compile Include="Subscription\SubscriptionOpenedHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

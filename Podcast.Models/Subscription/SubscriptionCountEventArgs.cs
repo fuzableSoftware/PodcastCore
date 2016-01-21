@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fuzable.Podcast.Entities
+namespace Fuzable.Podcast.Entities.Subscription
 {
     /// <summary>
     /// Definition of arguments used for subscription count
