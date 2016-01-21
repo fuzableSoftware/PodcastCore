@@ -177,13 +177,14 @@ namespace Fuzable.Podcast.Entities.Subscription
             {
                 OnPodcastOpened(podcast.Name);
                 podcast.ProcessFeed(downloadFolder);
+                OnPodcastProcessed(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
                 foreach (var episode in podcast.EpisodesToDownload)
                 {
                     episode.EpisodeDownloading += Episode_EpisodeDownloading;
                     episode.EpisodeDownloaded += Episode_EpisodeDownloaded;
                     episode.EpisodeDownloadFailed += Episode_EpisodeDownloadFailed;
+                    episode.Download();
                 }
-                OnPodcastProcessed(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
             }
             OnSubscriptionCompleted(Podcasts.Count);
         }
