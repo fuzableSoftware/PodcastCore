@@ -1,4 +1,5 @@
 ﻿using System;
+using Fuzable.Podcast.Entities.Episode;
 using Fuzable.Podcast.Entities.Podcast;
 using Fuzable.Podcast.Entities.Subscription;
 using Podcast.CLI.Properties;
@@ -17,8 +18,14 @@ namespace Podcast.CLI
             subscriptions.SubscriptionCompleted += Subscription_Completed;
             subscriptions.PodcastOpened += Podcast_Opened;
             subscriptions.PodcastProcessed += Podcast_Processed;
+            subscriptions.EpisodeProcessed += Episode_Processed;
             //sync
             subscriptions.Synchronize(downloadFolder);
+        }
+
+        private static void Episode_Processed(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Processed episode {eventArgs.Name} at {eventArgs.Url}");
         }
 
         static void Subscription_Opened(object sender, SubscriptionCountEventArgs eventArgs)

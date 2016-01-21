@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Fuzable.Podcast.Entities.Episode;
 using Fuzable.Podcast.Entities.Podcast;
 
 namespace Fuzable.Podcast.Entities.Subscription
@@ -82,6 +83,22 @@ namespace Fuzable.Podcast.Entities.Subscription
         }
 
         /// <summary>
+        /// Episode processed event
+        /// </summary>
+        public event EpisodeProcessedHandler EpisodeProcessed;
+        /// <summary>
+        /// Raises episode processed event with result
+        /// </summary>
+        /// <param name="name">Episode name</param>
+        /// <param name="url">Episode address</param>
+        /// <param name="path">Episode local path</param>
+        /// <param name="result">Success result of episode</param>
+        protected virtual void OnEpisodeProcessed(string name, string url, string path, EpisodeDetailEventArgs.EpisodeResult result)
+        {
+            EpisodeProcessed?.Invoke(this, new EpisodeDetailEventArgs(name, url, path, result));
+        }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public Subscription()
@@ -151,19 +168,39 @@ namespace Fuzable.Podcast.Entities.Subscription
         /// <summary>
         /// Synchronize the subscription
         /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
         public void Synchronize(string downloadFolder)
         {
             DownloadFolder = downloadFolder;
             Podcasts = GetPodcasts();
             OnSubscriptionOpened(Podcasts.Count);
-            foreach (var x in Podcasts)
+            foreach (var podcast in Podcasts)
             {
-                OnPodcastOpened(x.Name);
-                x.ProcessFeed(downloadFolder);
-                OnPodcastProcessed(x.Name, x.Url, x.EpisodesToDownload.Count, x.EpisodesToDelete.Count);
+                OnPodcastOpened(podcast.Name);
+                podcast.ProcessFeed(downloadFolder);
+                foreach (var episode in podcast.EpisodesToDownload)
+                {
+                    episode.EpisodeDownloading += Episode_EpisodeDownloading;
+                    episode.EpisodeDownloaded += Episode_EpisodeDownloaded;
+                    episode.EpisodeDownloadFailed += Episode_EpisodeDownloadFailed;
+                }
+                OnPodcastProcessed(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
             }
             OnSubscriptionCompleted(Podcasts.Count);
+        }
+
+        private void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.FilePath, EpisodeDetailEventArgs.EpisodeResult.Failed));
+        }
+
+        private void Episode_EpisodeDownloaded(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.FilePath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
+        }
+
+        private void Episode_EpisodeDownloading(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.FilePath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
         }
     }
 }
