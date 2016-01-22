@@ -94,7 +94,7 @@ namespace Fuzable.Podcast.Entities
                 }
                 catch (WebException)
                 {
-                    OnEpisodeDownloadFailed(Title, FilePath);
+                    OnEpisodeDownloadFailed(Title, Url);
                     //delete failed download
                     if (File.Exists(FilePath))
                     {

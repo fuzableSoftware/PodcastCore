@@ -36,8 +36,7 @@ namespace Podcast.CLI
 
         static void Podcast_Processed(object sender, PodcastDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Retrieved information from {eventArgs.Url}");
-            Console.WriteLine($"for {eventArgs.Name} will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
+            Console.WriteLine($"Retrieved information from {eventArgs.Url} for {eventArgs.Name} will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
         }
 
         private static void Episode_Processed(object sender, EpisodeDetailEventArgs eventArgs)
