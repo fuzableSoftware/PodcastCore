@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Fuzable.Podcast.Entities.Episode;
-using Fuzable.Podcast.Entities.Podcast;
+using Fuzable.Podcast.Entities.Episodes;
+using Fuzable.Podcast.Entities.Podcasts;
+using Fuzable.Podcast.Entities.Subscriptions;
 
-namespace Fuzable.Podcast.Entities.Subscription
+namespace Fuzable.Podcast.Entities
 {
     /// <summary>
     /// Manages subscription file (podcasts.xml)
@@ -16,7 +17,7 @@ namespace Fuzable.Podcast.Entities.Subscription
         /// <summary>
         /// Podcasts in the subscription
         /// </summary>
-        public List<Podcast.Podcast> Podcasts { get; set; }
+        public List<Podcast> Podcasts { get; set; }
 
         /// <summary>
         /// Filename used to manage subscriptions
@@ -119,7 +120,7 @@ namespace Fuzable.Podcast.Entities.Subscription
         /// Returns podcasts in subscription file
         /// </summary>
         /// <returns></returns>
-        internal List<Podcast.Podcast> GetPodcasts()
+        internal List<Podcast> GetPodcasts()
         {
             //make sure we have somewhere to download to
             try
@@ -133,7 +134,7 @@ namespace Fuzable.Podcast.Entities.Subscription
             }
             
             //read podcasts.xml file and extract subscribed podcasts from and return
-            var podcasts = new List<Podcast.Podcast>();
+            var podcasts = new List<Podcast>();
 
             try
             {
@@ -146,7 +147,7 @@ namespace Fuzable.Podcast.Entities.Subscription
                                 Url = item.Element("Url")?.Value,
                                 EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
                             };
-                podcasts.AddRange(items.Select(item => new Podcast.Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
+                podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
             }
             catch (Exception ex)
             {

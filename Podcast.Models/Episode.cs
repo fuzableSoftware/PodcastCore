@@ -1,7 +1,8 @@
 ﻿using System.IO;
 using System.Net;
+using Fuzable.Podcast.Entities.Episodes;
 
-namespace Fuzable.Podcast.Entities.Episode
+namespace Fuzable.Podcast.Entities
 {
     /// <summary>
     /// A podcast episode

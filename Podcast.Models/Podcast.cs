@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 
-namespace Fuzable.Podcast.Entities.Podcast
+namespace Fuzable.Podcast.Entities
 {
     /// <summary>
     /// an individual podcast
@@ -27,11 +27,11 @@ namespace Fuzable.Podcast.Entities.Podcast
         /// <summary>
         /// Episodes to download during sync
         /// </summary>
-        public List<Episode.Episode> EpisodesToDownload { get; set; }
+        public List<Episode> EpisodesToDownload { get; set; }
         /// <summary>
         /// Episodes to delete during sync
         /// </summary>
-        public List<Episode.Episode> EpisodesToDelete { get; set; }
+        public List<Episode> EpisodesToDelete { get; set; }
 
         /// <summary>
         /// Constructor
@@ -44,8 +44,8 @@ namespace Fuzable.Podcast.Entities.Podcast
             Name = name;
             Url = url;
             EpisodesToKeep = episodesToKeep;
-            EpisodesToDownload = new List<Episode.Episode>();
-            EpisodesToDelete = new List<Episode.Episode>();
+            EpisodesToDownload = new List<Episode>();
+            EpisodesToDelete = new List<Episode>();
         }
 
         /// <summary>
@@ -74,11 +74,11 @@ namespace Fuzable.Podcast.Entities.Podcast
 
                     if (EpisodesToKeep == 0 || counter < EpisodesToKeep)
                     {
-                        EpisodesToDownload.Add(new Episode.Episode(item.Title, item.Link, filePath));
+                        EpisodesToDownload.Add(new Episode(item.Title, item.Link, filePath));
                     }
                     else
                     {
-                        EpisodesToDelete.Add(new Episode.Episode(item.Title, item.Link, filePath));
+                        EpisodesToDelete.Add(new Episode(item.Title, item.Link, filePath));
                     }
                     counter++;
                 }

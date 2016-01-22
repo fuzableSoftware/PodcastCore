@@ -1,4 +1,4 @@
-namespace Fuzable.Podcast.Entities.Podcast
+namespace Fuzable.Podcast.Entities.Podcasts
 {
     /// <summary>
     /// Definition of podcast opened event signature

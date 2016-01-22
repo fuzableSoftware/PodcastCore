@@ -1,7 +1,8 @@
 ﻿using System;
-using Fuzable.Podcast.Entities.Episode;
-using Fuzable.Podcast.Entities.Podcast;
-using Fuzable.Podcast.Entities.Subscription;
+using Fuzable.Podcast.Entities;
+using Fuzable.Podcast.Entities.Episodes;
+using Fuzable.Podcast.Entities.Podcasts;
+using Fuzable.Podcast.Entities.Subscriptions;
 using Podcast.CLI.Properties;
 
 namespace Podcast.CLI
