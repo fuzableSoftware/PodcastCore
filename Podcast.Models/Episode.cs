@@ -31,9 +31,10 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         /// <param name="name">Name of episode</param>
         /// <param name="url">Episode address</param>
-        protected virtual void OnEpisodeDownloading(string name, string url)
+        /// <param name="path">Episode local path</param>
+        protected virtual void OnEpisodeDownloading(string name, string url, string path)
         {
-            EpisodeDownloading?.Invoke(this, new EpisodeDetailEventArgs(name, url));
+            EpisodeDownloading?.Invoke(this, new EpisodeDetailEventArgs(name, url, path));
         }
         /// <summary>
         /// Episode downloaded event
@@ -85,7 +86,7 @@ namespace Fuzable.Podcast.Entities
             {
                 try
                 {
-                    OnEpisodeDownloading(Title, Url);
+                    OnEpisodeDownloading(Title, Url, FilePath);
                     using (var client = new WebClient())
                     {
                         client.DownloadFile(Url, FilePath);

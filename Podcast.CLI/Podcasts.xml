@@ -5,4 +5,29 @@
     <Url>http://rss.conversationsnetwork.org/series/stackoverflow.xml</Url>
     <EpisodesToKeep>1</EpisodesToKeep>
   </Podcast>
+  <Podcast>
+    <Name>Hot Takedown</Name>
+    <Url>http://espn.go.com/espnradio/feeds/rss/podcast.xml?id=12474672</Url>
+    <EpisodesToKeep>5</EpisodesToKeep>
+  </Podcast>
+  <Podcast>
+    <Name>What's the Point</Name>
+    <Url>http://espn.go.com/espnradio/feeds/rss/podcast.xml?id=13131752</Url>
+    <EpisodesToKeep>5</EpisodesToKeep>
+  </Podcast>
+  <Podcast>
+    <Name>Judge John Hodgman</Name>
+    <Url>http://feeds.feedburner.com/todayinthepast?format=xml</Url>
+    <EpisodesToKeep>6</EpisodesToKeep>
+  </Podcast>
+  <Podcast>
+    <Name>BackStory</Name>
+    <Url>http://feeds.feedburner.com/BackStoryRadio</Url>
+    <EpisodesToKeep>4</EpisodesToKeep>
+  </Podcast>
+  <Podcast>
+    <Name>The Human Bible</Name>
+    <Url>http://thehumanbible.libsyn.com/rss</Url>
+    <EpisodesToKeep>35</EpisodesToKeep>
+  </Podcast>
 </Podcasts>

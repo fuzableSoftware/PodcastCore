@@ -102,6 +102,7 @@ namespace Fuzable.Podcast.Entities
         private static string CreateFilePathFromUrl(string fileUrl, string downloadFolder)
         {
             var filename = fileUrl.Split('/').Last();
+            filename = filename.Split('?').First();
             return Path.Combine(downloadFolder, filename);
         }
     }
