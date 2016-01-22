@@ -158,7 +158,7 @@ namespace Fuzable.Podcast.Entities
             return podcasts;
         }
 
-        private static void VerifyDownloadFolderExists(string downloadFolder)
+        internal static void VerifyDownloadFolderExists(string downloadFolder)
         {
             if (!Directory.Exists(downloadFolder))
             {
