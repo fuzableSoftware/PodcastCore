@@ -11,7 +11,7 @@ namespace Podcast.CLI
     {
         static void Main(string[] args)
         {
-            var downloadFolder = Settings.Default.DestinationFolder;
+            var downloadFolder = Settings.Default.DownloadFolder;
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
             //attach to events
