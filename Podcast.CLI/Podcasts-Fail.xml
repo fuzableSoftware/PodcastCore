@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Podcasts>
+  <Podcast>
+    <Name>Hot Takedown</Name>
+    <Url>http://espn.go.com/espnradio/feeds/rss/podcast.xml?id=12474672</Url>
+    <EpisodesToKeep>5</EpisodesToKeep>
+  </Podcast>
+  <Podcast>
+    <Name>What's the Point</Name>
+    <Url>http://espn.go.com/espnradio/feeds/rss/podcast.xml?id=13131752</Url>
+    <EpisodesToKeep>5</EpisodesToKeep>
+  </Podcast>
+</Podcasts>
