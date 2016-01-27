@@ -24,6 +24,27 @@ namespace Fuzable.Podcast.Entities
         /// Number of episodes to keep
         /// </summary>
         public int EpisodesToKeep { get; set; }
+
+        /// <summary>
+        /// Possible values for episode order (recent first, all in order, etc.)
+        /// </summary>
+        public enum EpisodeOrder
+        {
+            /// <summary>
+            /// Most recent podcast first (default)
+            /// </summary>
+            Recent, 
+            /// <summary>
+            /// First podcast first; ordered, sequential
+            /// </summary>
+            Chronological
+        }
+
+        /// <summary>
+        /// Order to write podcasts to USB key
+        /// </summary>
+        public EpisodeOrder Order { get; set; }
+
         /// <summary>
         /// Episodes to download during sync
         /// </summary>
@@ -39,13 +60,14 @@ namespace Fuzable.Podcast.Entities
         /// <param name="name">Podcast name</param>
         /// <param name="url">Podcast URL</param>
         /// <param name="episodesToKeep">Number of episodes to keep</param>
-        public Podcast(string name, string url, int episodesToKeep)
+        public Podcast(string name, string url, int episodesToKeep, EpisodeOrder order)
         {
             Name = name;
             Url = url;
             EpisodesToKeep = episodesToKeep;
             EpisodesToDownload = new List<Episode>();
             EpisodesToDelete = new List<Episode>();
+            Order = order;
         }
 
         /// <summary>
@@ -103,7 +125,7 @@ namespace Fuzable.Podcast.Entities
         {
             var filename = fileUrl.Split('/').Last();
             filename = filename.Split('?').First();
-            filename = index + "_" + filename;
+            filename = index.ToString("000") + "_" + filename;
             return Path.Combine(downloadFolder, filename);
         }
     }

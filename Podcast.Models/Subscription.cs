@@ -73,15 +73,16 @@ namespace Fuzable.Podcast.Entities
             try
             {
                 var settingsDoc = XDocument.Load($@"{Environment.CurrentDirectory}\{"Podcasts.xml"}");
-
                 var items = from item in settingsDoc.Descendants("Podcast")
                             select new
                             {
                                 Name = item.Element("Name")?.Value,
                                 Url = item.Element("Url")?.Value,
-                                EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
+                                EpisodesToKeep = item.Element("EpisodesToKeep")?.Value, 
+                                Order = item.Element("Order")?.Value
                             };
-                podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
+                podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep),
+                    (Podcast.EpisodeOrder)Enum.Parse(typeof(Podcast.EpisodeOrder), item.Order))));
             }
             catch (Exception ex)
             {
@@ -154,16 +155,29 @@ namespace Fuzable.Podcast.Entities
                 index += 1;
                 OnSubscriptionCopying(index, folders.Length);
 
-                var podcast = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
-                OnPodcastCopying(podcast);
+                var podcastName = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
+                OnPodcastCopying(podcastName);
 
                 var files = Directory.GetFiles(folder);
+
+                //reorder files if needed
+                if (Podcasts == null || Podcasts.Count == 0)
+                {
+                    Podcasts = GetPodcasts();
+                }
+                var podcast = (Podcasts.Find(p => p.Name == podcastName));
+                if (podcast?.Order == Podcast.EpisodeOrder.Chronological)
+                {
+                    //order should be reverse of how they were downloaded
+                    Array.Reverse(files);
+                }
+
                 foreach (var file in files)
                 {
                     var filename = Path.GetFileName(file) ?? "IDK";
-                    var source = Path.Combine(downloadFolder, podcast);
+                    var source = Path.Combine(downloadFolder, podcastName);
                     source = Path.Combine(source, filename);
-                    var podcastFolder = Path.Combine(destinationFolder, podcast);
+                    var podcastFolder = Path.Combine(destinationFolder, podcastName);
                     var destination = Path.Combine(podcastFolder, filename);
 
                     try
@@ -171,9 +185,9 @@ namespace Fuzable.Podcast.Entities
                         if (!File.Exists(destination))
                         {
                             VerifyFolderExists(podcastFolder);
-                            OnEpisodeCopying(podcast, source, destination);
+                            OnEpisodeCopying(podcastName, source, destination);
                             File.Copy(source, destination, false);
-                            OnEpisodeCopied(podcast, source, destination);
+                            OnEpisodeCopied(podcastName, source, destination);
                         }
                     }
                     catch (Exception)
@@ -186,7 +200,7 @@ namespace Fuzable.Podcast.Entities
 #endif
                     }
                 }
-                OnPodcastCopied(podcast);
+                OnPodcastCopied(podcastName);
             }
             OnSubscriptionCopied();
         }
