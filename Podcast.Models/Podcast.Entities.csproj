@@ -58,6 +58,7 @@
     <Compile Include="Podcasts\PodcastProcessingHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Subscription.cs" />
+    <Compile Include="Subscriptions\SubscriptionCopyingHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionCopiedHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionCompletedHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionCountEventArgs.cs" />

@@ -99,6 +99,22 @@ namespace Fuzable.Podcast.Entities
             EpisodeProcessed?.Invoke(this, new EpisodeDetailEventArgs(name, url, path, result));
         }
 
+        public event EpisodeCopyingHandler EpisodeCopying;
+        protected virtual void OnEpisodeCopying(string name, string path)
+        {
+            EpisodeCopying?.Invoke(this, new EpisodeDetailEventArgs(name, path));
+        }
+        public event EpisodeCopiedHandler EpisodeCopied;
+        protected virtual void OnEpisodeCopied(string name, string path)
+        {
+            EpisodeCopied?.Invoke(this, new EpisodeDetailEventArgs(name, path));
+        }
+        public event EpisodeCopyFailedHandler EpisodeCopyFailed;
+        protected virtual void OnEpisodeCopyFailed(string name, string path)
+        {
+            EpisodeCopyFailed?.Invoke(this, new EpisodeDetailEventArgs(name, path));
+        }
+
         public event PodcastCopyingHandler PodcastCopying;
         protected virtual void OnPodcastCopying(string name)
         {
@@ -110,9 +126,17 @@ namespace Fuzable.Podcast.Entities
             PodcastCopied?.Invoke(this, new PodcastDetailEventArgs(name));
         }
 
+        public event SubscriptionCopiedHandler SubscriptionCopying;
+
+        protected virtual void OnSubscriptionCopying()
+        {
+            SubscriptionCopying?.Invoke(this, EventArgs.Empty);
+        }
+
+
         public event SubscriptionCopiedHandler SubscriptionCopied;
 
-        protected virtual void OnSubscriptionCopied(string name)
+        protected virtual void OnSubscriptionCopied()
         {
             SubscriptionCopied?.Invoke(this, EventArgs.Empty);
         }
@@ -124,7 +148,7 @@ namespace Fuzable.Podcast.Entities
         {
             SubscriptionFile = "podcasts/xml";
         }
-        
+
         /// <summary>
         /// Constructor specifying subscription file
         /// </summary>
@@ -150,7 +174,7 @@ namespace Fuzable.Podcast.Entities
                 var error = new ApplicationException($"Error locating download folder '{DownloadFolder}'", ex);
                 throw error;
             }
-            
+
             //read podcasts.xml file and extract subscribed podcasts from and return
             var podcasts = new List<Podcast>();
 
@@ -206,6 +230,61 @@ namespace Fuzable.Podcast.Entities
                 }
             }
             OnSubscriptionCompleted(Podcasts.Count);
+        }
+
+        public void Copy(string downloadFolder, string destinationFolder)
+        {
+            //does the download folder exist?
+            if (!Directory.Exists(downloadFolder))
+            {
+                throw new FileNotFoundException("Specified download folder does not exist");
+            }
+
+            //does the destination folder exist?
+            if (!Directory.Exists(destinationFolder))
+            {
+                throw new FileNotFoundException("Specified destination folder does not exist");
+            }
+
+            OnSubscriptionCopying();
+
+            //get folders in download folder
+            var folders = Directory.GetDirectories(downloadFolder);
+
+            //copy files in each folder to destination
+            //if file exists, skip
+            foreach (var folder in folders)
+            {
+                var podcast = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
+                OnPodcastCopying(podcast);
+
+                var files = Directory.GetFiles(folder);
+                foreach (var file in files)
+                {
+                    var filename = Path.GetFileName(file) ?? "IDK";
+                    var source = Path.Combine(downloadFolder, podcast);
+                    source = Path.Combine(source, filename);
+                    var destination = Path.Combine(destinationFolder, podcast);
+                    destination = Path.Combine(destination, filename);
+
+                    try
+                    {
+                        if (!File.Exists(destination))
+                        {
+                            OnEpisodeCopying(source, destination);
+                            File.Copy(file, source, false);
+                            OnEpisodeCopied(filename, destination);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        OnEpisodeCopyFailed(filename, destination);
+                        throw;
+                    }
+                }
+                OnPodcastCopied(podcast);
+            }
+            OnSubscriptionCopied();
         }
 
         private void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)

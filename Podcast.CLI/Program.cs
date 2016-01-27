@@ -7,9 +7,9 @@ using Podcast.CLI.Properties;
 
 namespace Podcast.CLI
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var downloadFolder = Settings.Default.DownloadFolder;
             //read podcasts.xml
@@ -20,23 +20,38 @@ namespace Podcast.CLI
             subscriptions.PodcastOpened += Podcast_Opened;
             subscriptions.PodcastProcessed += Podcast_Processed;
             subscriptions.EpisodeProcessed += Episode_Processed;
+
             //sync
             subscriptions.Synchronize(downloadFolder);
+
+            //atach to copy events
+            subscriptions.EpisodeCopying += Episode_Copying;
+            subscriptions.EpisodeCopied += Episode_Copied;
+            subscriptions.EpisodeCopyFailed += Episode_CopyFailed;
+            subscriptions.PodcastCopying += Podcast_Copying;
+            subscriptions.PodcastCopied += Podcast_Copied;
+            subscriptions.PodcastCopying += Podcast_Copying;
+            subscriptions.SubscriptionCopying += Subscription_Copying;
+            subscriptions.SubscriptionCopied += Subscription_Copied;
+
+            //copy 
+            subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder);
         }
 
-        static void Subscription_Opened(object sender, SubscriptionCountEventArgs eventArgs)
+        private static void Subscription_Opened(object sender, SubscriptionCountEventArgs eventArgs)
         {
             Console.WriteLine($"Subscribed to {eventArgs.Count} podcast(s)");
         }
 
-        static void Podcast_Opened(object sender, PodcastDetailEventArgs eventArgs)
+        private static void Podcast_Opened(object sender, PodcastDetailEventArgs eventArgs)
         {
             Console.WriteLine($"Opening podcast '{eventArgs.Name}'");
         }
 
-        static void Podcast_Processed(object sender, PodcastDetailEventArgs eventArgs)
+        private static void Podcast_Processed(object sender, PodcastDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Retrieved information from {eventArgs.Url} for {eventArgs.Name} will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
+            Console.WriteLine(
+                $"Retrieved information from {eventArgs.Url} for {eventArgs.Name} will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
         }
 
         private static void Episode_Processed(object sender, EpisodeDetailEventArgs eventArgs)
@@ -44,22 +59,61 @@ namespace Podcast.CLI
             switch (eventArgs.Result)
             {
                 case EpisodeDetailEventArgs.EpisodeResult.Downloading:
-                    Console.WriteLine($"Downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.DownloadPath}...");
+                    Console.WriteLine(
+                        $"Downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.DownloadPath}...");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Downloaded:
                     Console.WriteLine($"Downloaded episode {eventArgs.Name} to {eventArgs.DownloadPath}");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Failed:
-                    Console.WriteLine($"FAILED downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.DownloadPath}");
+                    Console.WriteLine(
+                        $"FAILED downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.DownloadPath}");
                     break;
             }
         }
 
-        static void Subscription_Completed(object sender, SubscriptionCountEventArgs eventArgs)
+        private static void Subscription_Completed(object sender, SubscriptionCountEventArgs eventArgs)
         {
             Console.WriteLine($"Subscription with {eventArgs.Count} podcast(s) has finished processing");
-            Console.Write("Press any key to continue...");
+            Console.WriteLine("Press any key to copy downloaded podcasts to USB key...");
             Console.ReadKey();
         }
+
+        private static void Subscription_Copying(object sender, EventArgs e)
+        {
+            Console.WriteLine("Subscription has started copying to USB key");
+        }
+
+        private static void Subscription_Copied(object sender, EventArgs e)
+        {
+            Console.WriteLine("Podcasts in subscription have been copied to USB key");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        private static void Podcast_Copied(object sender, PodcastDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Podcast {eventArgs.Name} has been copied to USB key");
+        }
+
+        private static void Podcast_Copying(object sender, PodcastDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Podcast {eventArgs.Name} is being copied to USB key");
+        }
+
+        private static void Episode_Copying(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Copying episode {eventArgs.Name} from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}");
+        }
+        private static void Episode_Copied(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Episode {eventArgs.Name} was successfully copied from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}");
+        }
+        
+        private static void Episode_CopyFailed(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Episode {eventArgs.Name} could not be copied from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}");
+        }
+
     }
 }

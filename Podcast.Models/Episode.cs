@@ -64,23 +64,6 @@ namespace Fuzable.Podcast.Entities
             EpisodeDownloadFailed?.Invoke(this, new EpisodeDetailEventArgs(name, url));
         }
 
-        public event EpisodeCopyingHandler EpisodeCopying;
-        protected virtual void OnEpisodeCopying(string name, string path)
-        {
-            EpisodeCopying?.Invoke(this, new EpisodeDetailEventArgs(name, path));
-        }
-        public event EpisodeCopiedHandler EpisodeCopied;
-        protected virtual void OnEpisodeCopied(string name, string path)
-        {
-            EpisodeCopied?.Invoke(this, new EpisodeDetailEventArgs(name, path));
-        }
-        public event EpisodeCopyFailedHandler EpisodeCopyFailed;
-        protected virtual void OnEpisodeCopyFailed(string name, string path)
-        {
-            EpisodeCopyFailed?.Invoke(this, new EpisodeDetailEventArgs(name, path));
-        }
-
-
         /// <summary>
         /// Constructor
         /// </summary>
