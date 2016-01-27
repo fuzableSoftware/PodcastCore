@@ -74,7 +74,7 @@ namespace Fuzable.Podcast.Entities
                 var counter = 0;
                 foreach (var item in items)
                 {
-                    var filePath = CreateFilePathFromUrl(item.Link, downloadFolder);
+                    var filePath = CreateFilePathFromUrl(item.Link, downloadFolder, counter+1);
 
                     if (EpisodesToKeep == 0 || counter < EpisodesToKeep)
                     {
@@ -99,10 +99,11 @@ namespace Fuzable.Podcast.Entities
             }
         }
 
-        private static string CreateFilePathFromUrl(string fileUrl, string downloadFolder)
+        private static string CreateFilePathFromUrl(string fileUrl, string downloadFolder, int index)
         {
             var filename = fileUrl.Split('/').Last();
             filename = filename.Split('?').First();
+            filename = index + "_" + filename;
             return Path.Combine(downloadFolder, filename);
         }
     }
