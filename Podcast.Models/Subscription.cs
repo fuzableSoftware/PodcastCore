@@ -59,7 +59,7 @@ namespace Fuzable.Podcast.Entities
             //make sure we have somewhere to download to
             try
             {
-                VerifyDownloadFolderExists(DownloadFolder);
+                VerifyFolderExists(DownloadFolder);
             }
             catch (Exception ex)
             {
@@ -92,11 +92,11 @@ namespace Fuzable.Podcast.Entities
             return podcasts;
         }
 
-        internal static void VerifyDownloadFolderExists(string downloadFolder)
+        internal static void VerifyFolderExists(string folder)
         {
-            if (!Directory.Exists(downloadFolder))
+            if (!Directory.Exists(folder))
             {
-                Directory.CreateDirectory(downloadFolder);
+                Directory.CreateDirectory(folder);
             }
         }
 
@@ -163,22 +163,27 @@ namespace Fuzable.Podcast.Entities
                     var filename = Path.GetFileName(file) ?? "IDK";
                     var source = Path.Combine(downloadFolder, podcast);
                     source = Path.Combine(source, filename);
-                    var destination = Path.Combine(destinationFolder, podcast);
-                    destination = Path.Combine(destination, filename);
+                    var podcastFolder = Path.Combine(destinationFolder, podcast);
+                    var destination = Path.Combine(podcastFolder, filename);
 
                     try
                     {
                         if (!File.Exists(destination))
                         {
-                            OnEpisodeCopying(source, destination);
-                            File.Copy(file, source, false);
-                            OnEpisodeCopied(filename, destination);
+                            VerifyFolderExists(podcastFolder);
+                            OnEpisodeCopying(podcast, source, destination);
+                            File.Copy(source, destination, false);
+                            OnEpisodeCopied(podcast, source, destination);
                         }
                     }
                     catch (Exception)
                     {
                         OnEpisodeCopyFailed(filename, destination);
-                        throw;
+#if (DEBUG)
+                        {
+                            throw;
+                        }
+#endif
                     }
                 }
                 OnPodcastCopied(podcast);
@@ -280,11 +285,12 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Raises episode copying event
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="path"></param>
-        protected virtual void OnEpisodeCopying(string name, string path)
+        /// <param name="name">Name or title of the episode being copied</param>
+        /// <param name="source">Path to the episode being copied</param>
+        /// <param name="destination">Destination the episode is being copied to</param>
+        protected virtual void OnEpisodeCopying(string name, string source, string destination)
         {
-            EpisodeCopying?.Invoke(this, new EpisodeDetailEventArgs(name, path));
+            EpisodeCopying?.Invoke(this, new EpisodeDetailEventArgs(name, null, source, destination));
         }
 
         /// <summary>
@@ -295,10 +301,11 @@ namespace Fuzable.Podcast.Entities
         /// Raises episode copied event
         /// </summary>
         /// <param name="name">Title of podcast episode</param>
-        /// <param name="path">Path to podcast episiode</param>
-        protected virtual void OnEpisodeCopied(string name, string path)
+        /// <param name="source">Path to the episode copied</param>
+        /// <param name="destination">Destination the episode was copied to</param>
+        protected virtual void OnEpisodeCopied(string name, string source, string destination)
         {
-            EpisodeCopied?.Invoke(this, new EpisodeDetailEventArgs(name, path));
+            EpisodeCopied?.Invoke(this, new EpisodeDetailEventArgs(name, null, source, destination));
         }
 
         /// <summary>
@@ -322,7 +329,7 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Raises podcast copying event
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Name of the podcast being copied</param>
         protected virtual void OnPodcastCopying(string name)
         {
             PodcastCopying?.Invoke(this, new PodcastDetailEventArgs(name));

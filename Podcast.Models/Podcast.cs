@@ -57,7 +57,7 @@ namespace Fuzable.Podcast.Entities
             {
                 //append podcast name to folder and verify folder exists
                 downloadFolder = Path.Combine(downloadFolder, Name);
-                Subscription.VerifyDownloadFolderExists(downloadFolder);
+                Subscription.VerifyFolderExists(downloadFolder);
 
                 var xmlDoc = XDocument.Load(Url);
 
