@@ -18,7 +18,8 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// <summary>
         /// Podcast local path
         /// </summary>
-        public string FilePath { get; set; }
+        public string DownloadPath { get; set; }
+        public string DestinationPath { get; set; }
 
         /// <summary>
         /// Available values for Result when attempting to download episode
@@ -34,7 +35,7 @@ namespace Fuzable.Podcast.Entities.Episodes
             /// </summary>
             Downloaded,
             /// <summary>
-            /// Episode could not be downloaded
+            /// Episode could not be downloaded or copied
             /// </summary>
             Failed
         };
@@ -43,7 +44,7 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// Result of episode being downloaded
         /// </summary>
         public EpisodeResult Result { get; set; }
-        
+
         /// <summary>
         /// Partial constructor
         /// </summary>
@@ -65,7 +66,7 @@ namespace Fuzable.Podcast.Entities.Episodes
         {
             Name = name;
             Url = url;
-            FilePath = path;
+            DownloadPath = path;
         }
         /// <summary>
         /// Constructor
@@ -78,8 +79,22 @@ namespace Fuzable.Podcast.Entities.Episodes
         {
             Name = name;
             Url = url;
-            FilePath = path;
+            DownloadPath = path;
             Result = result;
+        }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">Episode name</param>
+        /// <param name="url">Episode address</param>
+        /// <param name="source">Episode download path</param>
+        /// <param name="destination">Episode destination/copy path</param>
+        public EpisodeDetailEventArgs(string name, string url, string source, string destination)
+        {
+            Name = name;
+            Url = url;
+            DownloadPath = source;
+            DestinationPath = destination;
         }
     }
 }

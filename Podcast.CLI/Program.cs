@@ -44,13 +44,13 @@ namespace Podcast.CLI
             switch (eventArgs.Result)
             {
                 case EpisodeDetailEventArgs.EpisodeResult.Downloading:
-                    Console.WriteLine($"Downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.FilePath}...");
+                    Console.WriteLine($"Downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.DownloadPath}...");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Downloaded:
-                    Console.WriteLine($"Downloaded episode {eventArgs.Name} to {eventArgs.FilePath}");
+                    Console.WriteLine($"Downloaded episode {eventArgs.Name} to {eventArgs.DownloadPath}");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Failed:
-                    Console.WriteLine($"FAILED downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.FilePath}");
+                    Console.WriteLine($"FAILED downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.DownloadPath}");
                     break;
             }
         }

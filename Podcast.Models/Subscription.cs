@@ -99,6 +99,24 @@ namespace Fuzable.Podcast.Entities
             EpisodeProcessed?.Invoke(this, new EpisodeDetailEventArgs(name, url, path, result));
         }
 
+        public event PodcastCopyingHandler PodcastCopying;
+        protected virtual void OnPodcastCopying(string name)
+        {
+            PodcastCopying?.Invoke(this, new PodcastDetailEventArgs(name));
+        }
+        public event PodcastCopiedHandler PodcastCopied;
+        protected virtual void OnPodcastCopied(string name)
+        {
+            PodcastCopied?.Invoke(this, new PodcastDetailEventArgs(name));
+        }
+
+        public event SubscriptionCopiedHandler SubscriptionCopied;
+
+        protected virtual void OnSubscriptionCopied(string name)
+        {
+            SubscriptionCopied?.Invoke(this, EventArgs.Empty);
+        }
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -192,17 +210,17 @@ namespace Fuzable.Podcast.Entities
 
         private void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.FilePath, EpisodeDetailEventArgs.EpisodeResult.Failed));
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Failed));
         }
 
         private void Episode_EpisodeDownloaded(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.FilePath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
         }
 
         private void Episode_EpisodeDownloading(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.FilePath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
         }
     }
 }
