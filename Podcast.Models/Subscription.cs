@@ -29,6 +29,175 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public string DownloadFolder { get; set; }
 
+        #region Constructors
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public Subscription()
+        {
+            SubscriptionFile = "podcasts/xml";
+        }
+
+        /// <summary>
+        /// Constructor specifying subscription file
+        /// </summary>
+        /// <param name="subscriptionFile"></param>
+        public Subscription(string subscriptionFile)
+        {
+            SubscriptionFile = subscriptionFile;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Returns podcasts in subscription file
+        /// </summary>
+        /// <returns></returns>
+        internal List<Podcast> GetPodcasts()
+        {
+            //make sure we have somewhere to download to
+            try
+            {
+                VerifyDownloadFolderExists(DownloadFolder);
+            }
+            catch (Exception ex)
+            {
+                var error = new ApplicationException($"Error locating download folder '{DownloadFolder}'", ex);
+                throw error;
+            }
+
+            //read podcasts.xml file and extract subscribed podcasts from and return
+            var podcasts = new List<Podcast>();
+
+            try
+            {
+                var settingsDoc = XDocument.Load($@"{Environment.CurrentDirectory}\{"Podcasts.xml"}");
+
+                var items = from item in settingsDoc.Descendants("Podcast")
+                            select new
+                            {
+                                Name = item.Element("Name")?.Value,
+                                Url = item.Element("Url")?.Value,
+                                EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
+                            };
+                podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
+            }
+            catch (Exception ex)
+            {
+                var error = new ApplicationException("Error retrieving subscriptions", ex);
+                throw error;
+            }
+
+            return podcasts;
+        }
+
+        internal static void VerifyDownloadFolderExists(string downloadFolder)
+        {
+            if (!Directory.Exists(downloadFolder))
+            {
+                Directory.CreateDirectory(downloadFolder);
+            }
+        }
+
+        /// <summary>
+        /// Synchronize the subscription
+        /// </summary>
+        public void Synchronize(string downloadFolder)
+        {
+            DownloadFolder = downloadFolder;
+            Podcasts = GetPodcasts();
+            OnSubscriptionOpened(Podcasts.Count);
+            foreach (var podcast in Podcasts)
+            {
+                OnPodcastOpened(podcast.Name);
+                podcast.ProcessFeed(downloadFolder);
+                OnPodcastProcessed(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
+                foreach (var episode in podcast.EpisodesToDownload)
+                {
+                    episode.EpisodeDownloading += Episode_EpisodeDownloading;
+                    episode.EpisodeDownloaded += Episode_EpisodeDownloaded;
+                    episode.EpisodeDownloadFailed += Episode_EpisodeDownloadFailed;
+                    episode.Download();
+                }
+            }
+            OnSubscriptionCompleted(Podcasts.Count);
+        }
+
+        public void Copy(string downloadFolder, string destinationFolder)
+        {
+            //does the download folder exist?
+            if (!Directory.Exists(downloadFolder))
+            {
+                throw new FileNotFoundException("Specified download folder does not exist");
+            }
+
+            //does the destination folder exist?
+            if (!Directory.Exists(destinationFolder))
+            {
+                throw new FileNotFoundException("Specified destination folder does not exist");
+            }
+
+            //get folders in download folder
+            var folders = Directory.GetDirectories(downloadFolder);
+            var index = 0;
+            
+            //copy files in each folder to destination
+            //if file exists, skip
+            foreach (var folder in folders)
+            {
+                index += 1;
+                OnSubscriptionCopying(index, folders.Length);
+
+                var podcast = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
+                OnPodcastCopying(podcast);
+
+                var files = Directory.GetFiles(folder);
+                foreach (var file in files)
+                {
+                    var filename = Path.GetFileName(file) ?? "IDK";
+                    var source = Path.Combine(downloadFolder, podcast);
+                    source = Path.Combine(source, filename);
+                    var destination = Path.Combine(destinationFolder, podcast);
+                    destination = Path.Combine(destination, filename);
+
+                    try
+                    {
+                        if (!File.Exists(destination))
+                        {
+                            OnEpisodeCopying(source, destination);
+                            File.Copy(file, source, false);
+                            OnEpisodeCopied(filename, destination);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        OnEpisodeCopyFailed(filename, destination);
+                        throw;
+                    }
+                }
+                OnPodcastCopied(podcast);
+            }
+            OnSubscriptionCopied();
+        }
+
+        #region Event Handlers
+
+        private void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Failed));
+        }
+
+        private void Episode_EpisodeDownloaded(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
+        }
+
+        private void Episode_EpisodeDownloading(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
+        }
+
         /// <summary>
         /// Event raised when subscription is opened
         /// </summary>
@@ -126,11 +295,11 @@ namespace Fuzable.Podcast.Entities
             PodcastCopied?.Invoke(this, new PodcastDetailEventArgs(name));
         }
 
-        public event SubscriptionCopiedHandler SubscriptionCopying;
+        public event SubscriptionCopyingHandler SubscriptionCopying;
 
-        protected virtual void OnSubscriptionCopying()
+        protected virtual void OnSubscriptionCopying(int current, int total)
         {
-            SubscriptionCopying?.Invoke(this, EventArgs.Empty);
+            SubscriptionCopying?.Invoke(this, new SubscriptionCountEventArgs(total, current));
         }
 
 
@@ -140,166 +309,6 @@ namespace Fuzable.Podcast.Entities
         {
             SubscriptionCopied?.Invoke(this, EventArgs.Empty);
         }
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public Subscription()
-        {
-            SubscriptionFile = "podcasts/xml";
-        }
-
-        /// <summary>
-        /// Constructor specifying subscription file
-        /// </summary>
-        /// <param name="subscriptionFile"></param>
-        public Subscription(string subscriptionFile)
-        {
-            SubscriptionFile = subscriptionFile;
-        }
-
-        /// <summary>
-        /// Returns podcasts in subscription file
-        /// </summary>
-        /// <returns></returns>
-        internal List<Podcast> GetPodcasts()
-        {
-            //make sure we have somewhere to download to
-            try
-            {
-                VerifyDownloadFolderExists(DownloadFolder);
-            }
-            catch (Exception ex)
-            {
-                var error = new ApplicationException($"Error locating download folder '{DownloadFolder}'", ex);
-                throw error;
-            }
-
-            //read podcasts.xml file and extract subscribed podcasts from and return
-            var podcasts = new List<Podcast>();
-
-            try
-            {
-                var settingsDoc = XDocument.Load($@"{Environment.CurrentDirectory}\{"Podcasts.xml"}");
-
-                var items = from item in settingsDoc.Descendants("Podcast")
-                            select new
-                            {
-                                Name = item.Element("Name")?.Value,
-                                Url = item.Element("Url")?.Value,
-                                EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
-                            };
-                podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep))));
-            }
-            catch (Exception ex)
-            {
-                var error = new ApplicationException("Error retrieving subscriptions", ex);
-                throw error;
-            }
-
-            return podcasts;
-        }
-
-        internal static void VerifyDownloadFolderExists(string downloadFolder)
-        {
-            if (!Directory.Exists(downloadFolder))
-            {
-                Directory.CreateDirectory(downloadFolder);
-            }
-        }
-
-        /// <summary>
-        /// Synchronize the subscription
-        /// </summary>
-        public void Synchronize(string downloadFolder)
-        {
-            DownloadFolder = downloadFolder;
-            Podcasts = GetPodcasts();
-            OnSubscriptionOpened(Podcasts.Count);
-            foreach (var podcast in Podcasts)
-            {
-                OnPodcastOpened(podcast.Name);
-                podcast.ProcessFeed(downloadFolder);
-                OnPodcastProcessed(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
-                foreach (var episode in podcast.EpisodesToDownload)
-                {
-                    episode.EpisodeDownloading += Episode_EpisodeDownloading;
-                    episode.EpisodeDownloaded += Episode_EpisodeDownloaded;
-                    episode.EpisodeDownloadFailed += Episode_EpisodeDownloadFailed;
-                    episode.Download();
-                }
-            }
-            OnSubscriptionCompleted(Podcasts.Count);
-        }
-
-        public void Copy(string downloadFolder, string destinationFolder)
-        {
-            //does the download folder exist?
-            if (!Directory.Exists(downloadFolder))
-            {
-                throw new FileNotFoundException("Specified download folder does not exist");
-            }
-
-            //does the destination folder exist?
-            if (!Directory.Exists(destinationFolder))
-            {
-                throw new FileNotFoundException("Specified destination folder does not exist");
-            }
-
-            OnSubscriptionCopying();
-
-            //get folders in download folder
-            var folders = Directory.GetDirectories(downloadFolder);
-
-            //copy files in each folder to destination
-            //if file exists, skip
-            foreach (var folder in folders)
-            {
-                var podcast = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
-                OnPodcastCopying(podcast);
-
-                var files = Directory.GetFiles(folder);
-                foreach (var file in files)
-                {
-                    var filename = Path.GetFileName(file) ?? "IDK";
-                    var source = Path.Combine(downloadFolder, podcast);
-                    source = Path.Combine(source, filename);
-                    var destination = Path.Combine(destinationFolder, podcast);
-                    destination = Path.Combine(destination, filename);
-
-                    try
-                    {
-                        if (!File.Exists(destination))
-                        {
-                            OnEpisodeCopying(source, destination);
-                            File.Copy(file, source, false);
-                            OnEpisodeCopied(filename, destination);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        OnEpisodeCopyFailed(filename, destination);
-                        throw;
-                    }
-                }
-                OnPodcastCopied(podcast);
-            }
-            OnSubscriptionCopied();
-        }
-
-        private void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)
-        {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Failed));
-        }
-
-        private void Episode_EpisodeDownloaded(object sender, EpisodeDetailEventArgs eventArgs)
-        {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
-        }
-
-        private void Episode_EpisodeDownloading(object sender, EpisodeDetailEventArgs eventArgs)
-        {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
-        }
+        #endregion
     }
 }

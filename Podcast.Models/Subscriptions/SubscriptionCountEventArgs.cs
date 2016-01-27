@@ -11,6 +11,7 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         /// Number of podcasts in subscription
         /// </summary>
         public int Count { get; set; }
+        public int Index { get; set; }
 
         /// <summary>
         /// Constructor with count
@@ -20,6 +21,11 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         public SubscriptionCountEventArgs(int numberOfItems)
         {
             Count = numberOfItems;
+        }
+        public SubscriptionCountEventArgs(int totalCount, int currentIndex)
+        {
+            Count = totalCount;
+            Index = currentIndex;
         }
     }
 }

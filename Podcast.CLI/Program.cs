@@ -30,7 +30,6 @@ namespace Podcast.CLI
             subscriptions.EpisodeCopyFailed += Episode_CopyFailed;
             subscriptions.PodcastCopying += Podcast_Copying;
             subscriptions.PodcastCopied += Podcast_Copied;
-            subscriptions.PodcastCopying += Podcast_Copying;
             subscriptions.SubscriptionCopying += Subscription_Copying;
             subscriptions.SubscriptionCopied += Subscription_Copied;
 
@@ -45,13 +44,13 @@ namespace Podcast.CLI
 
         private static void Podcast_Opened(object sender, PodcastDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Opening podcast '{eventArgs.Name}'");
+            Console.WriteLine($"Opening podcast '{eventArgs.Name}'...");
         }
 
         private static void Podcast_Processed(object sender, PodcastDetailEventArgs eventArgs)
         {
             Console.WriteLine(
-                $"Retrieved information from {eventArgs.Url} for {eventArgs.Name} will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
+                $"Retrieved information from {eventArgs.Url} for '{eventArgs.Name}' will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
         }
 
         private static void Episode_Processed(object sender, EpisodeDetailEventArgs eventArgs)
@@ -60,14 +59,14 @@ namespace Podcast.CLI
             {
                 case EpisodeDetailEventArgs.EpisodeResult.Downloading:
                     Console.WriteLine(
-                        $"Downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.DownloadPath}...");
+                        $"Downloading episode '{eventArgs.Name}' from {eventArgs.Url} to {eventArgs.DownloadPath}...");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Downloaded:
-                    Console.WriteLine($"Downloaded episode {eventArgs.Name} to {eventArgs.DownloadPath}");
+                    Console.WriteLine($"Downloaded episode '{eventArgs.Name}' to {eventArgs.DownloadPath}");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Failed:
                     Console.WriteLine(
-                        $"FAILED downloading episode {eventArgs.Name} from {eventArgs.Url} to {eventArgs.DownloadPath}");
+                        $"FAILED downloading episode '{eventArgs.Name}' from {eventArgs.Url} to {eventArgs.DownloadPath}");
                     break;
             }
         }
@@ -79,9 +78,9 @@ namespace Podcast.CLI
             Console.ReadKey();
         }
 
-        private static void Subscription_Copying(object sender, EventArgs e)
+        private static void Subscription_Copying(object sender, SubscriptionCountEventArgs e)
         {
-            Console.WriteLine("Subscription has started copying to USB key");
+            Console.WriteLine($"Subscription copying to USB key, copying podcast {e.Index} of {e.Count}...");
         }
 
         private static void Subscription_Copied(object sender, EventArgs e)
@@ -93,26 +92,26 @@ namespace Podcast.CLI
 
         private static void Podcast_Copied(object sender, PodcastDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Podcast {eventArgs.Name} has been copied to USB key");
+            Console.WriteLine($"Podcast '{eventArgs.Name}' has been copied to USB key");
         }
 
         private static void Podcast_Copying(object sender, PodcastDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Podcast {eventArgs.Name} is being copied to USB key");
+            Console.WriteLine($"Podcast '{eventArgs.Name}' is being copied to USB key...");
         }
 
         private static void Episode_Copying(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Copying episode {eventArgs.Name} from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}");
+            Console.WriteLine($"Copying episode '{eventArgs.Name}' from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}...");
         }
         private static void Episode_Copied(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Episode {eventArgs.Name} was successfully copied from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}");
+            Console.WriteLine($"Episode '{eventArgs.Name}' was successfully copied from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}");
         }
         
         private static void Episode_CopyFailed(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Episode {eventArgs.Name} could not be copied from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}");
+            Console.WriteLine($"Episode '{eventArgs.Name}' could not be copied from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}!");
         }
 
     }
