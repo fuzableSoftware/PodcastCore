@@ -124,6 +124,11 @@ namespace Fuzable.Podcast.Entities
             OnSubscriptionCompleted(Podcasts.Count);
         }
 
+        /// <summary>
+        /// Copy podcasts from download location to USB key
+        /// </summary>
+        /// <param name="downloadFolder">folder podcasts are downloaded to</param>
+        /// <param name="destinationFolder">folder podcasts are copied to</param>
         public void Copy(string downloadFolder, string destinationFolder)
         {
             //does the download folder exist?
@@ -268,43 +273,97 @@ namespace Fuzable.Podcast.Entities
             EpisodeProcessed?.Invoke(this, new EpisodeDetailEventArgs(name, url, path, result));
         }
 
+        /// <summary>
+        /// Event for copying podcast episodes
+        /// </summary>
         public event EpisodeCopyingHandler EpisodeCopying;
+        /// <summary>
+        /// Raises episode copying event
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
         protected virtual void OnEpisodeCopying(string name, string path)
         {
             EpisodeCopying?.Invoke(this, new EpisodeDetailEventArgs(name, path));
         }
+
+        /// <summary>
+        /// Event indicating episode has been copied
+        /// </summary>
         public event EpisodeCopiedHandler EpisodeCopied;
+        /// <summary>
+        /// Raises episode copied event
+        /// </summary>
+        /// <param name="name">Title of podcast episode</param>
+        /// <param name="path">Path to podcast episiode</param>
         protected virtual void OnEpisodeCopied(string name, string path)
         {
             EpisodeCopied?.Invoke(this, new EpisodeDetailEventArgs(name, path));
         }
+
+        /// <summary>
+        /// Event indicating episode copy failed
+        /// </summary>
         public event EpisodeCopyFailedHandler EpisodeCopyFailed;
+        /// <summary>
+        /// Raises episode copy failed event
+        /// </summary>
+        /// <param name="name">Episode title or name</param>
+        /// <param name="path">Intended path to episode</param>
         protected virtual void OnEpisodeCopyFailed(string name, string path)
         {
             EpisodeCopyFailed?.Invoke(this, new EpisodeDetailEventArgs(name, path));
         }
 
+        /// <summary>
+        /// Event indicates podcast is being copied
+        /// </summary>
         public event PodcastCopyingHandler PodcastCopying;
+        /// <summary>
+        /// Raises podcast copying event
+        /// </summary>
+        /// <param name="name"></param>
         protected virtual void OnPodcastCopying(string name)
         {
             PodcastCopying?.Invoke(this, new PodcastDetailEventArgs(name));
         }
+
+        /// <summary>
+        /// Event indicating podcast has been copied
+        /// </summary>
         public event PodcastCopiedHandler PodcastCopied;
+        /// <summary>
+        /// Raises the podcast copied event
+        /// </summary>
+        /// <param name="name"></param>
         protected virtual void OnPodcastCopied(string name)
         {
             PodcastCopied?.Invoke(this, new PodcastDetailEventArgs(name));
         }
 
+        /// <summary>
+        /// Event indicating subscription is being copied
+        /// </summary>
         public event SubscriptionCopyingHandler SubscriptionCopying;
 
+        /// <summary>
+        /// Raises subscription copying event
+        /// </summary>
+        /// <param name="current">The podcast current being copied</param>
+        /// <param name="total">Total number of podcasts to copy</param>
         protected virtual void OnSubscriptionCopying(int current, int total)
         {
             SubscriptionCopying?.Invoke(this, new SubscriptionCountEventArgs(total, current));
         }
 
-
+        /// <summary>
+        /// Event indicating subscription is being copied
+        /// </summary>
         public event SubscriptionCopiedHandler SubscriptionCopied;
 
+        /// <summary>
+        /// Raises the subscription copied event
+        /// </summary>
         protected virtual void OnSubscriptionCopied()
         {
             SubscriptionCopied?.Invoke(this, EventArgs.Empty);

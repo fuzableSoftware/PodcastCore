@@ -19,6 +19,9 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// Podcast local path
         /// </summary>
         public string DownloadPath { get; set; }
+        /// <summary>
+        /// Podcast destination (copy) path
+        /// </summary>
         public string DestinationPath { get; set; }
 
         /// <summary>

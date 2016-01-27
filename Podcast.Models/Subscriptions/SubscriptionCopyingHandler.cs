@@ -1,5 +1,3 @@
-using System;
-
 namespace Fuzable.Podcast.Entities.Subscriptions
 {
     /// <summary>

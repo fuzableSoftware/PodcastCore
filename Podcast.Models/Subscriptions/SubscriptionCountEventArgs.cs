@@ -11,6 +11,9 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         /// Number of podcasts in subscription
         /// </summary>
         public int Count { get; set; }
+        /// <summary>
+        /// Current podcast being processed (if applicable)
+        /// </summary>
         public int Index { get; set; }
 
         /// <summary>
@@ -22,6 +25,12 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         {
             Count = numberOfItems;
         }
+
+        /// <summary>
+        /// Constructor for setting both total and current item
+        /// </summary>
+        /// <param name="totalCount"></param>
+        /// <param name="currentIndex"></param>
         public SubscriptionCountEventArgs(int totalCount, int currentIndex)
         {
             Count = totalCount;
