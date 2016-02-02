@@ -15,7 +15,7 @@ namespace Podcast.CLI
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
             //attach to events
-            subscriptions.SubscriptionOpened += Subscription_Opened;
+            subscriptions.SubscriptionSynchronizing += SubscriptionSynchronizing;
             subscriptions.SubscriptionSynchronized += SubscriptionSynchronized;
             subscriptions.PodcastOpened += Podcast_Opened;
             subscriptions.PodcastProcessed += Podcast_Processed;
@@ -37,14 +37,14 @@ namespace Podcast.CLI
             subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder);
         }
 
-        private static void Subscription_Opened(object sender, SubscriptionCountEventArgs eventArgs)
+        private static void SubscriptionSynchronizing(object sender, SubscriptionCountEventArgs eventArgs)
         {
             Console.WriteLine($"Subscribed to {eventArgs.Count} podcast(s)");
         }
 
         private static void Podcast_Opened(object sender, PodcastDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Opening podcast '{eventArgs.Name}'...");
+            Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}'...");
         }
 
         private static void Podcast_Processed(object sender, PodcastDetailEventArgs eventArgs)
@@ -73,7 +73,7 @@ namespace Podcast.CLI
 
         private static void SubscriptionSynchronized(object sender, SubscriptionCountEventArgs eventArgs)
         {
-            Console.WriteLine($"Subscription with {eventArgs.Count} podcast(s) has finished processing");
+            Console.WriteLine($"Subscription with {eventArgs.Count} podcast(s) has finished synchronizing");
             Console.WriteLine("Press any key to copy downloaded podcasts to USB key...");
             Console.ReadKey();
         }

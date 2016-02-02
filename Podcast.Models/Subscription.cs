@@ -108,7 +108,7 @@ namespace Fuzable.Podcast.Entities
         {
             DownloadFolder = downloadFolder;
             Podcasts = GetPodcasts();
-            OnSubscriptionOpened(Podcasts.Count);
+            OnSubscriptionSynchronizing(Podcasts.Count);
             foreach (var podcast in Podcasts)
             {
                 OnPodcastOpened(podcast.Name);
@@ -122,7 +122,7 @@ namespace Fuzable.Podcast.Entities
                     episode.Download();
                 }
             }
-            OnSubscriptionCompleted(Podcasts.Count);
+            OnSubscriptionSynchronized(Podcasts.Count);
         }
 
         /// <summary>
@@ -252,14 +252,14 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Event raised when subscription is opened
         /// </summary>
-        public event SubscriptionOpenedHandler SubscriptionOpened;
+        public event SubscriptionSynchronizingHandler SubscriptionSynchronizing;
         /// <summary>
         /// Handler to raise event when opening subscription
         /// </summary>
         /// <param name="count">Number of podcasts in subscription</param>
-        protected virtual void OnSubscriptionOpened(int count)
+        protected virtual void OnSubscriptionSynchronizing(int count)
         {
-            SubscriptionOpened?.Invoke(this, new SubscriptionCountEventArgs(count));
+            SubscriptionSynchronizing?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
         /// <summary>
         /// Event raised when subscription is done
@@ -269,7 +269,7 @@ namespace Fuzable.Podcast.Entities
         /// 
         /// </summary>
         /// <param name="count">Number of podcasts in subscription</param>
-        protected virtual void OnSubscriptionCompleted(int count)
+        protected virtual void OnSubscriptionSynchronized(int count)
         {
             SubscriptionSynchronized?.Invoke(this, new SubscriptionCountEventArgs(count));
         }

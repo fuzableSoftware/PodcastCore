@@ -62,7 +62,7 @@
     <Compile Include="Subscriptions\SubscriptionCopiedHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionSynchronizedHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionCountEventArgs.cs" />
-    <Compile Include="Subscriptions\SubscriptionOpenedHandler.cs" />
+    <Compile Include="Subscriptions\SubscriptionSynchronizingHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
