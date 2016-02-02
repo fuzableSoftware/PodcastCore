@@ -169,25 +169,37 @@ namespace Fuzable.Podcast.Entities
                 if (podcast?.Order == Podcast.EpisodeOrder.Chronological)
                 {
                     //order should be reverse of how they were downloaded
-                    Array.Reverse(files);
+                    //Array.Reverse(files); 
+                    //Array.Reverse reorders the array but USB clients (home receiver and car) seem to be listing in alpha (despite car docs indicating write order)
                 }
 
+                //count files as they are processed
+                var fileIndex = 0;
                 foreach (var file in files)
                 {
+                    //get source path
                     var filename = Path.GetFileName(file) ?? "IDK";
-                    var source = Path.Combine(downloadFolder, podcastName);
-                    source = Path.Combine(source, filename);
+                    //get destination path
                     var podcastFolder = Path.Combine(destinationFolder, podcastName);
+                    //destination filename is used by player to organize
+                    //default filename is number prefix containing download order
+                    //if want downloaded last (first podcast) to be first, need to reverse order here
                     var destination = Path.Combine(podcastFolder, filename);
+                    if (podcast?.Order == Podcast.EpisodeOrder.Chronological)
+                    {
+                        //reset destination to the reverse number order, same prefix
+                        destination = (files.Length - fileIndex).ToString("000") + "_" + filename.Substring(4);
+                        destination = Path.Combine(podcastFolder, destination);
+                    }
 
                     try
                     {
                         if (!File.Exists(destination))
                         {
                             VerifyFolderExists(podcastFolder);
-                            OnEpisodeCopying(podcastName, source, destination);
-                            File.Copy(source, destination, false);
-                            OnEpisodeCopied(podcastName, source, destination);
+                            OnEpisodeCopying(podcastName, file, destination);
+                            File.Copy(file, destination, false);
+                            OnEpisodeCopied(podcastName, file, destination);
                         }
                     }
                     catch (Exception)
@@ -198,6 +210,10 @@ namespace Fuzable.Podcast.Entities
                             throw;
                         }
 #endif
+                    }
+                    finally
+                    {
+                        fileIndex += 1;
                     }
                 }
                 OnPodcastCopied(podcastName);

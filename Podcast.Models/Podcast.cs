@@ -60,6 +60,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="name">Podcast name</param>
         /// <param name="url">Podcast URL</param>
         /// <param name="episodesToKeep">Number of episodes to keep</param>
+        /// <param name="order">one of EpisodeOrder</param>
         public Podcast(string name, string url, int episodesToKeep, EpisodeOrder order)
         {
             Name = name;
@@ -127,6 +128,6 @@ namespace Fuzable.Podcast.Entities
             filename = filename.Split('?').First();
             filename = index.ToString("000") + "_" + filename;
             return Path.Combine(downloadFolder, filename);
-        }
+       }
     }
 }
