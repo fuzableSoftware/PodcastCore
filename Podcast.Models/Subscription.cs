@@ -184,13 +184,24 @@ namespace Fuzable.Podcast.Entities
                     //destination filename is used by player to organize
                     //default filename is number prefix containing download order
                     //if want downloaded last (first podcast) to be first, need to reverse order here
-                    var destination = Path.Combine(podcastFolder, filename);
+                    var destination = filename;
                     if (podcast?.Order == Podcast.EpisodeOrder.Chronological)
                     {
                         //reset destination to the reverse number order, same prefix
                         destination = (files.Length - fileIndex).ToString("000") + "_" + filename.Substring(4);
-                        destination = Path.Combine(podcastFolder, destination);
                     }
+
+                    //if the destination has leading zero, trim it
+                    if (files.Length < 100)
+                    {
+                        destination = destination.Substring(1);
+                    }
+
+                    //replace underscore with space
+                    destination = destination.Replace('_', ' ');
+
+                    //append path to destination
+                    destination = Path.Combine(podcastFolder, destination);
 
                     try
                     {
