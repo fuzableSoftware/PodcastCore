@@ -22,6 +22,7 @@ namespace Podcast.CLI
             subscriptions.PodcastSynchronized += Podcast_Synchronized;
             subscriptions.EpisodeSynchronizing += EpisodeSynchronizing;
             subscriptions.EpisodeSynchronized += EpisodeSynchronized;
+            subscriptions.FolderCreated += FolderCreated;
 
             //sync
             subscriptions.Synchronize(downloadFolder);
@@ -39,70 +40,70 @@ namespace Podcast.CLI
             subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder);
         }
 
-        private static void SubscriptionSynchronizing(object sender, SubscriptionCountEventArgs eventArgs)
+        private static void FolderCreated(object sender, FolderCreatedEventArgs e)
         {
-            if (eventArgs.Count > 1)
-            {
-                Console.WriteLine($"Synchronizing subscription containing {eventArgs.Count} podcasts");
-            }
-            else
-            {
-                Console.WriteLine($"Synchronizing subscription containing {eventArgs.Count} podcast");
-            }
+            Console.WriteLine($"Folder created at {e.Path}");
         }
 
-        private static void Podcast_Synchronizing(object sender, PodcastDetailEventArgs eventArgs)
+        private static void SubscriptionSynchronizing(object sender, SubscriptionCountEventArgs e)
         {
-            if (eventArgs.EpisodesToDownload == -1)
+            Console.WriteLine(e.Count > 1
+                ? $"Synchronizing subscription containing {e.Count} podcasts"
+                : $"Synchronizing subscription containing {e.Count} podcast");
+        }
+
+        private static void Podcast_Synchronizing(object sender, PodcastDetailEventArgs e)
+        {
+            if (e.EpisodesToDownload == -1)
             {
             //unknown, feed not opened
-            Console.WriteLine($"Processing podcast feed for '{eventArgs.Name}'");
+            Console.WriteLine($"Processing podcast feed for '{e.Name}'");
             }
             else
             {
-            Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}' at {eventArgs.Url}...");
-            Console.WriteLine($"** {eventArgs.Name} may download {eventArgs.EpisodesToDownload} and remove up to {eventArgs.EpisodesToDelete} episodes **");
+            Console.WriteLine($"Synchronizing podcast '{e.Name}' at {e.Url}...");
+            Console.WriteLine($"** {e.Name} may download {e.EpisodesToDownload} and remove up to {e.EpisodesToDelete} episodes **");
             }
         }
         
-        private static void Podcast_Synchronized(object sender, PodcastDetailEventArgs eventArgs)
+        private static void Podcast_Synchronized(object sender, PodcastDetailEventArgs e)
         {
-            Console.WriteLine($"Finished synchronizing '{eventArgs.Name}'");
+            Console.WriteLine($"Finished synchronizing '{e.Name}'");
         }
 
-        private static void EpisodeSynchronizing(object sender, EpisodeDetailEventArgs eventArgs)
+        private static void EpisodeSynchronizing(object sender, EpisodeDetailEventArgs e)
         {
-            switch (eventArgs.Result)
+            switch (e.Result)
             {
                 case EpisodeDetailEventArgs.EpisodeResult.Downloading:
                     Console.WriteLine(
-                        $"Downloading episode '{eventArgs.Name}' from {eventArgs.Url} to {eventArgs.Path}...");
+                        $"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Downloaded:
-                    Console.WriteLine($"'{eventArgs.Name}' has been downloaded to {eventArgs.Path}");
+                    Console.WriteLine($"'{e.Name}' has been downloaded to {e.Path}");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Failed:
                     Console.WriteLine(
-                        $"FAILED downloading episode '{eventArgs.Name}' from {eventArgs.Url} to {eventArgs.Path}");
+                        $"FAILED downloading episode '{e.Name}' from {e.Url} to {e.Path}");
                     break;
             }
         }
 
-        private static void EpisodeSynchronized(object sender, EpisodeDetailEventArgs eventArgs)
+        private static void EpisodeSynchronized(object sender, EpisodeDetailEventArgs e)
         {
-            if (eventArgs.Url == null)
+            if (e.Url == null)
             {
-                Console.WriteLine($"'{eventArgs.Name}' already downloaded");
+                Console.WriteLine($"'{e.Name}' already downloaded");
             }
             else
             {
-                Console.WriteLine($"Finished downloading episode '{eventArgs.Name}'");
+                Console.WriteLine($"Finished downloading episode '{e.Name}'");
             }
         }
 
-        private static void SubscriptionSynchronized(object sender, SubscriptionCountEventArgs eventArgs)
+        private static void SubscriptionSynchronized(object sender, SubscriptionCountEventArgs e)
         {
-            Console.WriteLine($"Subscription with {eventArgs.Count} podcast(s) has finished synchronizing");
+            Console.WriteLine($"Subscription with {e.Count} podcast(s) has finished synchronizing");
             Console.WriteLine("Press any key to copy downloaded podcasts to USB key...");
             Console.ReadKey();
         }
@@ -119,32 +120,32 @@ namespace Podcast.CLI
             Console.ReadKey();
         }
 
-        private static void Podcast_Copied(object sender, PodcastDetailEventArgs eventArgs)
+        private static void Podcast_Copied(object sender, PodcastDetailEventArgs e)
         {
-            Console.WriteLine($"Podcast '{eventArgs.Name}' has been copied to USB key");
+            Console.WriteLine($"Podcast '{e.Name}' has been copied to USB key");
         }
 
-        private static void Podcast_Copying(object sender, PodcastDetailEventArgs eventArgs)
+        private static void Podcast_Copying(object sender, PodcastDetailEventArgs e)
         {
-            Console.WriteLine($"Podcast '{eventArgs.Name}' is being copied to USB key...");
+            Console.WriteLine($"Podcast '{e.Name}' is being copied to USB key...");
         }
 
-        private static void Episode_Copying(object sender, EpisodeCopyEventArgs eventArgs)
+        private static void Episode_Copying(object sender, EpisodeCopyEventArgs e)
         {
-            Console.WriteLine(eventArgs.Source == null
-                ? $"File already exists at {eventArgs.Destination}"
-                : $"Copying {eventArgs.Source} to {eventArgs.Destination}...");
+            Console.WriteLine(e.Source == null
+                ? $"File already exists at {e.Destination}"
+                : $"Copying {e.Source} to {e.Destination}...");
         }
-        private static void Episode_Copied(object sender, EpisodeCopyEventArgs eventArgs)
+        private static void Episode_Copied(object sender, EpisodeCopyEventArgs e)
         {
-            Console.WriteLine(eventArgs.Source == null
-                ? $"File already exists at {eventArgs.Destination}"
-                : $"File {eventArgs.Source} successfully copied to {eventArgs.Destination}");
+            Console.WriteLine(e.Source == null
+                ? $"File already exists at {e.Destination}"
+                : $"File {e.Source} successfully copied to {e.Destination}");
         }
 
-        private static void Episode_CopyFailed(object sender, EpisodeCopyEventArgs eventArgs)
+        private static void Episode_CopyFailed(object sender, EpisodeCopyEventArgs e)
         {
-            Console.WriteLine($"'{eventArgs.Source}' could not be copied to {eventArgs.Destination}!");
+            Console.WriteLine($"'{e.Source}' could not be copied to {e.Destination}!");
         }
 
     }

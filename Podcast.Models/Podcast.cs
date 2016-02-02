@@ -74,13 +74,14 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Process a podcast's feed
         /// </summary>
-        public void ProcessFeed(string downloadFolder)
+        public void ProcessFeed(Subscription subscription)
         {
             try
             {
                 //append podcast name to folder and verify folder exists
+                var downloadFolder = subscription.DownloadFolder;
                 downloadFolder = Path.Combine(downloadFolder, Name);
-                Subscription.VerifyFolderExists(downloadFolder);
+                subscription.VerifyFolderExists(downloadFolder);
 
                 var xmlDoc = XDocument.Load(Url);
 

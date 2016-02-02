@@ -32,6 +32,11 @@ namespace Fuzable.Podcast.Entities
         #region Events
 
         /// <summary>
+        /// Event raised when a folder is being created
+        /// </summary>
+        public event FolderCreatedHandler FolderCreated;
+
+        /// <summary>
         /// Event raised when subscription is synchronizing
         /// </summary>
         public event SubscriptionSynchronizingHandler SubscriptionSynchronizing;
@@ -164,12 +169,11 @@ namespace Fuzable.Podcast.Entities
             return podcasts;
         }
 
-        internal static void VerifyFolderExists(string folder)
+        internal void VerifyFolderExists(string folder)
         {
-            if (!Directory.Exists(folder))
-            {
-                Directory.CreateDirectory(folder);
-            }
+            if (Directory.Exists(folder)) return;
+            Directory.CreateDirectory(folder);
+            OnFolderCreated(folder);
         }
 
         /// <summary>
@@ -184,7 +188,7 @@ namespace Fuzable.Podcast.Entities
             {
                 //raise this without info, before processing feed (since is complex operation, could fail)
                 OnPodcastSynchronizing(podcast.Name);
-                podcast.ProcessFeed(downloadFolder);
+                podcast.ProcessFeed(this);
                 OnPodcastSynchronizing(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
                 //process each episode
                 foreach (var episode in podcast.EpisodesToDownload)
@@ -314,6 +318,15 @@ namespace Fuzable.Podcast.Entities
         #region Event Handlers
 
         #region Subscription
+
+        /// <summary>
+        /// Handler to raise event when a folder is created
+        /// </summary>
+        /// <param name="path"></param>
+        protected virtual void OnFolderCreated(string path)
+        {
+            FolderCreated?.Invoke(this, new FolderCreatedEventArgs(path));
+        }
 
         /// <summary>
         /// Handler to raise event when opening subscription
