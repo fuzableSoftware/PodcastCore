@@ -5,7 +5,7 @@ namespace Fuzable.Podcast.Entities.Episodes
     /// <summary>
     /// Episode detail event arguments
     /// </summary>
-    public class EpisodeDetailEventArgs : EventArgs
+    public class EpisodeDownloadingEventArgs : EventArgs
     {
         /// <summary>
         /// Name of the episode
@@ -50,7 +50,7 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// </summary>
         /// <param name="name">Episode name</param>
         /// <param name="url">Episode address</param>
-        public EpisodeDetailEventArgs(string name, string url)
+        public EpisodeDownloadingEventArgs(string name, string url)
         {
             Name = name;
             Url = url;
@@ -62,7 +62,7 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// <param name="name">Episode name</param>
         /// <param name="url">Episode address</param>
         /// <param name="path">Episode local path</param>
-        public EpisodeDetailEventArgs(string name, string url, string path)
+        public EpisodeDownloadingEventArgs(string name, string url, string path)
         {
             Name = name;
             Url = url;
@@ -76,7 +76,7 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// <param name="url">Episode address</param>
         /// <param name="path">Episode local path</param>
         /// <param name="result">Result of download attempt</param>
-        public EpisodeDetailEventArgs(string name, string url, string path, EpisodeResult result)
+        public EpisodeDownloadingEventArgs(string name, string url, string path, EpisodeResult result)
         {
             Name = name;
             Url = url;

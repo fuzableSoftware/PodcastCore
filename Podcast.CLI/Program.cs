@@ -71,25 +71,25 @@ namespace Podcast.CLI
             Console.WriteLine($"Finished synchronizing '{e.Name}'");
         }
 
-        private static void EpisodeSynchronizing(object sender, EpisodeDetailEventArgs e)
+        private static void EpisodeSynchronizing(object sender, EpisodeDownloadingEventArgs e)
         {
             switch (e.Result)
             {
-                case EpisodeDetailEventArgs.EpisodeResult.Downloading:
+                case EpisodeDownloadingEventArgs.EpisodeResult.Downloading:
                     Console.WriteLine(
                         $"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
                     break;
-                case EpisodeDetailEventArgs.EpisodeResult.Downloaded:
+                case EpisodeDownloadingEventArgs.EpisodeResult.Downloaded:
                     Console.WriteLine($"'{e.Name}' has been downloaded to {e.Path}");
                     break;
-                case EpisodeDetailEventArgs.EpisodeResult.Failed:
+                case EpisodeDownloadingEventArgs.EpisodeResult.Failed:
                     Console.WriteLine(
                         $"FAILED downloading episode '{e.Name}' from {e.Url} to {e.Path}");
                     break;
             }
         }
 
-        private static void EpisodeSynchronized(object sender, EpisodeDetailEventArgs e)
+        private static void EpisodeSynchronized(object sender, EpisodeDownloadingEventArgs e)
         {
             if (e.Url == null)
             {
