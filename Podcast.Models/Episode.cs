@@ -22,10 +22,32 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public string FilePath { get; set; }
 
+        #region Events
+
         /// <summary>
         /// Episode downloading event
         /// </summary>
         public event EpisodeDownloadingHandler EpisodeDownloading;
+
+        /// <summary>
+        /// Episode downloaded event
+        /// </summary>
+        public event EpisodeDownloadedHandler EpisodeDownloaded;
+        
+        /// <summary>
+        /// Episode download failed event
+        /// </summary>
+        public event EpisodeDownloadFailedHandler EpisodeDownloadFailed;
+
+        /// <summary>
+        /// Episode download synchronized event
+        /// </summary>
+        public event EpisodeSynchronizedHandler EpisodeSynchronized;
+
+        #endregion
+
+        #region Event Handlers
+
         /// <summary>
         /// Raises EpisodeDownloading event
         /// </summary>
@@ -36,10 +58,7 @@ namespace Fuzable.Podcast.Entities
         {
             EpisodeDownloading?.Invoke(this, new EpisodeDetailEventArgs(name, url, path));
         }
-        /// <summary>
-        /// Episode downloaded event
-        /// </summary>
-        public event EpisodeDownloadedHandler EpisodeDownloaded;
+
         /// <summary>
         /// Raises EpisodeDownloaded event
         /// </summary>
@@ -50,10 +69,7 @@ namespace Fuzable.Podcast.Entities
         {
             EpisodeDownloaded?.Invoke(this, new EpisodeDetailEventArgs(name, url, path));
         }
-        /// <summary>
-        /// Episode download failed event
-        /// </summary>
-        public event EpisodeDownloadFailedHandler EpisodeDownloadFailed;
+
         /// <summary>
         /// Raises EpisodeDownloadFailed event
         /// </summary>
@@ -63,11 +79,7 @@ namespace Fuzable.Podcast.Entities
         {
             EpisodeDownloadFailed?.Invoke(this, new EpisodeDetailEventArgs(name, url));
         }
-
-        /// <summary>
-        /// Episode download synchronized event
-        /// </summary>
-        public event EpisodeSynchronizedHandler EpisodeSynchronized;
+        
         /// <summary>
         /// Raises EpisodeSynchronized event
         /// </summary>
@@ -77,6 +89,8 @@ namespace Fuzable.Podcast.Entities
         {
             EpisodeSynchronized?.Invoke(this, new EpisodeDetailEventArgs(name, url));
         }
+
+        #endregion
 
         /// <summary>
         /// Constructor
