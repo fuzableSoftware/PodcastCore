@@ -111,7 +111,7 @@ namespace Fuzable.Podcast.Entities
             OnSubscriptionSynchronizing(Podcasts.Count);
             foreach (var podcast in Podcasts)
             {
-                OnPodcastOpened(podcast.Name);
+                OnPodcastSyncronizing(podcast.Name);
                 podcast.ProcessFeed(downloadFolder);
                 OnPodcastProcessed(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
                 foreach (var episode in podcast.EpisodesToDownload)
@@ -277,14 +277,14 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Event raised when podcast is opened
         /// </summary>
-        public event PodcastOpenedHandler PodcastOpened;
+        public event PodcastSynchronizingHandler PodcastSynchronizing;
         /// <summary>
         /// Handler to raise event when opening podcast
         /// </summary>
         /// <param name="name">Podcast name</param>
-        protected virtual void OnPodcastOpened(string name)
+        protected virtual void OnPodcastSyncronizing(string name)
         {
-            PodcastOpened?.Invoke(this, new PodcastDetailEventArgs(name));
+            PodcastSynchronizing?.Invoke(this, new PodcastDetailEventArgs(name));
         }
 
         /// <summary>
