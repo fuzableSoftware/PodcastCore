@@ -277,14 +277,14 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Event raised when podcast is opened
         /// </summary>
-        public event PodcastSynchronizingHandler PodcastSynchronizing;
+        public event PodcastSynchronizingHandler PodcastOpened;
         /// <summary>
         /// Handler to raise event when opening podcast
         /// </summary>
         /// <param name="name">Podcast name</param>
         protected virtual void OnPodcastSyncronizing(string name)
         {
-            PodcastSynchronizing?.Invoke(this, new PodcastDetailEventArgs(name));
+            PodcastOpened?.Invoke(this, new PodcastDetailEventArgs(name));
         }
 
         /// <summary>

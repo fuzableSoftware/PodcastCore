@@ -17,7 +17,7 @@ namespace Podcast.CLI
             //attach to events
             subscriptions.SubscriptionSynchronizing += SubscriptionSynchronizing;
             subscriptions.SubscriptionSynchronized += SubscriptionSynchronized;
-            subscriptions.PodcastSynchronizing += PodcastSynchronizing;
+            subscriptions.PodcastOpened += Podcast_Synchronizing;
             subscriptions.PodcastProcessed += Podcast_Processed;
             subscriptions.EpisodeProcessed += Episode_Processed;
 
@@ -42,7 +42,7 @@ namespace Podcast.CLI
             Console.WriteLine($"Syncing subscription containing {eventArgs.Count} podcast(s)...");
         }
 
-        private static void PodcastSynchronizing(object sender, PodcastDetailEventArgs eventArgs)
+        private static void Podcast_Synchronizing(object sender, PodcastDetailEventArgs eventArgs)
         {
             Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}'...");
         }
