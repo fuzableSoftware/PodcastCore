@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Episode.cs" />
+    <Compile Include="Episodes\EpisodeCopyEventArgs.cs" />
     <Compile Include="Episodes\EpisodeDetailEventArgs.cs" />
     <Compile Include="Episodes\EpisodeCopiedHandler.cs" />
     <Compile Include="Episodes\EpisodeDownloadedHandler.cs" />

@@ -76,14 +76,14 @@ namespace Podcast.CLI
             {
                 case EpisodeDetailEventArgs.EpisodeResult.Downloading:
                     Console.WriteLine(
-                        $"Downloading episode '{eventArgs.PodcastName}' from {eventArgs.Url} to {eventArgs.DownloadPath}...");
+                        $"Downloading episode '{eventArgs.Name}' from {eventArgs.Url} to {eventArgs.Path}...");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Downloaded:
-                    Console.WriteLine($"Downloaded episode '{eventArgs.PodcastName}' to {eventArgs.DownloadPath}");
+                    Console.WriteLine($"'{eventArgs.Name}' has been downloaded to {eventArgs.Path}");
                     break;
                 case EpisodeDetailEventArgs.EpisodeResult.Failed:
                     Console.WriteLine(
-                        $"FAILED downloading episode '{eventArgs.PodcastName}' from {eventArgs.Url} to {eventArgs.DownloadPath}");
+                        $"FAILED downloading episode '{eventArgs.Name}' from {eventArgs.Url} to {eventArgs.Path}");
                     break;
             }
         }
@@ -92,11 +92,11 @@ namespace Podcast.CLI
         {
             if (eventArgs.Url == null)
             {
-                Console.WriteLine($"'{eventArgs.PodcastName}' already downloaded");
+                Console.WriteLine($"'{eventArgs.Name}' already downloaded");
             }
             else
             {
-                Console.WriteLine($"Finished downloading episode '{eventArgs.PodcastName}'");
+                Console.WriteLine($"Finished downloading episode '{eventArgs.Name}'");
             }
         }
 
@@ -129,20 +129,22 @@ namespace Podcast.CLI
             Console.WriteLine($"Podcast '{eventArgs.Name}' is being copied to USB key...");
         }
 
-        private static void Episode_Copying(object sender, EpisodeDetailEventArgs eventArgs)
+        private static void Episode_Copying(object sender, EpisodeCopyEventArgs eventArgs)
         {
-            Console.WriteLine($"Copying episode '{eventArgs.PodcastName}' from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}...");
+            Console.WriteLine(eventArgs.Source == null
+                ? $"File already exists at {eventArgs.Destination}"
+                : $"Copying {eventArgs.Source} to {eventArgs.Destination}...");
         }
-        private static void Episode_Copied(object sender, EpisodeDetailEventArgs eventArgs)
+        private static void Episode_Copied(object sender, EpisodeCopyEventArgs eventArgs)
         {
-            Console.WriteLine(eventArgs.Result == EpisodeDetailEventArgs.EpisodeResult.Exists
-                ? $"File already exists at {eventArgs.DestinationPath}"
-                : $"File successfully copied from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}");
+            Console.WriteLine(eventArgs.Source == null
+                ? $"File already exists at {eventArgs.Destination}"
+                : $"File {eventArgs.Source} successfully copied to {eventArgs.Destination}");
         }
 
-        private static void Episode_CopyFailed(object sender, EpisodeDetailEventArgs eventArgs)
+        private static void Episode_CopyFailed(object sender, EpisodeCopyEventArgs eventArgs)
         {
-            Console.WriteLine($"Episode '{eventArgs.PodcastName}' could not be copied from {eventArgs.DownloadPath} to {eventArgs.DestinationPath}!");
+            Console.WriteLine($"'{eventArgs.Source}' could not be copied to {eventArgs.Destination}!");
         }
 
     }

@@ -283,13 +283,13 @@ namespace Fuzable.Podcast.Entities
                         if (!File.Exists(destination))
                         {
                             VerifyFolderExists(podcastFolder);
-                            OnEpisodeCopying(podcastName, file, destination);
+                            OnEpisodeCopying(file, destination);
                             File.Copy(file, destination, false);
-                            OnEpisodeCopied(podcastName, file, destination);
+                            OnEpisodeCopied(file, destination);
                         }
                         else
                         {
-                            OnEpisodeCopied(podcastName, file, destination, EpisodeDetailEventArgs.EpisodeResult.Exists);
+                            OnEpisodeCopied(null, destination);
                         }
                     }
                     catch (Exception)
@@ -407,7 +407,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="eventArgs">Information about the episode being downloaded</param>
         protected virtual void Episode_EpisodeDownloading(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.PodcastName, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.Path, EpisodeDetailEventArgs.EpisodeResult.Downloading));
         }
 
         /// <summary>
@@ -417,7 +417,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="eventArgs">Information about the episode being downloaded</param>
         protected virtual void Episode_EpisodeDownloaded(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.PodcastName, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.Path, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
         }
 
         /// <summary>
@@ -427,7 +427,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="eventArgs">Information about the episode being downloaded</param>
         protected virtual void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.PodcastName, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Failed));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.Path, EpisodeDetailEventArgs.EpisodeResult.Failed));
         }
 
         #endregion
@@ -439,7 +439,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="eventArgs">Information about the episode that was synchronized</param>
         protected virtual void Episode_EpisodeSynchronized(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeSynchronized?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.PodcastName, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
+            EpisodeSynchronized?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.Path, EpisodeDetailEventArgs.EpisodeResult.Downloading));
         }
 
         /// <summary>
@@ -457,44 +457,31 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Raises episode copying event
         /// </summary>
-        /// <param name="name">Name or title of the episode being copied</param>
         /// <param name="source">Path to the episode being copied</param>
         /// <param name="destination">Destination the episode is being copied to</param>
-        protected virtual void OnEpisodeCopying(string name, string source, string destination)
+        protected virtual void OnEpisodeCopying(string source, string destination)
         {
-            EpisodeCopying?.Invoke(this, new EpisodeDetailEventArgs(name, null, source, destination));
+            EpisodeCopying?.Invoke(this, new EpisodeCopyEventArgs(source, destination));
         }
 
         /// <summary>
         /// Raises episode copied event
         /// </summary>
-        /// <param name="name">Title of podcast episode</param>
         /// <param name="source">Path to the episode copied</param>
         /// <param name="destination">Destination the episode was copied to</param>
-        protected virtual void OnEpisodeCopied(string name, string source, string destination)
+        protected virtual void OnEpisodeCopied(string source, string destination)
         {
-            EpisodeCopied?.Invoke(this, new EpisodeDetailEventArgs(name, null, source, destination));
-        }
-        /// <summary>
-        /// Raises episode copied event
-        /// </summary>
-        /// <param name="name">Title of podcast episode</param>
-        /// <param name="source">Path to the episode copied</param>
-        /// <param name="destination">Destination the episode was copied to</param>
-        /// <param name="result">Result of copy operation</param>
-        protected virtual void OnEpisodeCopied(string name, string source, string destination, EpisodeDetailEventArgs.EpisodeResult result)
-        {
-            EpisodeCopied?.Invoke(this, new EpisodeDetailEventArgs(name, null, source, destination, result));
+            EpisodeCopying?.Invoke(this, new EpisodeCopyEventArgs(source, destination));
         }
 
         /// <summary>
         /// Raises episode copy failed event
         /// </summary>
-        /// <param name="name">Episode title or name</param>
-        /// <param name="path">Intended path to episode</param>
-        protected virtual void OnEpisodeCopyFailed(string name, string path)
+        /// <param name="source">Episode title or name</param>
+        /// <param name="destination">Intended path to episode</param>
+        protected virtual void OnEpisodeCopyFailed(string source, string destination)
         {
-            EpisodeCopyFailed?.Invoke(this, new EpisodeDetailEventArgs(name, path));
+            EpisodeCopyFailed?.Invoke(this, new EpisodeCopyEventArgs(source, destination));
         }
 
         #endregion
