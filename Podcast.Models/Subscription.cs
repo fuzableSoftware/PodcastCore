@@ -29,6 +29,79 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public string DownloadFolder { get; set; }
 
+        #region Events
+
+        /// <summary>
+        /// Event raised when subscription is synchronizing
+        /// </summary>
+        public event SubscriptionSynchronizingHandler SubscriptionSynchronizing;
+
+        /// <summary>
+        /// Event raised when subscription is done synchronizing
+        /// </summary>
+        public event SubscriptionSynchronizedHandler SubscriptionSynchronized;
+
+
+        /// <summary>
+        /// Event raised when podcast is synchronizing
+        /// </summary>
+        public event EpisodeSynchronizedHandler EpisodeSynchronized;
+
+        /// <summary>
+        /// Event raised when podcast is synchronizing
+        /// </summary>
+        public event PodcastSynchronizingHandler PodcastSynchronizing;
+
+        /// <summary>
+        /// Event indicates podcast is being copied
+        /// </summary>
+        /// 
+        public event PodcastCopyingHandler PodcastCopying;
+        /// <summary>
+        /// Event indicating episode copy failed
+        /// </summary>
+        /// 
+        public event EpisodeCopyFailedHandler EpisodeCopyFailed;
+        /// <summary>
+        /// Event indicating episode has been copied
+        /// </summary>
+        /// 
+        public event EpisodeCopiedHandler EpisodeCopied;
+
+        /// <summary>
+        ///  Event for copying podcast episodes
+        /// </summary>
+        /// 
+        public event EpisodeCopyingHandler EpisodeCopying;
+
+        /// <summary>
+        ///  Episode processed event
+        /// </summary>
+        ///  
+        public event EpisodeSynchronizingHandler EpisodeSynchronizing;
+
+        /// <summary>
+        ///  Event raised when podcast is synchronized
+        /// </summary>
+        public event PodcastSynchronizedHandler PodcastSynchronized;
+
+        /// <summary>
+        /// Event indicating subscription is being copied
+        /// </summary>
+        public event SubscriptionCopyingHandler SubscriptionCopying;
+
+        /// <summary>
+        /// Event indicating subscription is being copied
+        /// </summary>
+        public event SubscriptionCopiedHandler SubscriptionCopied;
+
+        /// <summary>
+        /// Event indicating podcast has been copied
+        /// </summary>
+        public event PodcastCopiedHandler PodcastCopied;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -78,7 +151,7 @@ namespace Fuzable.Podcast.Entities
                             {
                                 Name = item.Element("Name")?.Value,
                                 Url = item.Element("Url")?.Value,
-                                EpisodesToKeep = item.Element("EpisodesToKeep")?.Value, 
+                                EpisodesToKeep = item.Element("EpisodesToKeep")?.Value,
                                 Order = item.Element("Order")?.Value
                             };
                 podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.EpisodesToKeep),
@@ -112,17 +185,19 @@ namespace Fuzable.Podcast.Entities
             foreach (var podcast in Podcasts)
             {
                 //raise this without info, before processing feed (since is complex operation, could fail)
-                OnPodcastSyncronizing(podcast.Name);
+                OnPodcastSynchronizing(podcast.Name);
                 podcast.ProcessFeed(downloadFolder);
-                OnPodcastSyncronizing(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
+                OnPodcastSynchronizing(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
                 //process each episode
                 foreach (var episode in podcast.EpisodesToDownload)
                 {
                     episode.EpisodeDownloading += Episode_EpisodeDownloading;
                     episode.EpisodeDownloaded += Episode_EpisodeDownloaded;
                     episode.EpisodeDownloadFailed += Episode_EpisodeDownloadFailed;
+                    episode.EpisodeSynchronized += Episode_EpisodeSynchronized;
                     episode.Download();
                 }
+                OnPodcastSynchronized(podcast.Name);
             }
             OnSubscriptionSynchronized(Podcasts.Count);
         }
@@ -149,7 +224,7 @@ namespace Fuzable.Podcast.Entities
             //get folders in download folder
             var folders = Directory.GetDirectories(downloadFolder);
             var index = 0;
-            
+
             //copy files in each folder to destination
             //if file exists, skip
             foreach (var folder in folders)
@@ -236,25 +311,8 @@ namespace Fuzable.Podcast.Entities
 
         #region Event Handlers
 
-        private void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)
-        {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Failed));
-        }
+        #region Subscription
 
-        private void Episode_EpisodeDownloaded(object sender, EpisodeDetailEventArgs eventArgs)
-        {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
-        }
-
-        private void Episode_EpisodeDownloading(object sender, EpisodeDetailEventArgs eventArgs)
-        {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
-        }
-
-        /// <summary>
-        /// Event raised when subscription is opened
-        /// </summary>
-        public event SubscriptionSynchronizingHandler SubscriptionSynchronizing;
         /// <summary>
         /// Handler to raise event when opening subscription
         /// </summary>
@@ -263,47 +321,125 @@ namespace Fuzable.Podcast.Entities
         {
             SubscriptionSynchronizing?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
+
         /// <summary>
-        /// Event raised when subscription is done
+        /// Handler to raise subscription done with sync event
         /// </summary>
-        public event SubscriptionSynchronizedHandler SubscriptionSynchronized;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="count">Number of podcasts in subscription</param>
+        /// <param name="count">Number of podcasts synchronized</param>
         protected virtual void OnSubscriptionSynchronized(int count)
         {
             SubscriptionSynchronized?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
 
         /// <summary>
-        /// Event raised when podcast is synchronizing
+        /// Raises subscription copying event
         /// </summary>
-        public event PodcastSynchronizingHandler PodcastSynchronizing;
-        /// <summary>
-        /// Handler to raise event when opening podcast
-        /// </summary>
-        /// <param name="name">Podcast name</param>
-        protected virtual void OnPodcastSyncronizing(string name)
+        /// <param name="current">The podcast current being copied</param>
+        /// <param name="total">Total number of podcasts to copy</param>
+        protected virtual void OnSubscriptionCopying(int current, int total)
         {
-            PodcastSynchronizing?.Invoke(this, new PodcastDetailEventArgs(name));
+            SubscriptionCopying?.Invoke(this, new SubscriptionCountEventArgs(total, current));
         }
+
         /// <summary>
-        /// Handler to raise event when processing podcast
+        /// Raises the subscription copied event
+        /// </summary>
+        protected virtual void OnSubscriptionCopied()
+        {
+            SubscriptionCopied?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region Podcast
+
+        /// <summary>
+        ///  Handler to raise event when synchronizing podcast
         /// </summary>
         /// <param name="name">Name of podcast</param>
         /// <param name="url">Podcast address</param>
         /// <param name="episodesToDownload">Number of episodes to download</param>
         /// <param name="episodesToDelete">Number of episodes to delete</param>
-        protected virtual void OnPodcastSyncronizing(string name, string url, int episodesToDownload, int episodesToDelete)
+        protected virtual void OnPodcastSynchronizing(string name, string url = "?", int episodesToDownload = -1, int episodesToDelete = -1)
         {
             PodcastSynchronizing?.Invoke(this, new PodcastDetailEventArgs(name, url, episodesToDownload, episodesToDelete));
         }
 
         /// <summary>
-        /// Episode processed event
+        /// Handler to raise event when opening podcast
         /// </summary>
-        public event EpisodeSynchronizingHandler EpisodeSynchronizing;
+        /// <param name="name">Podcast name</param>
+        protected virtual void OnPodcastSynchronized(string name)
+        {
+            PodcastSynchronized?.Invoke(this, new PodcastDetailEventArgs(name));
+        }
+
+        /// <summary>
+        /// Raises podcast copying event
+        /// </summary>
+        /// <param name="name">Name of the podcast being copied</param>
+        protected virtual void OnPodcastCopying(string name)
+        {
+            PodcastCopying?.Invoke(this, new PodcastDetailEventArgs(name));
+        }
+
+        /// <summary>
+        /// Raises the podcast copied event
+        /// </summary>
+        /// <param name="name">Name of the podcast being copied</param>
+        protected virtual void OnPodcastCopied(string name)
+        {
+            PodcastCopied?.Invoke(this, new PodcastDetailEventArgs(name));
+        }
+
+        #endregion
+
+        #region Episode
+
+        #region Wrap episode's downloading events
+        
+        /// <summary>
+        /// Catches episode downloading event and raises as synchronizing event
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="eventArgs">Information about the episode being downloaded</param>
+        protected virtual void Episode_EpisodeDownloading(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
+        }
+
+        /// <summary>
+        /// Catches episode downloaded event and raises as synchronizing event
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="eventArgs">Information about the episode being downloaded</param>
+        protected virtual void Episode_EpisodeDownloaded(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
+        }
+
+        /// <summary>
+        /// Catches episode downloaded failed event and raises as synchronizing event
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="eventArgs">Information about the episode being downloaded</param>
+        protected virtual void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Failed));
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Raises Episode Synchronized event
+        /// </summary>
+        /// <param name="sender">Episode that was synchronized</param>
+        /// <param name="eventArgs">Information about the episode that was synchronized</param>
+        protected virtual void Episode_EpisodeSynchronized(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            EpisodeSynchronized?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
+        }
+
         /// <summary>
         /// Raises episode processed event with result
         /// </summary>
@@ -317,10 +453,6 @@ namespace Fuzable.Podcast.Entities
         }
 
         /// <summary>
-        /// Event for copying podcast episodes
-        /// </summary>
-        public event EpisodeCopyingHandler EpisodeCopying;
-        /// <summary>
         /// Raises episode copying event
         /// </summary>
         /// <param name="name">Name or title of the episode being copied</param>
@@ -331,10 +463,6 @@ namespace Fuzable.Podcast.Entities
             EpisodeCopying?.Invoke(this, new EpisodeDetailEventArgs(name, null, source, destination));
         }
 
-        /// <summary>
-        /// Event indicating episode has been copied
-        /// </summary>
-        public event EpisodeCopiedHandler EpisodeCopied;
         /// <summary>
         /// Raises episode copied event
         /// </summary>
@@ -347,10 +475,6 @@ namespace Fuzable.Podcast.Entities
         }
 
         /// <summary>
-        /// Event indicating episode copy failed
-        /// </summary>
-        public event EpisodeCopyFailedHandler EpisodeCopyFailed;
-        /// <summary>
         /// Raises episode copy failed event
         /// </summary>
         /// <param name="name">Episode title or name</param>
@@ -360,59 +484,8 @@ namespace Fuzable.Podcast.Entities
             EpisodeCopyFailed?.Invoke(this, new EpisodeDetailEventArgs(name, path));
         }
 
-        /// <summary>
-        /// Event indicates podcast is being copied
-        /// </summary>
-        public event PodcastCopyingHandler PodcastCopying;
-        /// <summary>
-        /// Raises podcast copying event
-        /// </summary>
-        /// <param name="name">Name of the podcast being copied</param>
-        protected virtual void OnPodcastCopying(string name)
-        {
-            PodcastCopying?.Invoke(this, new PodcastDetailEventArgs(name));
-        }
+        #endregion
 
-        /// <summary>
-        /// Event indicating podcast has been copied
-        /// </summary>
-        public event PodcastCopiedHandler PodcastCopied;
-        /// <summary>
-        /// Raises the podcast copied event
-        /// </summary>
-        /// <param name="name"></param>
-        protected virtual void OnPodcastCopied(string name)
-        {
-            PodcastCopied?.Invoke(this, new PodcastDetailEventArgs(name));
-        }
-
-        /// <summary>
-        /// Event indicating subscription is being copied
-        /// </summary>
-        public event SubscriptionCopyingHandler SubscriptionCopying;
-
-        /// <summary>
-        /// Raises subscription copying event
-        /// </summary>
-        /// <param name="current">The podcast current being copied</param>
-        /// <param name="total">Total number of podcasts to copy</param>
-        protected virtual void OnSubscriptionCopying(int current, int total)
-        {
-            SubscriptionCopying?.Invoke(this, new SubscriptionCountEventArgs(total, current));
-        }
-
-        /// <summary>
-        /// Event indicating subscription is being copied
-        /// </summary>
-        public event SubscriptionCopiedHandler SubscriptionCopied;
-
-        /// <summary>
-        /// Raises the subscription copied event
-        /// </summary>
-        protected virtual void OnSubscriptionCopied()
-        {
-            SubscriptionCopied?.Invoke(this, EventArgs.Empty);
-        }
         #endregion
     }
 }

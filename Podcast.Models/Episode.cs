@@ -65,6 +65,20 @@ namespace Fuzable.Podcast.Entities
         }
 
         /// <summary>
+        /// Episode download synchronized event
+        /// </summary>
+        public event EpisodeSynchronizedHandler EpisodeSynchronized;
+        /// <summary>
+        /// Raises EpisodeSynchronized event
+        /// </summary>
+        /// <param name="name">Name of episode</param>
+        /// <param name="url">Episode address</param>
+        protected virtual void OnEpisodeSynchronized(string name, string url)
+        {
+            EpisodeSynchronized?.Invoke(this, new EpisodeDetailEventArgs(name, url));
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="title">Podcast title</param>
@@ -101,6 +115,10 @@ namespace Fuzable.Podcast.Entities
                     {
                         File.Delete(FilePath);
                     }
+                }
+                finally
+                {
+                    OnEpisodeSynchronized(Title, Url);
                 }
             }
         }

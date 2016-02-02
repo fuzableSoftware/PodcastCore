@@ -14,11 +14,14 @@ namespace Podcast.CLI
             var downloadFolder = Settings.Default.DownloadFolder;
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
+
             //attach to sync events
             subscriptions.SubscriptionSynchronizing += SubscriptionSynchronizing;
             subscriptions.SubscriptionSynchronized += SubscriptionSynchronized;
             subscriptions.PodcastSynchronizing += Podcast_Synchronizing;
+            subscriptions.PodcastSynchronized += Podcast_Synchronized;
             subscriptions.EpisodeSynchronizing += EpisodeSynchronizing;
+            subscriptions.EpisodeSynchronized += EpisodeSynchronized;
 
             //sync
             subscriptions.Synchronize(downloadFolder);
@@ -44,7 +47,12 @@ namespace Podcast.CLI
         private static void Podcast_Synchronizing(object sender, PodcastDetailEventArgs eventArgs)
         {
             Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}' at {eventArgs.Url}...");
-            Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}' may download {eventArgs.EpisodesToDownload} and remove up to {eventArgs.EpisodesToDelete} episodes...");
+            Console.WriteLine($"Synchronizing {eventArgs.Name} may download {eventArgs.EpisodesToDownload} and remove up to {eventArgs.EpisodesToDelete} episodes...");
+        }
+        
+        private static void Podcast_Synchronized(object sender, PodcastDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Finished synchronizing '{eventArgs.Name}'");
         }
 
         private static void EpisodeSynchronizing(object sender, EpisodeDetailEventArgs eventArgs)
@@ -63,6 +71,11 @@ namespace Podcast.CLI
                         $"FAILED downloading episode '{eventArgs.Name}' from {eventArgs.Url} to {eventArgs.DownloadPath}");
                     break;
             }
+        }
+
+        private static void EpisodeSynchronized(object sender, EpisodeDetailEventArgs eventArgs)
+        {
+            Console.WriteLine($"Finished processing episode '{eventArgs.Name}'");
         }
 
         private static void SubscriptionSynchronized(object sender, SubscriptionCountEventArgs eventArgs)
