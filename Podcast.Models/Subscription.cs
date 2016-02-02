@@ -471,7 +471,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Destination the episode was copied to</param>
         protected virtual void OnEpisodeCopied(string source, string destination)
         {
-            EpisodeCopying?.Invoke(this, new EpisodeCopyEventArgs(source, destination));
+            EpisodeCopied?.Invoke(this, new EpisodeCopyEventArgs(source, destination));
         }
 
         /// <summary>
