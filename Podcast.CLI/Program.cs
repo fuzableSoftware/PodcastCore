@@ -17,7 +17,7 @@ namespace Podcast.CLI
             //attach to events
             subscriptions.SubscriptionSynchronizing += SubscriptionSynchronizing;
             subscriptions.SubscriptionSynchronized += SubscriptionSynchronized;
-            subscriptions.PodcastOpened += Podcast_Synchronizing;
+            subscriptions.PodcastSynchronizing += Podcast_Synchronizing;
             subscriptions.PodcastProcessed += Podcast_Processed;
             subscriptions.EpisodeProcessed += Episode_Processed;
 
