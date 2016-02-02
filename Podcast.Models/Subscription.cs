@@ -41,50 +41,6 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public event SubscriptionSynchronizedHandler SubscriptionSynchronized;
 
-
-        /// <summary>
-        /// Event raised when podcast is synchronizing
-        /// </summary>
-        public event EpisodeSynchronizedHandler EpisodeSynchronized;
-
-        /// <summary>
-        /// Event raised when podcast is synchronizing
-        /// </summary>
-        public event PodcastSynchronizingHandler PodcastSynchronizing;
-
-        /// <summary>
-        /// Event indicates podcast is being copied
-        /// </summary>
-        /// 
-        public event PodcastCopyingHandler PodcastCopying;
-        /// <summary>
-        /// Event indicating episode copy failed
-        /// </summary>
-        /// 
-        public event EpisodeCopyFailedHandler EpisodeCopyFailed;
-        /// <summary>
-        /// Event indicating episode has been copied
-        /// </summary>
-        /// 
-        public event EpisodeCopiedHandler EpisodeCopied;
-
-        /// <summary>
-        ///  Event for copying podcast episodes
-        /// </summary>
-        /// 
-        public event EpisodeCopyingHandler EpisodeCopying;
-
-        /// <summary>
-        ///  Episode processed event
-        /// </summary>
-        ///  
-        public event EpisodeSynchronizingHandler EpisodeSynchronizing;
-
-        /// <summary>
-        ///  Event raised when podcast is synchronized
-        /// </summary>
-        public event PodcastSynchronizedHandler PodcastSynchronized;
-
         /// <summary>
         /// Event indicating subscription is being copied
         /// </summary>
@@ -96,9 +52,51 @@ namespace Fuzable.Podcast.Entities
         public event SubscriptionCopiedHandler SubscriptionCopied;
 
         /// <summary>
+        /// Event raised when podcast is synchronizing
+        /// </summary>
+        public event PodcastSynchronizingHandler PodcastSynchronizing;
+
+        /// <summary>
+        ///  Event raised when podcast is synchronized
+        /// </summary>
+        public event PodcastSynchronizedHandler PodcastSynchronized;
+
+        /// <summary>
+        /// Event indicates podcast is being copied
+        /// </summary>
+        /// 
+        public event PodcastCopyingHandler PodcastCopying;
+
+        /// <summary>
         /// Event indicating podcast has been copied
         /// </summary>
         public event PodcastCopiedHandler PodcastCopied;
+        
+        /// <summary>
+        ///  Event raised when episode is synchronizing
+        /// </summary>
+        public event EpisodeSynchronizingHandler EpisodeSynchronizing;
+
+        /// <summary>
+        /// Event raised when episode is synchronized
+        /// </summary>
+        public event EpisodeSynchronizedHandler EpisodeSynchronized;
+
+        /// <summary>
+        ///  Event for copying podcast episodes
+        /// </summary>
+        /// 
+        public event EpisodeCopyingHandler EpisodeCopying;
+
+        /// <summary>
+        /// Event indicating episode has been copied
+        /// </summary>
+        public event EpisodeCopiedHandler EpisodeCopied;
+
+        /// <summary>
+        /// Event indicating episode copy failed
+        /// </summary>
+        public event EpisodeCopyFailedHandler EpisodeCopyFailed;
 
         #endregion
 
@@ -487,5 +485,6 @@ namespace Fuzable.Podcast.Entities
         #endregion
 
         #endregion
+
     }
 }
