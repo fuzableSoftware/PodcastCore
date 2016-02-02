@@ -22,6 +22,7 @@ namespace Podcast.CLI
             subscriptions.PodcastSynchronized += Podcast_Synchronized;
             subscriptions.EpisodeSynchronizing += EpisodeSynchronizing;
             subscriptions.EpisodeSynchronized += EpisodeSynchronized;
+            subscriptions.EpisodeSynchronizeFailed += EpisodeSynchronizeFailed;
             subscriptions.FolderCreated += FolderCreated;
 
             //sync
@@ -71,25 +72,12 @@ namespace Podcast.CLI
             Console.WriteLine($"Finished synchronizing '{e.Name}'");
         }
 
-        private static void EpisodeSynchronizing(object sender, EpisodeDownloadingEventArgs e)
+        private static void EpisodeSynchronizing(object sender, EpisodeEventArgs e)
         {
-            switch (e.Result)
-            {
-                case EpisodeDownloadingEventArgs.EpisodeResult.Downloading:
-                    Console.WriteLine(
-                        $"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
-                    break;
-                case EpisodeDownloadingEventArgs.EpisodeResult.Downloaded:
-                    Console.WriteLine($"'{e.Name}' has been downloaded to {e.Path}");
-                    break;
-                case EpisodeDownloadingEventArgs.EpisodeResult.Failed:
-                    Console.WriteLine(
-                        $"FAILED downloading episode '{e.Name}' from {e.Url} to {e.Path}");
-                    break;
-            }
+            Console.WriteLine($"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
         }
 
-        private static void EpisodeSynchronized(object sender, EpisodeDownloadingEventArgs e)
+        private static void EpisodeSynchronized(object sender, EpisodeEventArgs e)
         {
             if (e.Url == null)
             {
@@ -99,6 +87,11 @@ namespace Podcast.CLI
             {
                 Console.WriteLine($"Finished downloading episode '{e.Name}'");
             }
+        }
+
+        private static void EpisodeSynchronizeFailed(object sender, EpisodeEventArgs e)
+        {
+           Console.WriteLine($"Failed downloading episode '{e.Name}' from {e.Url}");
         }
 
         private static void SubscriptionSynchronized(object sender, SubscriptionCountEventArgs e)

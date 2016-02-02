@@ -88,6 +88,11 @@ namespace Fuzable.Podcast.Entities
         public event EpisodeSynchronizedHandler EpisodeSynchronized;
 
         /// <summary>
+        ///  Event raised when episode is synchronizing
+        /// </summary>
+        public event EpisodeSynchronizeFailedHandler EpisodeSynchronizeFailed;
+
+        /// <summary>
         ///  Event for copying podcast episodes
         /// </summary>
         /// 
@@ -417,30 +422,30 @@ namespace Fuzable.Podcast.Entities
         /// Catches episode downloading event and raises as synchronizing event
         /// </summary>
         /// <param name="sender">Event sender</param>
-        /// <param name="eventArgs">Information about the episode being downloaded</param>
-        protected virtual void Episode_EpisodeDownloading(object sender, EpisodeDownloadingEventArgs eventArgs)
+        /// <param name="e">Information about the episode being downloaded</param>
+        protected virtual void Episode_EpisodeDownloading(object sender, EpisodeEventArgs e)
         {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDownloadingEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.Path, EpisodeDownloadingEventArgs.EpisodeResult.Downloading));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeEventArgs(e.Name, e.Url, e.Path));
         }
 
         /// <summary>
         /// Catches episode downloaded event and raises as synchronizing event
         /// </summary>
         /// <param name="sender">Event sender</param>
-        /// <param name="eventArgs">Information about the episode being downloaded</param>
-        protected virtual void Episode_EpisodeDownloaded(object sender, EpisodeDownloadingEventArgs eventArgs)
+        /// <param name="e">Information about the episode being downloaded</param>
+        protected virtual void Episode_EpisodeDownloaded(object sender, EpisodeEventArgs e)
         {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDownloadingEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.Path, EpisodeDownloadingEventArgs.EpisodeResult.Downloaded));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeEventArgs(e.Name, e.Url, e.Path));
         }
 
         /// <summary>
         /// Catches episode downloaded failed event and raises as synchronizing event
         /// </summary>
         /// <param name="sender">Event sender</param>
-        /// <param name="eventArgs">Information about the episode being downloaded</param>
-        protected virtual void Episode_EpisodeDownloadFailed(object sender, EpisodeDownloadingEventArgs eventArgs)
+        /// <param name="e">Information about the episode being downloaded</param>
+        protected virtual void Episode_EpisodeDownloadFailed(object sender, EpisodeEventArgs e)
         {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeDownloadingEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.Path, EpisodeDownloadingEventArgs.EpisodeResult.Failed));
+            EpisodeSynchronizeFailed?.Invoke(sender, new EpisodeEventArgs(e.Name, e.Url, e.Path));
         }
 
         #endregion
@@ -449,10 +454,10 @@ namespace Fuzable.Podcast.Entities
         /// Raises Episode Synchronized event
         /// </summary>
         /// <param name="sender">Episode that was synchronized</param>
-        /// <param name="eventArgs">Information about the episode that was synchronized</param>
-        protected virtual void Episode_EpisodeSynchronized(object sender, EpisodeDownloadingEventArgs eventArgs)
+        /// <param name="e">Information about the episode that was synchronized</param>
+        protected virtual void Episode_EpisodeSynchronized(object sender, EpisodeEventArgs e)
         {
-            EpisodeSynchronized?.Invoke(sender, new EpisodeDownloadingEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.Path, EpisodeDownloadingEventArgs.EpisodeResult.Downloading));
+            EpisodeSynchronized?.Invoke(sender, new EpisodeEventArgs(e.Name, e.Url, e.Path));
         }
 
         /// <summary>
@@ -461,10 +466,9 @@ namespace Fuzable.Podcast.Entities
         /// <param name="name">Episode name</param>
         /// <param name="url">Episode address</param>
         /// <param name="path">Episode local path</param>
-        /// <param name="result">Success result of episode</param>
-        protected virtual void OnEpisodeSynchronizing(string name, string url, string path, EpisodeDownloadingEventArgs.EpisodeResult result)
+        protected virtual void OnEpisodeSynchronizing(string name, string url, string path)
         {
-            EpisodeSynchronizing?.Invoke(this, new EpisodeDownloadingEventArgs(name, url, path, result));
+            EpisodeSynchronizing?.Invoke(this, new EpisodeEventArgs(name, url, path));
         }
 
         /// <summary>
