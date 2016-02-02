@@ -14,11 +14,11 @@ namespace Podcast.CLI
             var downloadFolder = Settings.Default.DownloadFolder;
             //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
-            //attach to events
+            //attach to sync events
             subscriptions.SubscriptionSynchronizing += SubscriptionSynchronizing;
             subscriptions.SubscriptionSynchronized += SubscriptionSynchronized;
             subscriptions.PodcastSynchronizing += Podcast_Synchronizing;
-            subscriptions.EpisodeProcessed += Episode_Processed;
+            subscriptions.EpisodeSynchronizing += EpisodeSynchronizing;
 
             //sync
             subscriptions.Synchronize(downloadFolder);
@@ -47,7 +47,7 @@ namespace Podcast.CLI
             Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}' may download {eventArgs.EpisodesToDownload} and remove up to {eventArgs.EpisodesToDelete} episodes...");
         }
 
-        private static void Episode_Processed(object sender, EpisodeDetailEventArgs eventArgs)
+        private static void EpisodeSynchronizing(object sender, EpisodeDetailEventArgs eventArgs)
         {
             switch (eventArgs.Result)
             {

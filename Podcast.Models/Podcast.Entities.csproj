@@ -49,7 +49,7 @@
     <Compile Include="Episodes\EpisodeDownloadFailedHandler.cs" />
     <Compile Include="Episodes\EpisodeCopyingHandler.cs" />
     <Compile Include="Episodes\EpisodeDownloadingHandler.cs" />
-    <Compile Include="Episodes\EpisodeProcessedHandler.cs" />
+    <Compile Include="Episodes\EpisodeSynchronizingHandler.cs" />
     <Compile Include="Podcast.cs" />
     <Compile Include="Podcasts\PodcastCopiedHandler.cs" />
     <Compile Include="Podcasts\PodcastDetailEventArgs.cs" />

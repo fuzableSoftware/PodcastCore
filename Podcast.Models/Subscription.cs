@@ -111,9 +111,11 @@ namespace Fuzable.Podcast.Entities
             OnSubscriptionSynchronizing(Podcasts.Count);
             foreach (var podcast in Podcasts)
             {
+                //raise this without info, before processing feed (since is complex operation, could fail)
                 OnPodcastSyncronizing(podcast.Name);
                 podcast.ProcessFeed(downloadFolder);
                 OnPodcastSyncronizing(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
+                //process each episode
                 foreach (var episode in podcast.EpisodesToDownload)
                 {
                     episode.EpisodeDownloading += Episode_EpisodeDownloading;
@@ -236,17 +238,17 @@ namespace Fuzable.Podcast.Entities
 
         private void Episode_EpisodeDownloadFailed(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Failed));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Failed));
         }
 
         private void Episode_EpisodeDownloaded(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloaded));
         }
 
         private void Episode_EpisodeDownloading(object sender, EpisodeDetailEventArgs eventArgs)
         {
-            EpisodeProcessed?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeDetailEventArgs(eventArgs.Name, eventArgs.Url, eventArgs.DownloadPath, EpisodeDetailEventArgs.EpisodeResult.Downloading));
         }
 
         /// <summary>
@@ -301,7 +303,7 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Episode processed event
         /// </summary>
-        public event EpisodeProcessedHandler EpisodeProcessed;
+        public event EpisodeSynchronizingHandler EpisodeSynchronizing;
         /// <summary>
         /// Raises episode processed event with result
         /// </summary>
@@ -309,9 +311,9 @@ namespace Fuzable.Podcast.Entities
         /// <param name="url">Episode address</param>
         /// <param name="path">Episode local path</param>
         /// <param name="result">Success result of episode</param>
-        protected virtual void OnEpisodeProcessed(string name, string url, string path, EpisodeDetailEventArgs.EpisodeResult result)
+        protected virtual void OnEpisodeSynchronizing(string name, string url, string path, EpisodeDetailEventArgs.EpisodeResult result)
         {
-            EpisodeProcessed?.Invoke(this, new EpisodeDetailEventArgs(name, url, path, result));
+            EpisodeSynchronizing?.Invoke(this, new EpisodeDetailEventArgs(name, url, path, result));
         }
 
         /// <summary>
