@@ -264,14 +264,14 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Event raised when subscription is done
         /// </summary>
-        public event SubscriptionCompletedHandler SubscriptionCompleted;
+        public event SubscriptionSynchronizedHandler SubscriptionSynchronized;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="count">Number of podcasts in subscription</param>
         protected virtual void OnSubscriptionCompleted(int count)
         {
-            SubscriptionCompleted?.Invoke(this, new SubscriptionCountEventArgs(count));
+            SubscriptionSynchronized?.Invoke(this, new SubscriptionCountEventArgs(count));
         }
 
         /// <summary>

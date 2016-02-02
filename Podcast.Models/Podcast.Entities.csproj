@@ -60,7 +60,7 @@
     <Compile Include="Subscription.cs" />
     <Compile Include="Subscriptions\SubscriptionCopyingHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionCopiedHandler.cs" />
-    <Compile Include="Subscriptions\SubscriptionCompletedHandler.cs" />
+    <Compile Include="Subscriptions\SubscriptionSynchronizedHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionCountEventArgs.cs" />
     <Compile Include="Subscriptions\SubscriptionOpenedHandler.cs" />
   </ItemGroup>
