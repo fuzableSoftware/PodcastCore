@@ -33,7 +33,7 @@ namespace Fuzable.Podcast.Entities
         /// Episode downloaded event
         /// </summary>
         public event EpisodeDownloadedHandler EpisodeDownloaded;
-        
+
         /// <summary>
         /// Episode download failed event
         /// </summary>
@@ -65,7 +65,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="name">Name of episode</param>
         /// <param name="url">Episode address</param>
         /// <param name="path">Local path to episode</param>
-        protected virtual void OnEpisodeDownloaded(string name, string url, string path)
+        protected virtual void OnEpisodeDownloaded(string name,string url, string path)
         {
             EpisodeDownloaded?.Invoke(this, new EpisodeDetailEventArgs(name, url, path));
         }
@@ -79,7 +79,7 @@ namespace Fuzable.Podcast.Entities
         {
             EpisodeDownloadFailed?.Invoke(this, new EpisodeDetailEventArgs(name, url));
         }
-        
+
         /// <summary>
         /// Raises EpisodeSynchronized event
         /// </summary>
@@ -110,7 +110,11 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public void Download()
         {
-            if (!File.Exists(FilePath))
+            if (File.Exists(FilePath))
+            {
+                OnEpisodeSynchronized(Title, null);
+            }
+            else
             {
                 try
                 {
@@ -137,5 +141,4 @@ namespace Fuzable.Podcast.Entities
             }
         }
     }
-
 }
