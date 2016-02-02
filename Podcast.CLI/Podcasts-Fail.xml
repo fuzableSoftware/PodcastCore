@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Podcasts>
   <Podcast>
+    <Name>Stack Overflow</Name>
+    <Url>http://rss.conversationsnetwork.org/series/stackoverflow.xml</Url>
+    <EpisodesToKeep>1</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
     <Name>Hot Takedown</Name>
     <Url>http://espn.go.com/espnradio/feeds/rss/podcast.xml?id=12474672</Url>
     <EpisodesToKeep>5</EpisodesToKeep>

@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Podcasts>
   <Podcast>
-    <Name>Stack Overflow</Name>
-    <Url>http://rss.conversationsnetwork.org/series/stackoverflow.xml</Url>
-    <EpisodesToKeep>1</EpisodesToKeep>
-    <Order>0</Order>
-  </Podcast>
-  <Podcast>
     <Name>Judge John Hodgman</Name>
     <Url>http://feeds.feedburner.com/todayinthepast?format=xml</Url>
     <EpisodesToKeep>6</EpisodesToKeep>
