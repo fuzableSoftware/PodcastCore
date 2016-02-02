@@ -18,7 +18,6 @@ namespace Podcast.CLI
             subscriptions.SubscriptionSynchronizing += SubscriptionSynchronizing;
             subscriptions.SubscriptionSynchronized += SubscriptionSynchronized;
             subscriptions.PodcastSynchronizing += Podcast_Synchronizing;
-            subscriptions.PodcastProcessed += Podcast_Processed;
             subscriptions.EpisodeProcessed += Episode_Processed;
 
             //sync
@@ -44,13 +43,8 @@ namespace Podcast.CLI
 
         private static void Podcast_Synchronizing(object sender, PodcastDetailEventArgs eventArgs)
         {
-            Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}'...");
-        }
-
-        private static void Podcast_Processed(object sender, PodcastDetailEventArgs eventArgs)
-        {
-            Console.WriteLine(
-                $"Retrieved information from {eventArgs.Url} for '{eventArgs.Name}' will download {eventArgs.EpisodesToDownload} and delete up to {eventArgs.EpisodesToDelete} episodes");
+            Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}' at {eventArgs.Url}...");
+            Console.WriteLine($"Synchronizing podcast '{eventArgs.Name}' may download {eventArgs.EpisodesToDownload} and remove up to {eventArgs.EpisodesToDelete} episodes...");
         }
 
         private static void Episode_Processed(object sender, EpisodeDetailEventArgs eventArgs)

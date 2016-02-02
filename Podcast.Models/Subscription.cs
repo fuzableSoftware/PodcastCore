@@ -113,7 +113,7 @@ namespace Fuzable.Podcast.Entities
             {
                 OnPodcastSyncronizing(podcast.Name);
                 podcast.ProcessFeed(downloadFolder);
-                OnPodcastProcessed(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
+                OnPodcastSyncronizing(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
                 foreach (var episode in podcast.EpisodesToDownload)
                 {
                     episode.EpisodeDownloading += Episode_EpisodeDownloading;
@@ -275,7 +275,7 @@ namespace Fuzable.Podcast.Entities
         }
 
         /// <summary>
-        /// Event raised when podcast is opened
+        /// Event raised when podcast is synchronizing
         /// </summary>
         public event PodcastSynchronizingHandler PodcastSynchronizing;
         /// <summary>
@@ -286,11 +286,6 @@ namespace Fuzable.Podcast.Entities
         {
             PodcastSynchronizing?.Invoke(this, new PodcastDetailEventArgs(name));
         }
-
-        /// <summary>
-        /// Event raised when podcast is processed
-        /// </summary>
-        public event PodcastProcessingHandler PodcastProcessed;
         /// <summary>
         /// Handler to raise event when processing podcast
         /// </summary>
@@ -298,9 +293,9 @@ namespace Fuzable.Podcast.Entities
         /// <param name="url">Podcast address</param>
         /// <param name="episodesToDownload">Number of episodes to download</param>
         /// <param name="episodesToDelete">Number of episodes to delete</param>
-        protected virtual void OnPodcastProcessed(string name, string url, int episodesToDownload, int episodesToDelete)
+        protected virtual void OnPodcastSyncronizing(string name, string url, int episodesToDownload, int episodesToDelete)
         {
-            PodcastProcessed?.Invoke(this, new PodcastDetailEventArgs(name, url, episodesToDownload, episodesToDelete));
+            PodcastSynchronizing?.Invoke(this, new PodcastDetailEventArgs(name, url, episodesToDownload, episodesToDelete));
         }
 
         /// <summary>
