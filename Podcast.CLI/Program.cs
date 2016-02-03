@@ -96,7 +96,7 @@ namespace Podcast.CLI
 
         private static void SubscriptionSynchronized(object sender, SubscriptionEventArgs e)
         {
-            Console.WriteLine($"Subscription with {e.Count} podcast(s) has finished synchronizing");
+            Console.WriteLine($"Subscription with {e.Count} podcast(s) has finished synchronizing in {e.Duration.Seconds} seconds");
             Console.WriteLine("Press any key to copy downloaded podcasts to USB key...");
             Console.ReadKey();
         }

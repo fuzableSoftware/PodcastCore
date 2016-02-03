@@ -17,6 +17,11 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         public int Index { get; set; }
 
         /// <summary>
+        /// The time elapsed for this activity (if applicable)
+        /// </summary>
+        public TimeSpan Duration { get; set; } 
+        
+        /// <summary>
         /// Constructor with count
         /// </summary>
         /// <param name="numberOfItems">Number of podcasts in subscription</param>
@@ -29,12 +34,23 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         /// <summary>
         /// Constructor for setting both total and current item
         /// </summary>
-        /// <param name="totalCount"></param>
-        /// <param name="currentIndex"></param>
+        /// <param name="totalCount">Number of items</param>
+        /// <param name="currentIndex">Current item</param>
         public SubscriptionEventArgs(int totalCount, int currentIndex)
         {
             Count = totalCount;
             Index = currentIndex;
+        }
+
+        /// <summary>
+        /// Constructor for setting both total and duration
+        /// </summary>
+        /// <param name="totalCount">Number of items</param>
+        /// <param name="duration">How long the operation took</param>
+        public SubscriptionEventArgs(int totalCount, TimeSpan duration)
+        {
+            Count = totalCount;
+            Duration = duration;
         }
     }
 }

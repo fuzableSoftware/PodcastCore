@@ -209,7 +209,7 @@ namespace Fuzable.Podcast.Entities
             }
             var end = DateTime.Now;
             var lapsed = end - start;
-            OnSubscriptionSynchronized(Podcasts.Count);
+            OnSubscriptionSynchronized(Podcasts.Count, lapsed);
         }
 
         /// <summary>
@@ -349,9 +349,10 @@ namespace Fuzable.Podcast.Entities
         /// Handler to raise subscription done with sync event
         /// </summary>
         /// <param name="count">Number of podcasts synchronized</param>
-        protected virtual void OnSubscriptionSynchronized(int count)
+        /// <param name="duration">How long the synchronization took</param>
+        protected virtual void OnSubscriptionSynchronized(int count, TimeSpan duration)
         {
-            SubscriptionSynchronized?.Invoke(this, new SubscriptionEventArgs(count));
+            SubscriptionSynchronized?.Invoke(this, new SubscriptionEventArgs(count, duration));
         }
 
         /// <summary>
