@@ -5,7 +5,7 @@ namespace Fuzable.Podcast.Entities.Subscriptions
     /// <summary>
     /// Definition of arguments used for subscription count
     /// </summary>
-    public class SubscriptionCountEventArgs: EventArgs
+    public class SubscriptionEventArgs: EventArgs
     {
         /// <summary>
         /// Number of podcasts in subscription
@@ -21,7 +21,7 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         /// </summary>
         /// <param name="numberOfItems">Number of podcasts in subscription</param>
        
-        public SubscriptionCountEventArgs(int numberOfItems)
+        public SubscriptionEventArgs(int numberOfItems)
         {
             Count = numberOfItems;
         }
@@ -31,7 +31,7 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         /// </summary>
         /// <param name="totalCount"></param>
         /// <param name="currentIndex"></param>
-        public SubscriptionCountEventArgs(int totalCount, int currentIndex)
+        public SubscriptionEventArgs(int totalCount, int currentIndex)
         {
             Count = totalCount;
             Index = currentIndex;

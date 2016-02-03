@@ -5,5 +5,5 @@ namespace Fuzable.Podcast.Entities.Subscriptions
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="eventArgs"></param>
-    public delegate void SubscriptionSynchronizedHandler(object sender, SubscriptionCountEventArgs eventArgs);
+    public delegate void SubscriptionSynchronizedHandler(object sender, SubscriptionEventArgs eventArgs);
 }

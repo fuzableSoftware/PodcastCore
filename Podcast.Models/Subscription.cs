@@ -186,6 +186,7 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public void Synchronize(string downloadFolder)
         {
+            var start = DateTime.Now;
             DownloadFolder = downloadFolder;
             Podcasts = GetPodcasts();
             OnSubscriptionSynchronizing(Podcasts.Count);
@@ -206,6 +207,8 @@ namespace Fuzable.Podcast.Entities
                 }
                 OnPodcastSynchronized(podcast.Name);
             }
+            var end = DateTime.Now;
+            var lapsed = end - start;
             OnSubscriptionSynchronized(Podcasts.Count);
         }
 
@@ -339,7 +342,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="count">Number of podcasts in subscription</param>
         protected virtual void OnSubscriptionSynchronizing(int count)
         {
-            SubscriptionSynchronizing?.Invoke(this, new SubscriptionCountEventArgs(count));
+            SubscriptionSynchronizing?.Invoke(this, new SubscriptionEventArgs(count));
         }
 
         /// <summary>
@@ -348,7 +351,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="count">Number of podcasts synchronized</param>
         protected virtual void OnSubscriptionSynchronized(int count)
         {
-            SubscriptionSynchronized?.Invoke(this, new SubscriptionCountEventArgs(count));
+            SubscriptionSynchronized?.Invoke(this, new SubscriptionEventArgs(count));
         }
 
         /// <summary>
@@ -358,7 +361,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="total">Total number of podcasts to copy</param>
         protected virtual void OnSubscriptionCopying(int current, int total)
         {
-            SubscriptionCopying?.Invoke(this, new SubscriptionCountEventArgs(total, current));
+            SubscriptionCopying?.Invoke(this, new SubscriptionEventArgs(total, current));
         }
 
         /// <summary>

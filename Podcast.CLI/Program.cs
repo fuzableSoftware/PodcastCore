@@ -46,7 +46,7 @@ namespace Podcast.CLI
             Console.WriteLine($"Folder created at {e.Path}");
         }
 
-        private static void SubscriptionSynchronizing(object sender, SubscriptionCountEventArgs e)
+        private static void SubscriptionSynchronizing(object sender, SubscriptionEventArgs e)
         {
             Console.WriteLine(e.Count > 1
                 ? $"Synchronizing subscription containing {e.Count} podcasts"
@@ -94,14 +94,14 @@ namespace Podcast.CLI
            Console.WriteLine($"Failed downloading episode '{e.Name}' from {e.Url}");
         }
 
-        private static void SubscriptionSynchronized(object sender, SubscriptionCountEventArgs e)
+        private static void SubscriptionSynchronized(object sender, SubscriptionEventArgs e)
         {
             Console.WriteLine($"Subscription with {e.Count} podcast(s) has finished synchronizing");
             Console.WriteLine("Press any key to copy downloaded podcasts to USB key...");
             Console.ReadKey();
         }
 
-        private static void Subscription_Copying(object sender, SubscriptionCountEventArgs e)
+        private static void Subscription_Copying(object sender, SubscriptionEventArgs e)
         {
             Console.WriteLine($"Subscription copying to USB key, copying podcast {e.Index} of {e.Count}...");
         }
