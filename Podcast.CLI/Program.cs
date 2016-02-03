@@ -94,7 +94,7 @@ namespace Podcast.CLI
            Console.WriteLine($"Failed downloading episode '{e.Name}' from {e.Url}");
         }
 
-        private static void SubscriptionSynchronized(object sender, SubscriptionEventArgs e)
+        private static void SubscriptionSynchronized(object sender, SubscriptionTimedEventArgs e)
         {
             Console.WriteLine($"Subscription with {e.Count} podcast(s) has finished synchronizing in {e.Duration.Seconds} seconds");
             Console.WriteLine("Press any key to copy downloaded podcasts to USB key...");

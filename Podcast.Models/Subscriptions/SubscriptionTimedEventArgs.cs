@@ -5,7 +5,7 @@ namespace Fuzable.Podcast.Entities.Subscriptions
     /// <summary>
     /// Definition of arguments used for subscription count
     /// </summary>
-    public class SubscriptionEventArgs: EventArgs
+    public class SubscriptionTimedEventArgs: EventArgs
     {
         /// <summary>
         /// Number of podcasts in subscription
@@ -22,11 +22,21 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         public TimeSpan Duration { get; set; } 
         
         /// <summary>
+        /// Constructor with count
+        /// </summary>
+        /// <param name="numberOfItems">Number of podcasts in subscription</param>
+       
+        public SubscriptionTimedEventArgs(int numberOfItems)
+        {
+            Count = numberOfItems;
+        }
+
+        /// <summary>
         /// Constructor for setting both total and current item
         /// </summary>
         /// <param name="totalCount">Number of items</param>
         /// <param name="currentIndex">Current item</param>
-        public SubscriptionEventArgs(int totalCount, int currentIndex)
+        public SubscriptionTimedEventArgs(int totalCount, int currentIndex)
         {
             Count = totalCount;
             Index = currentIndex;
@@ -37,7 +47,7 @@ namespace Fuzable.Podcast.Entities.Subscriptions
         /// </summary>
         /// <param name="totalCount">Number of items</param>
         /// <param name="duration">How long the operation took</param>
-        public SubscriptionEventArgs(int totalCount, TimeSpan duration)
+        public SubscriptionTimedEventArgs(int totalCount, TimeSpan duration)
         {
             Count = totalCount;
             Duration = duration;

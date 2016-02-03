@@ -342,7 +342,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="count">Number of podcasts in subscription</param>
         protected virtual void OnSubscriptionSynchronizing(int count)
         {
-            SubscriptionSynchronizing?.Invoke(this, new SubscriptionEventArgs(count));
+            SubscriptionSynchronizing?.Invoke(this, new SubscriptionEventArgs(count, -1));
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="duration">How long the synchronization took</param>
         protected virtual void OnSubscriptionSynchronized(int count, TimeSpan duration)
         {
-            SubscriptionSynchronized?.Invoke(this, new SubscriptionEventArgs(count, duration));
+            SubscriptionSynchronized?.Invoke(this, new SubscriptionTimedEventArgs(count, duration));
         }
 
         /// <summary>
