@@ -24,4 +24,10 @@
     <EpisodesToKeep>10</EpisodesToKeep>
     <Order>0</Order>
   </Podcast>
+   <Podcast>
+    <Name>Talkin' Cowboys</Name>
+    <Url>http://www.dallascowboys.com/feeds/podcasts/2531/audio</Url>
+    <EpisodesToKeep>1</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
 </Podcasts>
