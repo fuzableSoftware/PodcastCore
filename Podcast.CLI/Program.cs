@@ -38,7 +38,16 @@ namespace Podcast.CLI
             subscriptions.SubscriptionCopied += Subscription_Copied;
 
             //copy 
-            subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder);
+            try
+            {
+                subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                Console.ReadLine();
+            }
+            
         }
 
         private static void FolderCreated(object sender, FolderCreatedEventArgs e)

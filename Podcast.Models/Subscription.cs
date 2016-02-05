@@ -220,6 +220,14 @@ namespace Fuzable.Podcast.Entities
         public void Copy(string downloadFolder, string destinationFolder)
         {
             var start = DateTime.Now;
+            //check that the destination folder is (probably) a USB key and has some free space
+            var x = new DriveInfo(destinationFolder);
+            if (!x.IsReady || x.DriveType != DriveType.Removable || x.AvailableFreeSpace <= 0)
+            {
+                //drive not ready
+                throw new IOException("Destination is not the right type or is not ready");
+            }
+
             //does the download folder exist?
             if (!Directory.Exists(downloadFolder))
             {
