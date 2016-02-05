@@ -4,6 +4,6 @@ namespace Fuzable.Podcast.Entities.Episodes
     /// Definition of episode downloaded event signature
     /// </summary>
     /// <param name="sender">event sender</param>
-    /// <param name="eventArgs">event arguments</param>
-    public delegate void EpisodeSynchronizingHandler(object sender, EpisodeEventArgs eventArgs);
+    /// <param name="e">event arguments</param>
+    public delegate void EpisodeSynchronizingHandler(object sender, EpisodeEventArgs e);
 }

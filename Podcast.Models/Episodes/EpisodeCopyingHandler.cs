@@ -4,6 +4,6 @@ namespace Fuzable.Podcast.Entities.Episodes
     /// Definition of episode copying event signature
     /// </summary>
     /// <param name="sender">event sender</param>
-    /// <param name="eventArgs">event arguments</param>
-    public delegate void EpisodeCopyingHandler(object sender, EpisodeCopyEventArgs eventArgs);
+    /// <param name="e">event arguments</param>
+    public delegate void EpisodeCopyingHandler(object sender, EpisodeCopyEventArgs e);
 }
