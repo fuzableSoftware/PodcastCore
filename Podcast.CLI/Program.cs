@@ -106,9 +106,9 @@ namespace Podcast.CLI
             Console.WriteLine($"Subscription copying to USB key, copying podcast {e.Index} of {e.Count}...");
         }
 
-        private static void Subscription_Copied(object sender, EventArgs e)
+        private static void Subscription_Copied(object sender, SubscriptionTimedEventArgs e)
         {
-            Console.WriteLine("Podcasts in subscription have been copied to USB key");
+            Console.WriteLine($"{e.Count} podcasts in subscription have been copied to USB key in {e.Duration.Seconds} seconds");
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }

@@ -7,5 +7,5 @@ namespace Fuzable.Podcast.Entities.Subscriptions
     /// </summary>
     /// <param name="sender">Event sender</param>
     /// <param name="e">Event arguments (default)</param>
-    public delegate void SubscriptionCopiedHandler(object sender, EventArgs e);
+    public delegate void SubscriptionCopiedHandler(object sender, SubscriptionTimedEventArgs e);
 }

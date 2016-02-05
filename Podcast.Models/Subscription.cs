@@ -219,6 +219,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destinationFolder">folder podcasts are copied to</param>
         public void Copy(string downloadFolder, string destinationFolder)
         {
+            var start = DateTime.Now;
             //does the download folder exist?
             if (!Directory.Exists(downloadFolder))
             {
@@ -320,7 +321,9 @@ namespace Fuzable.Podcast.Entities
                 }
                 OnPodcastCopied(podcastName);
             }
-            OnSubscriptionCopied();
+            var end = DateTime.Now;
+            var lapsed = end - start;
+            OnSubscriptionCopied(index, lapsed);
         }
 
         #region Event Handlers
@@ -368,9 +371,9 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Raises the subscription copied event
         /// </summary>
-        protected virtual void OnSubscriptionCopied()
+        protected virtual void OnSubscriptionCopied(int count, TimeSpan duration)
         {
-            SubscriptionCopied?.Invoke(this, EventArgs.Empty);
+            SubscriptionCopied?.Invoke(this, new SubscriptionTimedEventArgs(count, duration));
         }
 
         #endregion

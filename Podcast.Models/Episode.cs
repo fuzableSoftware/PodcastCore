@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Net;
 using Fuzable.Podcast.Entities.Episodes;
 
@@ -139,6 +140,28 @@ namespace Fuzable.Podcast.Entities
                     OnEpisodeSynchronized(Title, Url);
                 }
             }
+        }
+        
+        /// <summary>
+        /// generate episode filename from title, intended download folder, download index (order)
+        /// </summary>
+        /// <param name="title">Episode title</param>
+        /// <param name="downloadFolder">Folder to download to</param>
+        /// <param name="index">Order episide title</param>
+        /// <returns></returns>
+       public static string CreateEpisodeFileName(string title, string downloadFolder, int index)
+        {
+            //split on colons, remove any spacing
+            var parts = title.Split(':').Select(p => p.Trim());
+            var filename = string.Join(":", parts.ToArray());
+            //replace invalid file system chars with dashes
+            filename = Path.GetInvalidFileNameChars().Aggregate(filename, (current, c) => current.Replace(c, '-'));
+            //prefix filename with index or order of download
+            filename = index.ToString("000") + "_" + filename;
+            //append the path
+            filename = Path.Combine(downloadFolder, filename);
+            //return
+            return filename;
         }
     }
 }
