@@ -18,4 +18,10 @@
     <EpisodesToKeep>0</EpisodesToKeep>
     <Order>1</Order>
   </Podcast>
+  <Podcast>
+    <Name>Azure Friday</Name>
+    <Url>https://s.ch9.ms/Shows/Azure-Friday/feed/mp3</Url>
+    <EpisodesToKeep>10</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
 </Podcasts>
