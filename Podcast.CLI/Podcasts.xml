@@ -30,4 +30,10 @@
     <EpisodesToKeep>1</EpisodesToKeep>
     <Order>0</Order>
   </Podcast>
+  <Podcast>
+    <Name>Microsoft DevRadio</Name>
+    <Url>https://s.ch9.ms/Blogs/DevRadio/feed/mp3</Url>
+    <EpisodesToKeep>0</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
 </Podcasts>
