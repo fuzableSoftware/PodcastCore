@@ -95,6 +95,11 @@ namespace Fuzable.Podcast.Entities
                 EpisodesToDownload.Clear();
                 EpisodesToDelete.Clear();
 
+                if (Order == EpisodeOrder.Chronological)
+                {
+                    items = items.Reverse();
+                }
+
                 var counter = 0;
                 foreach (var item in items)
                 {
