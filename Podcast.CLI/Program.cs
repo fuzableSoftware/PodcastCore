@@ -106,8 +106,12 @@ namespace Podcast.CLI
         private static void SubscriptionSynchronized(object sender, SubscriptionTimedEventArgs e)
         {
             Console.WriteLine($"Subscription with {e.Count} podcast(s) has finished synchronizing in {e.Duration.Seconds} seconds");
-            Console.WriteLine("Press any key to copy downloaded podcasts to USB key...");
-            Console.ReadKey();
+            Console.WriteLine("Press X to abort or press any key to copy downloaded podcasts to USB key...");
+            var answer = Console.ReadKey();
+            if (answer.KeyChar == 'X')
+            {
+                Environment.Exit(0);
+            }
         }
 
         private static void Subscription_Copying(object sender, SubscriptionEventArgs e)

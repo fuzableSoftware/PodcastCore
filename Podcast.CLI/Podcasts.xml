@@ -21,7 +21,7 @@
   <Podcast>
     <Name>Azure Friday</Name>
     <Url>https://s.ch9.ms/Shows/Azure-Friday/feed/mp3</Url>
-    <EpisodesToKeep>10</EpisodesToKeep>
+    <EpisodesToKeep>0</EpisodesToKeep>
     <Order>0</Order>
   </Podcast>
    <Podcast>
@@ -34,6 +34,174 @@
     <Name>Microsoft DevRadio</Name>
     <Url>https://s.ch9.ms/Blogs/DevRadio/feed/mp3</Url>
     <EpisodesToKeep>0</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Philosophy Bites</Name>
+    <Url>http://philosophybites.libsyn.com/rss</Url>
+    <EpisodesToKeep>12</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Stuff You Should Know</Name>
+    <Url>http://www.howstuffworks.com/podcasts/stuff-you-should-know.rss</Url>
+    <EpisodesToKeep>8</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>NFL Around the League</Name>
+    <Url>http://aroundtheleague.libsyn.com//rss</Url>
+    <EpisodesToKeep>1</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Advanced Football Analytics</Name>
+    <Url>http://advancednflstats.libsyn.com//rss</Url>
+    <EpisodesToKeep>18</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Beating the Book</Name>
+    <Url>http://beatingthebook.libsyn.com//rss</Url>
+    <EpisodesToKeep>1</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Doug Loves Movies</Name>
+    <Url>http://feeds.feedburner.com/DougLovesMovies</Url>
+    <EpisodesToKeep>6</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Getting Doug with High</Name>
+    <Url>http://dougbenson.videopodcastnetwork.libsynpro.com/rss</Url>
+    <EpisodesToKeep>3</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Ice T - Final Level</Name>
+    <Url>http://icetfinallevel.libsyn.com//rss</Url>
+    <EpisodesToKeep>1</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>MS Dev Show</Name>
+    <Url>http://msdevshow.libsyn.com/rss</Url>
+    <EpisodesToKeep>8</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>StarTalk Radio</Name>
+    <Url>http://feeds.soundcloud.com/users/soundcloud:users:38128127/sounds.rss</Url>
+    <EpisodesToKeep>3</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>SQL Server Radio</Name>
+    <Url>http://www.sqlserverradio.com/feed/podcast/</Url>
+    <EpisodesToKeep>8</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Naked Archaeology</Name>
+    <Url>http://rss.acast.com/naked_archaeology_podcast/</Url>
+    <EpisodesToKeep>12</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The Azure Podcast</Name>
+    <Url>http://feeds.feedburner.com/TheAzurePodcast</Url>
+    <EpisodesToKeep></EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The British History Podcast</Name>
+    <Url>http://feeds.feedburner.com/TheBritishHistoryPodcast</Url>
+    <EpisodesToKeep>0</EpisodesToKeep>
+    <Order>1</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The Dane and the Pain</Name>
+    <Url>http://www.daneandthepain.com/feed/</Url>
+    <EpisodesToKeep>6</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The History Of Rome</Name>
+    <Url>http://historyofrome.libsyn.com/rss</Url>
+    <EpisodesToKeep>0</EpisodesToKeep>
+    <Order>1</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The Naked Scientist</Name>
+    <Url>http://rss.acast.com/naked_scientists_podcast/</Url>
+    <EpisodesToKeep>6</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The Nerdist</Name>
+    <Url>http://nerdist.libsyn.com/</Url>
+    <EpisodesToKeep>3</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The Smartest Man in the World</Name>
+    <Url>http://smartest.libsyn.com/</Url>
+    <EpisodesToKeep>3</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The Three-Cone Drill</Name>
+    <Url>http://threeconedrill.com/feed/</Url>
+    <EpisodesToKeep>3</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The Torch-Great Courses</Name>
+    <Url>http://podcasts.teach12.com/thetorch.xml</Url>
+    <EpisodesToKeep>24</EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name></Name>
+    <Url></Url>
+    <EpisodesToKeep></EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name></Name>
+    <Url></Url>
+    <EpisodesToKeep></EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name></Name>
+    <Url></Url>
+    <EpisodesToKeep></EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name></Name>
+    <Url></Url>
+    <EpisodesToKeep></EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name></Name>
+    <Url></Url>
+    <EpisodesToKeep></EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name></Name>
+    <Url></Url>
+    <EpisodesToKeep></EpisodesToKeep>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name></Name>
+    <Url></Url>
+    <EpisodesToKeep></EpisodesToKeep>
     <Order>0</Order>
   </Podcast>
 </Podcasts>
