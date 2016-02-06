@@ -148,16 +148,27 @@ namespace Fuzable.Podcast.Entities
         /// <param name="title">Episode title</param>
         /// <param name="downloadFolder">Folder to download to</param>
         /// <param name="index">Order episide title</param>
+        /// <param name="remove">string to remove from titles, set by podcast</param>
         /// <returns></returns>
-       public static string CreateEpisodeFileName(string title, string downloadFolder, int index)
+       public static string CreateEpisodeFileName(string title, string downloadFolder, int index, string remove = "")
         {
             //split on colons, remove any spacing
             var parts = title.Split(':').Select(p => p.Trim());
             var filename = string.Join(":", parts.ToArray());
+            //replace remove string 
+            filename = filename.Replace(remove, "");
             //replace invalid file system chars with dashes
             filename = Path.GetInvalidFileNameChars().Aggregate(filename, (current, c) => current.Replace(c, '-'));
+            //remove trailing dash
+            if (filename.EndsWith("-"))
+            {
+                filename = filename.TrimEnd('-');
+            }
             //prefix filename with index or order of download
-            filename = index.ToString("000") + "_" + filename;
+            if (index >= 0)
+            {
+                filename = index.ToString("000") + "_" + filename;
+            }
             //append the path
             filename = Path.Combine(downloadFolder, filename);
             //return

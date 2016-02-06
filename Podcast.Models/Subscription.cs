@@ -160,7 +160,8 @@ namespace Fuzable.Podcast.Entities
                                 Name = item.Element("Name")?.Value,
                                 Url = item.Element("Url")?.Value,
                                 Download = item.Element("Download")?.Value,
-                                Order = item.Element("Order")?.Value
+                                Order = item.Element("Order")?.Value, 
+                                RemoveFromTitle = item.Element("RemoveFromTitle")?.Value
                             };
                 podcasts.AddRange(items.Select(item => new Podcast(item.Name, item.Url, int.Parse(item.Download),
                     (Podcast.EpisodeOrder)Enum.Parse(typeof(Podcast.EpisodeOrder), item.Order))));

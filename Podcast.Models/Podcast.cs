@@ -26,6 +26,11 @@ namespace Fuzable.Podcast.Entities
         public int Download { get; set; }
 
         /// <summary>
+        /// String to remove from title (ex: prefix from vendor)
+        /// </summary>
+        public string RemoveFromTitle { get; set; } 
+
+        /// <summary>
         /// Possible values for episode order (recent first, all in order, etc.)
         /// </summary>
         public enum EpisodeOrder
@@ -103,7 +108,10 @@ namespace Fuzable.Podcast.Entities
                 var counter = 0;
                 foreach (var item in items)
                 {
-                    var filePath = Episode.CreateEpisodeFileName(item.Title, downloadFolder, counter+1);
+                    var filePath = "";
+                    //single episode doesn't need prefix
+                    filePath = Download == 1 ? Episode.CreateEpisodeFileName(item.Title, downloadFolder, -1, RemoveFromTitle) 
+                                             : Episode.CreateEpisodeFileName(item.Title, downloadFolder, counter + 1, RemoveFromTitle);
 
                     if (Download == 0 || counter < Download)
                     {

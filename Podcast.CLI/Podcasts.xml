@@ -29,6 +29,7 @@
     <Url>http://www.dallascowboys.com/feeds/podcasts/2531/audio</Url>
     <Download>1</Download>
     <Order>0</Order>
+    <RemoveFromTitle>Talkin' Cowboys-</RemoveFromTitle>
   </Podcast>
   <Podcast>
     <Name>Microsoft DevRadio</Name>
@@ -59,6 +60,7 @@
     <Url>http://advancednflstats.libsyn.com//rss</Url>
     <Download>12</Download>
     <Order>0</Order>
+    <RemoveFromTitle>AFA Podcast - </RemoveFromTitle>
   </Podcast>
   <Podcast>
     <Name>Beating the Book</Name>
