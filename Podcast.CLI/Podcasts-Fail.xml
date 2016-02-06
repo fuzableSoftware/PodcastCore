@@ -3,17 +3,17 @@
   <Podcast>
     <Name>Stack Overflow</Name>
     <Url>http://rss.conversationsnetwork.org/series/stackoverflow.xml</Url>
-    <EpisodesToKeep>1</EpisodesToKeep>
+    <Download>1</Download>
     <Order>0</Order>
   </Podcast>
   <Podcast>
     <Name>Hot Takedown</Name>
     <Url>http://espn.go.com/espnradio/feeds/rss/podcast.xml?id=12474672</Url>
-    <EpisodesToKeep>5</EpisodesToKeep>
+    <Download>5</Download>
   </Podcast>
   <Podcast>
     <Name>What's the Point</Name>
     <Url>http://espn.go.com/espnradio/feeds/rss/podcast.xml?id=13131752</Url>
-    <EpisodesToKeep>5</EpisodesToKeep>
+    <Download>5</Download>
   </Podcast>
 </Podcasts>

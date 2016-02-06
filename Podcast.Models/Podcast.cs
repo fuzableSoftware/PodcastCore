@@ -21,9 +21,9 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public string Url { get; set; }
         /// <summary>
-        /// Number of episodes to keep
+        /// Number of episodes to download
         /// </summary>
-        public int EpisodesToKeep { get; set; }
+        public int Download { get; set; }
 
         /// <summary>
         /// Possible values for episode order (recent first, all in order, etc.)
@@ -59,13 +59,13 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         /// <param name="name">Podcast name</param>
         /// <param name="url">Podcast URL</param>
-        /// <param name="episodesToKeep">Number of episodes to keep</param>
+        /// <param name="download">Number of episodes to keep</param>
         /// <param name="order">one of EpisodeOrder</param>
-        public Podcast(string name, string url, int episodesToKeep, EpisodeOrder order)
+        public Podcast(string name, string url, int download, EpisodeOrder order)
         {
             Name = name;
             Url = url;
-            EpisodesToKeep = episodesToKeep;
+            Download = download;
             EpisodesToDownload = new List<Episode>();
             EpisodesToDelete = new List<Episode>();
             Order = order;
@@ -100,7 +100,7 @@ namespace Fuzable.Podcast.Entities
                 {
                     var filePath = Episode.CreateEpisodeFileName(item.Title, downloadFolder, counter+1);
 
-                    if (EpisodesToKeep == 0 || counter < EpisodesToKeep)
+                    if (Download == 0 || counter < Download)
                     {
                         EpisodesToDownload.Add(new Episode(item.Title, item.Link, filePath));
                     }
