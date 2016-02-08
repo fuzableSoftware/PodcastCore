@@ -193,5 +193,11 @@
     <Url>http://nerdist.libsyn.com/rss</Url>
     <Download>2</Download>
     <Order>0</Order>
-  </Podcast>  
- </Podcasts>
+  </Podcast>
+  <Podcast>
+    <Name>KPunk</Name>
+    <Url>http://kpunk.libsyn.com//rss</Url>
+    <Download>2</Download>
+    <Order>0</Order>
+  </Podcast>
+</Podcasts>
