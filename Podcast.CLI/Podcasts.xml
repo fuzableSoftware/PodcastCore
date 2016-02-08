@@ -3,7 +3,7 @@
   <Podcast>
     <Name>Judge John Hodgman</Name>
     <Url>http://feeds.feedburner.com/todayinthepast?format=xml</Url>
-    <Download>6</Download>
+    <Download>4</Download>
     <Order>0</Order>
   </Podcast>
   <Podcast>
@@ -11,6 +11,7 @@
     <Url>http://feeds.feedburner.com/BackStoryRadio</Url>
     <Download>4</Download>
     <Order>0</Order>
+    <ExcludeTitle>PROMO</ExcludeTitle>
   </Podcast>
   <Podcast>
     <Name>The Human Bible</Name>
@@ -29,13 +30,14 @@
     <Url>http://www.dallascowboys.com/feeds/podcasts/2531/audio</Url>
     <Download>1</Download>
     <Order>0</Order>
-    <RemoveFromTitle>Talkin' Cowboys-</RemoveFromTitle>
+    <RemoveFromTitle>Talkin' Cowboys</RemoveFromTitle>
   </Podcast>
   <Podcast>
     <Name>Microsoft DevRadio</Name>
     <Url>https://s.ch9.ms/Blogs/DevRadio/feed/mp3</Url>
     <Download>0</Download>
     <Order>0</Order>
+    <ExcludeTitle>Startup Stories</ExcludeTitle>
   </Podcast>
   <Podcast>
     <Name>Philosophy Bites</Name>
@@ -58,7 +60,7 @@
   <Podcast>
     <Name>Advanced Football Analytics</Name>
     <Url>http://advancednflstats.libsyn.com//rss</Url>
-    <Download>12</Download>
+    <Download>3</Download>
     <Order>0</Order>
     <RemoveFromTitle>AFA Podcast - </RemoveFromTitle>
   </Podcast>
@@ -71,7 +73,7 @@
   <Podcast>
     <Name>Doug Loves Movies</Name>
     <Url>http://feeds.feedburner.com/DougLovesMovies</Url>
-    <Download>6</Download>
+    <Download>3</Download>
     <Order>0</Order>
   </Podcast>
   <Podcast>
@@ -79,12 +81,14 @@
     <Url>http://dougbenson.videopodcastnetwork.libsynpro.com/rss</Url>
     <Download>3</Download>
     <Order>0</Order>
+    <RemoveFromTitle>- Getting Doug with High</RemoveFromTitle>
   </Podcast>
   <Podcast>
     <Name>Ice T - Final Level</Name>
     <Url>http://icetfinallevel.libsyn.com//rss</Url>
     <Download>1</Download>
     <Order>0</Order>
+    <RemoveFromTitle>Final Level</RemoveFromTitle>
   </Podcast>
   <Podcast>
     <Name>MS Dev Show</Name>
@@ -123,12 +127,6 @@
     <Order>1</Order>
   </Podcast>
   <Podcast>
-    <Name>The Dane and the Pain</Name>
-    <Url>http://www.daneandthepain.com/feed/</Url>
-    <Download>6</Download>
-    <Order>0</Order>
-  </Podcast>
-  <Podcast>
     <Name>The History Of Rome</Name>
     <Url>http://historyofrome.libsyn.com/rss</Url>
     <Download>0</Download>
@@ -141,15 +139,9 @@
     <Order>0</Order>
   </Podcast>
   <Podcast>
-    <Name>The Nerdist</Name>
-    <Url>http://nerdist.libsyn.com/</Url>
-    <Download>3</Download>
-    <Order>0</Order>
-  </Podcast>
-  <Podcast>
     <Name>The Smartest Man in the World</Name>
-    <Url>http://smartest.libsyn.com/</Url>
-    <Download>3</Download>
+    <Url>http://smartest.libsyn.com/rss</Url>
+    <Download>2</Download>
     <Order>0</Order>
   </Podcast>
   <Podcast>
@@ -157,11 +149,12 @@
     <Url>http://threeconedrill.com/feed/</Url>
     <Download>3</Download>
     <Order>0</Order>
+    <RemoveFromTitle>Three-Cone Drill Podcast</RemoveFromTitle>
   </Podcast>
   <Podcast>
     <Name>The Torch-Great Courses</Name>
     <Url>http://podcasts.teach12.com/thetorch.xml</Url>
-    <Download>24</Download>
+    <Download>6</Download>
     <Order>0</Order>
   </Podcast>
   <Podcast>
@@ -170,4 +163,35 @@
     <Download>1</Download>
     <Order>0</Order>
   </Podcast>
-</Podcasts>
+  <Podcast>
+    <Name>This Week on Channel 9</Name>
+    <Url>https://s.ch9.ms/Shows/This+Week+On+Channel+9/feed/mp3</Url>
+    <Download>4</Download>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Windows Weekly</Name>
+    <Url>http://feeds.twit.tv/ww.xml</Url>
+    <Download>4</Download>
+    <Order>0</Order>
+    <RemoveFromTitle>WW</RemoveFromTitle>
+  </Podcast>
+  <Podcast>
+    <Name>WTF with Marc Maron</Name>
+    <Url>http://wtfpod.libsyn.com/rss</Url>
+    <Download>3</Download>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>Dubstep.fm Archives</Name>
+    <Url>http://www.dubstep.fm/archive.xml</Url>
+    <Download>3</Download>
+    <Order>0</Order>
+  </Podcast>
+  <Podcast>
+    <Name>The Nerdist</Name>
+    <Url>http://nerdist.libsyn.com/rss</Url>
+    <Download>2</Download>
+    <Order>0</Order>
+  </Podcast>  
+ </Podcasts>

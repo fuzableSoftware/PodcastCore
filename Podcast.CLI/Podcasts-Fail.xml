@@ -16,4 +16,10 @@
     <Url>http://espn.go.com/espnradio/feeds/rss/podcast.xml?id=13131752</Url>
     <Download>5</Download>
   </Podcast>
+  <Podcast>
+    <Name>The Dane and the Pain</Name>
+    <Url>http://www.daneandthepain.com/feed/</Url>
+    <Download>2</Download>
+    <Order>0</Order>
+  </Podcast>  
 </Podcasts>

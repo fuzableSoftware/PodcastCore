@@ -66,7 +66,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="name">Name of episode</param>
         /// <param name="url">Episode address</param>
         /// <param name="path">Local path to episode</param>
-        protected virtual void OnEpisodeDownloaded(string name,string url, string path)
+        protected virtual void OnEpisodeDownloaded(string name, string url, string path)
         {
             EpisodeDownloaded?.Invoke(this, new EpisodeEventArgs(name, url, path));
         }
@@ -119,12 +119,15 @@ namespace Fuzable.Podcast.Entities
             {
                 try
                 {
-                    OnEpisodeDownloading(Title, Url, FilePath);
-                    using (var client = new WebClient())
+                    if (Url != null)
                     {
-                        client.DownloadFile(Url, FilePath);
+                        OnEpisodeDownloading(Title, Url, FilePath);
+                        using (var client = new WebClient())
+                        {
+                            client.DownloadFile(Url, FilePath);
+                        }
+                        OnEpisodeDownloaded(Title, Url, FilePath);
                     }
-                    OnEpisodeDownloaded(Title, Url, FilePath);
                 }
                 catch (WebException)
                 {
@@ -141,7 +144,7 @@ namespace Fuzable.Podcast.Entities
                 }
             }
         }
-        
+
         /// <summary>
         /// generate episode filename from title, intended download folder, download index (order)
         /// </summary>
@@ -150,20 +153,20 @@ namespace Fuzable.Podcast.Entities
         /// <param name="index">Order episide title</param>
         /// <param name="remove">string to remove from titles, set by podcast</param>
         /// <returns></returns>
-       public static string CreateEpisodeFileName(string title, string downloadFolder, int index, string remove = "")
+        public static string CreateEpisodeFileName(string title, string downloadFolder, int index, string remove = "")
         {
             //split on colons, remove any spacing
             var parts = title.Split(':').Select(p => p.Trim());
             var filename = string.Join(":", parts.ToArray());
             //replace remove string 
-            filename = filename.Replace(remove, "");
+            if (remove != null)
+            {
+                filename = filename.Replace(remove, "");
+            }
             //replace invalid file system chars with dashes
             filename = Path.GetInvalidFileNameChars().Aggregate(filename, (current, c) => current.Replace(c, '-'));
-            //remove trailing dash
-            if (filename.EndsWith("-"))
-            {
-                filename = filename.TrimEnd('-');
-            }
+            //remove preceding or trailing dashes
+            filename = filename.TrimEnd('-').TrimStart('-');
             //prefix filename with index or order of download
             if (index >= 0)
             {

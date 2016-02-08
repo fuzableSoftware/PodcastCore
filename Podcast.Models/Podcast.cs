@@ -28,7 +28,12 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// String to remove from title (ex: prefix from vendor)
         /// </summary>
-        public string RemoveFromTitle { get; set; } 
+        public string RemoveFromTitle { get; set; }
+
+        /// <summary>
+        /// start of titles we don't want
+        /// </summary>
+        public string ExcludeTitle { get; set; }
 
         /// <summary>
         /// Possible values for episode order (recent first, all in order, etc.)
@@ -66,7 +71,9 @@ namespace Fuzable.Podcast.Entities
         /// <param name="url">Podcast URL</param>
         /// <param name="download">Number of episodes to keep</param>
         /// <param name="order">one of EpisodeOrder</param>
-        public Podcast(string name, string url, int download, EpisodeOrder order)
+        /// <param name="remove">string to remove from episode titles</param>
+        /// <param name="exclude">episodes starting with this string will be excluded</param>
+        public Podcast(string name, string url, int download, EpisodeOrder order, string remove, string exclude)
         {
             Name = name;
             Url = url;
@@ -74,6 +81,8 @@ namespace Fuzable.Podcast.Entities
             EpisodesToDownload = new List<Episode>();
             EpisodesToDelete = new List<Episode>();
             Order = order;
+            RemoveFromTitle = remove;
+            ExcludeTitle = exclude;
         }
 
         /// <summary>
@@ -90,7 +99,14 @@ namespace Fuzable.Podcast.Entities
 
                 var xmlDoc = XDocument.Load(Url);
 
+                var excludeTitlesThatStartWith = "***NO EXCLUSIONS***";
+                if (ExcludeTitle != null)
+                {
+                    excludeTitlesThatStartWith = ExcludeTitle;
+                }
+
                 var items = from item in xmlDoc.Descendants("item")
+                            where item.Element("title")?.Value.StartsWith(excludeTitlesThatStartWith) == false
                             select new
                             {
                                 Title = item.Element("title")?.Value,
@@ -109,9 +125,15 @@ namespace Fuzable.Podcast.Entities
                 foreach (var item in items)
                 {
                     var filePath = "";
-                    //single episode doesn't need prefix
-                    filePath = Download == 1 ? Episode.CreateEpisodeFileName(item.Title, downloadFolder, -1, RemoveFromTitle) 
-                                             : Episode.CreateEpisodeFileName(item.Title, downloadFolder, counter + 1, RemoveFromTitle);
+                    if (Download == 1 || Download == 0)
+                    {
+                        //if downloading all available or only one, don't use a number prefix
+                        filePath = Episode.CreateEpisodeFileName(item.Title, downloadFolder, -1, RemoveFromTitle);
+                    }
+                    else
+                    {
+                        filePath = Episode.CreateEpisodeFileName(item.Title, downloadFolder, counter + 1, RemoveFromTitle);
+                    }
 
                     if (Download == 0 || counter < Download)
                     {
