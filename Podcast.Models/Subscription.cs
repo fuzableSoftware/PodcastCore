@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Fuzable.Podcast.Entities.Episodes;
 using Fuzable.Podcast.Entities.Podcasts;
+using Fuzable.Podcast.Entities.Properties;
 using Fuzable.Podcast.Entities.Subscriptions;
 
 namespace Fuzable.Podcast.Entities
@@ -219,7 +220,8 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         /// <param name="downloadFolder">folder podcasts are downloaded to</param>
         /// <param name="destinationFolder">folder podcasts are copied to</param>
-        public void Copy(string downloadFolder, string destinationFolder)
+        /// <param name="group">copy group to use, defaults to null (all)</param>
+        public void Copy(string downloadFolder, string destinationFolder, string group = null)
         {
             var start = DateTime.Now;
             //check that the destination folder is (probably) a USB key and has some free space
@@ -242,8 +244,13 @@ namespace Fuzable.Podcast.Entities
                 throw new FileNotFoundException("Specified destination folder does not exist");
             }
 
-            //get folders in download folder
-            var folders = Directory.GetDirectories(downloadFolder);
+            //does group file size exceed max?
+            if (MaximumGroupSizeExceeded(group, downloadFolder))
+            {
+                throw new ArgumentException("specified group exceeds maximum copy size");
+            }
+
+            string[] folders = GetFoldersInGroup(group, downloadFolder);
             var index = 0;
 
             //copy files in each folder to destination
@@ -334,6 +341,34 @@ namespace Fuzable.Podcast.Entities
             var end = DateTime.Now;
             var lapsed = end - start;
             OnSubscriptionCopied(index, lapsed);
+        }
+
+        private static string[] GetFoldersInGroup(string group, string downloadFolder)
+        {
+            if (group == null)
+            {
+                //get folders in download folder
+                return Directory.GetDirectories(downloadFolder);
+            }
+            else
+            {
+                //get for group
+                //TODO for now just return all
+                return Directory.GetDirectories(downloadFolder);
+            }
+        }
+
+        private static bool MaximumGroupSizeExceeded(string group, string downloadFolder)
+        {
+            var max = Settings.Default.MaximumGroupSize;
+            if (group == null)
+            {
+                //all files and folders in download folder
+                var info = new DirectoryInfo(downloadFolder);
+                var size = info.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+                return size > max;
+            }
+            return false;
         }
 
         #region Event Handlers

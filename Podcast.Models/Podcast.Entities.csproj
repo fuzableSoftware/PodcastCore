@@ -60,6 +60,11 @@
     <Compile Include="Podcasts\PodcastSynchronizedHandler.cs" />
     <Compile Include="Podcasts\PodcastSynchronizingHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Subscription.cs" />
     <Compile Include="Subscriptions\FolderCreatedHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionCopyingHandler.cs" />
@@ -69,6 +74,13 @@
     <Compile Include="Subscriptions\SubscriptionSynchronizedHandler.cs" />
     <Compile Include="Subscriptions\SubscriptionEventArgs.cs" />
     <Compile Include="Subscriptions\SubscriptionSynchronizingHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
