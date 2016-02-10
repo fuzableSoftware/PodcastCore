@@ -155,7 +155,7 @@ namespace Fuzable.Podcast.Entities
             try
             {
                 var settingsDoc = XDocument.Load($@"{Environment.CurrentDirectory}\{"Podcasts.xml"}");
-                var items = from item in settingsDoc.Descendants("Podcast")
+                var items = from item in settingsDoc.Root?.Elements("Podcasts").Descendants("Podcast")
                             select new
                             {
                                 Name = item.Element("Name")?.Value,
