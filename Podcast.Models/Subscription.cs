@@ -199,7 +199,8 @@ namespace Fuzable.Podcast.Entities
                 OnPodcastSynchronizing(podcast.Name);
                 podcast.ProcessFeed(this);
                 OnPodcastSynchronizing(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
-                //process each episode
+
+               //process each episode
                 foreach (var episode in podcast.EpisodesToDownload)
                 {
                     episode.EpisodeDownloading += Episode_EpisodeDownloading;

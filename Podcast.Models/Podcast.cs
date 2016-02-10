@@ -92,7 +92,7 @@ namespace Fuzable.Podcast.Entities
         {
             try
             {
-                //append podcast name to folder and verify folder exists
+                //append podcast name to path and verify path exists
                 var downloadFolder = subscription.DownloadFolder;
                 downloadFolder = Path.Combine(downloadFolder, Name);
                 subscription.VerifyFolderExists(downloadFolder);

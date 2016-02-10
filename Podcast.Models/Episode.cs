@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Fuzable.Podcast.Entities.Episodes;
@@ -119,15 +120,22 @@ namespace Fuzable.Podcast.Entities
             {
                 try
                 {
-                    if (Url != null)
+                    if (Url == null) return;
+                    OnEpisodeDownloading(Title, Url, FilePath);
+
+                    if (EpisodeIsDownloaded(FilePath))
                     {
-                        OnEpisodeDownloading(Title, Url, FilePath);
-                        using (var client = new WebClient())
-                        {
-                            client.DownloadFile(Url, FilePath);
-                        }
+                        //we're done
                         OnEpisodeDownloaded(Title, Url, FilePath);
+                        return;
+                    } 
+
+                    //download it 
+                    using (var client = new WebClient())
+                    {
+                        client.DownloadFile(Url, FilePath);
                     }
+                    OnEpisodeDownloaded(Title, Url, FilePath);
                 }
                 catch (WebException)
                 {
@@ -176,6 +184,47 @@ namespace Fuzable.Podcast.Entities
             filename = Path.Combine(downloadFolder, filename);
             //return
             return filename;
+        }
+
+        static string GetFilenameWithoutPrefix(string filename)
+        {
+            return filename.Substring(4);
+        }
+
+        static bool EpisodeIsDownloaded(string fullPath)
+        {
+            if (fullPath == null)
+            {
+                return false;
+            }
+
+            //split apart path
+            var filename = Path.GetFileName(fullPath);
+            var path = Path.GetDirectoryName(fullPath);
+            if (path == null) return false;
+            //does file exist now?
+            var partialFilename = GetFilenameWithoutPrefix(filename);
+            var folder = new DirectoryInfo(path);
+            var files = folder.EnumerateFiles("???_" + partialFilename).ToList();
+            var numberOfFiles = files.Count();
+            switch (numberOfFiles)
+            {
+                case 0:
+                    //no files found with similar name
+                    //just download file or whatever, nothing to do 
+                    return false;
+                case 1:
+                    //1 file found with similar name
+                    //rename this file with the new prefix 
+                    var file = files[0];
+                    var newPath = @Path.Combine(path, filename);
+                    file.MoveTo(newPath);
+                    //we updated the file, so tell the caller
+                    return true;
+            }
+            //more than 1 file? something's wrong 
+            Debug.Assert(numberOfFiles < 2, "too many files returned in similar name search");
+            return false;
         }
     }
 }
