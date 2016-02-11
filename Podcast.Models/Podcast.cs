@@ -137,11 +137,11 @@ namespace Fuzable.Podcast.Entities
                     if (Download == 1 || Download == 0)
                     {
                         //if downloading all available or only one, don't use a number prefix
-                        filePath = Episode.CreateEpisodeFileName(item.Title, downloadFolder, -1, RemoveFromTitle);
+                        filePath = Episode.GenerateEpisodeFilename(item.Title, downloadFolder, -1, RemoveFromTitle);
                     }
                     else
                     {
-                        filePath = Episode.CreateEpisodeFileName(item.Title, downloadFolder, counter + 1, RemoveFromTitle);
+                        filePath = Episode.GenerateEpisodeFilename(item.Title, downloadFolder, counter + 1, RemoveFromTitle);
                     }
 
                     if (Download == 0 || counter < Download)

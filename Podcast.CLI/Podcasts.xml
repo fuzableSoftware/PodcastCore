@@ -189,6 +189,7 @@
       <Url>http://www.dubstep.fm/archive.xml</Url>
       <Download>3</Download>
       <Order>0</Order>
+      <RemoveFromTitle>DUBSTEP.FM ARCHIVE - </RemoveFromTitle>
     </Podcast>
     <Podcast>
       <Name>The Nerdist</Name>

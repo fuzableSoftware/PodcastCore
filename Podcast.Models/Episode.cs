@@ -161,7 +161,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="index">Order episide title</param>
         /// <param name="remove">string to remove from titles, set by podcast</param>
         /// <returns></returns>
-        public static string CreateEpisodeFileName(string title, string downloadFolder, int index, string remove = "")
+        public static string GenerateEpisodeFilename(string title, string downloadFolder, int index, string remove = "")
         {
             //split on colons, remove any spacing
             var parts = title.Split(':').Select(p => p.Trim());
@@ -180,7 +180,9 @@ namespace Fuzable.Podcast.Entities
             {
                 filename = index.ToString("000") + "_" + filename;
             }
-            //append the path
+            //append type
+            filename += ".mp3";
+            //combine with the path
             filename = Path.Combine(downloadFolder, filename);
             //return
             return filename;
