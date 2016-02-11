@@ -245,17 +245,17 @@ namespace Fuzable.Podcast.Entities
                 throw new FileNotFoundException("Specified destination folder does not exist");
             }
 
+            var folders = GetFoldersInGroup(group, downloadFolder);
+            
             //does group file size exceed max?
-            if (MaximumGroupSizeExceeded(group, downloadFolder))
+            if (MaximumGroupSizeExceeded(group, folders))
             {
                 throw new ArgumentException("specified group exceeds maximum copy size");
             }
 
-            string[] folders = GetFoldersInGroup(group, downloadFolder);
-            var index = 0;
-
             //copy files in each folder to destination
             //if file exists, skip
+            var index = 0;
             foreach (var folder in folders)
             {
                 index += 1;
@@ -354,22 +354,42 @@ namespace Fuzable.Podcast.Entities
             else
             {
                 //get for group
-                //TODO for now just return all
-                return Directory.GetDirectories(downloadFolder);
+                //read podcasts.xml file and extract groups podcasts from
+                var folders = new List<Podcast>();
+
+                try
+                {
+                    var settingsDoc = XDocument.Load($@"{Environment.CurrentDirectory}\{"Podcasts.xml"}");
+                    var items = from item in settingsDoc.Root?.Elements("Groups").Descendants("Group").Descendants("Podcasts").Descendants("Podcast")
+                                select new
+                                {
+                                    Name = item.Element("Name")?.Value
+                                };
+                    folders.AddRange(items.Select(item => new Podcast(item.Name)));
+                }
+                catch (Exception ex)
+                {
+                    var error = new ApplicationException("Error retrieving groups", ex);
+                    throw error;
+                }
+                //filter
+                var includedFolders = folders.Select(s => Path.Combine(downloadFolder, s.Name)).ToArray();
+                return includedFolders;
             }
         }
 
-        private static bool MaximumGroupSizeExceeded(string group, string downloadFolder)
+        private static bool MaximumGroupSizeExceeded(string group, string[] downloadFolders)
         {
             var max = Settings.Default.MaximumGroupSize;
             if (group == null)
             {
                 //all files and folders in download folder
-                var info = new DirectoryInfo(downloadFolder);
+                var info = new DirectoryInfo(downloadFolders[0]);
                 var size = info.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length);
                 return size > max;
             }
-            return false;
+            var total = downloadFolders.Select(downloadFolder => new DirectoryInfo(downloadFolder)).Select(info => info.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length)).Sum();
+            return total > max;
         }
 
         #region Event Handlers

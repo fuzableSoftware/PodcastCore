@@ -25,10 +25,10 @@ namespace Fuzable.Podcast.Entities.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4096000")]
-        public int MaximumGroupSize {
+        [global::System.Configuration.DefaultSettingValueAttribute("4294967296")]
+        public long MaximumGroupSize {
             get {
-                return ((int)(this["MaximumGroupSize"]));
+                return ((long)(this["MaximumGroupSize"]));
             }
             set {
                 this["MaximumGroupSize"] = value;

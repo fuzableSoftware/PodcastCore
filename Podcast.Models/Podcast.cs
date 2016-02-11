@@ -86,6 +86,15 @@ namespace Fuzable.Podcast.Entities
         }
 
         /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">Name of podcast</param>
+        public Podcast(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
         /// Process a podcast's feed
         /// </summary>
         public void ProcessFeed(Subscription subscription)

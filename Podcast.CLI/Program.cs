@@ -40,7 +40,7 @@ namespace Podcast.CLI
             //copy 
             try
             {
-                subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder);
+                subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder, "Selections");
             }
             catch (Exception ex)
             {

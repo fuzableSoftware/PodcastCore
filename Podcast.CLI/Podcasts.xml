@@ -43,13 +43,13 @@
     <Podcast>
       <Name>Philosophy Bites</Name>
       <Url>http://philosophybites.libsyn.com/rss</Url>
-      <Download>12</Download>
+      <Download>4</Download>
       <Order>0</Order>
     </Podcast>
     <Podcast>
       <Name>Stuff You Should Know</Name>
       <Url>http://www.howstuffworks.com/podcasts/stuff-you-should-know.rss</Url>
-      <Download>8</Download>
+      <Download>4</Download>
       <Order>0</Order>
     </Podcast>
     <Podcast>
@@ -61,20 +61,21 @@
     <Podcast>
       <Name>Advanced Football Analytics</Name>
       <Url>http://advancednflstats.libsyn.com//rss</Url>
-      <Download>3</Download>
+      <Download>1</Download>
       <Order>0</Order>
       <RemoveFromTitle>AFA Podcast - </RemoveFromTitle>
     </Podcast>
     <Podcast>
       <Name>Beating the Book</Name>
       <Url>http://beatingthebook.libsyn.com//rss</Url>
-      <Download>2</Download>
+      <Download>1</Download>
       <Order>0</Order>
+      <RemoveFromTitle>Beating The Book</RemoveFromTitle>
     </Podcast>
     <Podcast>
       <Name>Doug Loves Movies</Name>
       <Url>http://feeds.feedburner.com/DougLovesMovies</Url>
-      <Download>3</Download>
+      <Download>1</Download>
       <Order>0</Order>
     </Podcast>
     <Podcast>
@@ -106,13 +107,13 @@
     <Podcast>
       <Name>SQL Server Radio</Name>
       <Url>http://www.sqlserverradio.com/feed/podcast/</Url>
-      <Download>8</Download>
+      <Download>4</Download>
       <Order>0</Order>
     </Podcast>
     <Podcast>
       <Name>Naked Archaeology</Name>
       <Url>http://rss.acast.com/naked_archaeology_podcast/</Url>
-      <Download>12</Download>
+      <Download>6</Download>
       <Order>0</Order>
     </Podcast>
     <Podcast>
@@ -155,7 +156,7 @@
     <Podcast>
       <Name>The Torch-Great Courses</Name>
       <Url>http://podcasts.teach12.com/thetorch.xml</Url>
-      <Download>6</Download>
+      <Download>4</Download>
       <Order>0</Order>
     </Podcast>
     <Podcast>
@@ -219,9 +220,6 @@
           <Name>Talkin' Cowboys</Name>
         </Podcast>
         <Podcast>
-          <Name>Microsoft DevRadio</Name>
-        </Podcast>
-        <Podcast>
           <Name>Philosophy Bites</Name>
         </Podcast>
         <Podcast>
@@ -231,43 +229,22 @@
           <Name>NFL Around the League</Name>
         </Podcast>
         <Podcast>
-          <Name>Advanced Football Analytics</Name>
-        </Podcast>
-        <Podcast>
-          <Name>Beating the Book</Name>
-        </Podcast>
-        <Podcast>
           <Name>Doug Loves Movies</Name>
         </Podcast>
         <Podcast>
           <Name>Getting Doug with High</Name>
         </Podcast>
         <Podcast>
-          <Name>Ice T - Final Level</Name>
-        </Podcast>
-        <Podcast>
-          <Name>MS Dev Show</Name>
-        </Podcast>
-        <Podcast>
           <Name>StarTalk Radio</Name>
         </Podcast>
         <Podcast>
-          <Name>SQL Server Radio</Name>
-        </Podcast>
-        <Podcast>
           <Name>Naked Archaeology</Name>
-        </Podcast>
-        <Podcast>
-          <Name>The Azure Podcast</Name>
         </Podcast>
         <Podcast>
           <Name>The Naked Scientist</Name>
         </Podcast>
         <Podcast>
           <Name>The Smartest Man in the World</Name>
-        </Podcast>
-        <Podcast>
-          <Name>The Three-Cone Drill</Name>
         </Podcast>
         <Podcast>
           <Name>The Torch-Great Courses</Name>
