@@ -203,6 +203,18 @@
       <Download>2</Download>
       <Order>0</Order>
     </Podcast>
+      <Podcast>
+      <Name>Entreprogrammers</Name>
+      <Url>http://kpunk.libsyn.com//rss</Url>
+      <Download>1</Download>
+      <Order>0</Order>
+    </Podcast>
+      <Podcast>
+      <Name>Simple Programmer</Name>
+      <Url>http://kpunk.libsyn.com//rss</Url>
+      <Download>4</Download>
+      <Order>0</Order>
+    </Podcast>
   </Podcasts>
   <Groups>
     <Group>
@@ -264,6 +276,12 @@
         </Podcast>
         <Podcast>
           <Name>The Nerdist</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Entreprogrammers</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Simple Programmer</Name>
         </Podcast>
       </Podcasts>
     </Group>
