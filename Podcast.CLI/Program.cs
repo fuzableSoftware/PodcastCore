@@ -166,22 +166,22 @@ namespace Podcast.CLI
             Console.WriteLine($"Podcast '{e.Name}' is being copied to USB key...");
         }
 
-        private static void Episode_Copying(object sender, EpisodeCopyEventArgs e)
+        private static void Episode_Copying(object sender, EpisodeEventArgs e)
         {
-            Console.WriteLine(e.Source == null
-                ? $"File already exists at {e.Destination}"
-                : $"Copying {e.Source} to {e.Destination}...");
+            Console.WriteLine(e.Name == null
+                ? $"File already exists at {e.Path}"
+                : $"Copying {e.Name} to {e.Path}...");
         }
-        private static void Episode_Copied(object sender, EpisodeCopyEventArgs e)
+        private static void Episode_Copied(object sender, EpisodeEventArgs e)
         {
-            Console.WriteLine(e.Source == null
-                ? $"File already exists at {e.Destination}"
-                : $"File {e.Source} successfully copied to {e.Destination}");
+            Console.WriteLine(e.Name == null
+                ? $"File already exists at {e.Path}"
+                : $"File {e.Path} successfully copied to {e.Path}");
         }
 
-        private static void Episode_CopyFailed(object sender, EpisodeCopyEventArgs e)
+        private static void Episode_CopyFailed(object sender, EpisodeEventArgs e)
         {
-            Console.WriteLine($"'{e.Source}' could not be copied to {e.Destination}!");
+            Console.WriteLine($"'{e.Name}' could not be copied to {e.Path}!");
         }
 
     }

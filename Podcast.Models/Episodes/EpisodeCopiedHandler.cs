@@ -5,5 +5,5 @@ namespace Fuzable.Podcast.Entities.Episodes
     /// </summary>
     /// <param name="sender">event sender</param>
     /// <param name="e">event arguments</param>
-    public delegate void EpisodeCopiedHandler(object sender, EpisodeCopyEventArgs e);
+    public delegate void EpisodeCopiedHandler(object sender, EpisodeEventArgs e);
 }

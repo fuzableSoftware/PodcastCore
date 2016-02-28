@@ -77,7 +77,7 @@ namespace Fuzable.Podcast.Entities
         /// Event indicating podcast has been copied
         /// </summary>
         public event PodcastCopiedHandler PodcastCopied;
-        
+
         /// <summary>
         ///  Event raised when episode is synchronizing
         /// </summary>
@@ -108,7 +108,7 @@ namespace Fuzable.Podcast.Entities
         /// Event indicating episode copy failed
         /// </summary>
         public event EpisodeCopyFailedHandler EpisodeCopyFailed;
-
+        
         #endregion
 
         #region Constructors
@@ -214,11 +214,10 @@ namespace Fuzable.Podcast.Entities
                 //process each episode to delete
                 foreach (var episode in podcast.EpisodesToDelete)
                 {
-                    //episode.EpisodeDeleting += Episode_EpisodeDeleting;
                     //episode.EpisodeDeleted += Episode_EpisodeDeleted;
                     //episode.EpisodeDeleteFailed += Episode_EpisodeDeleteFailed;
                     episode.EpisodeSynchronized += Episode_EpisodeSynchronized;
-                    //episode.Remove();
+                    episode.Delete();
                 }
             }
             var end = DateTime.Now;
@@ -561,7 +560,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Destination the episode is being copied to</param>
         protected virtual void OnEpisodeCopying(string source, string destination)
         {
-            EpisodeCopying?.Invoke(this, new EpisodeCopyEventArgs(source, destination));
+            EpisodeCopying?.Invoke(this, new EpisodeEventArgs(source, "", destination));
         }
 
         /// <summary>
@@ -571,7 +570,17 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Destination the episode was copied to</param>
         protected virtual void OnEpisodeCopied(string source, string destination)
         {
-            EpisodeCopied?.Invoke(this, new EpisodeCopyEventArgs(source, destination));
+            EpisodeCopied?.Invoke(this, new EpisodeEventArgs(source, "", destination));
+        }
+
+        /// <summary>
+        /// Raises episode deleted event
+        /// </summary>
+        /// <param name="source">Path to the episode copied</param>
+        /// <param name="destination">Destination the episode was copied to</param>
+        protected virtual void OnEpisodeDeleted(string source, string destination)
+        {
+            //EpisodeDeleted?.Invoke(this, new EpisodeEventArgs(source, "", destination));
         }
 
         /// <summary>
@@ -581,7 +590,17 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Intended path to episode</param>
         protected virtual void OnEpisodeCopyFailed(string source, string destination)
         {
-            EpisodeCopyFailed?.Invoke(this, new EpisodeCopyEventArgs(source, destination));
+            EpisodeCopyFailed?.Invoke(this, new EpisodeEventArgs(source, "", destination));
+        }
+
+        /// <summary>
+        /// Raises episode delete failed event
+        /// </summary>
+        /// <param name="source">Episode title or name</param>
+        /// <param name="destination">Intended path to episode</param>
+        protected virtual void OnEpisodeDeleteFailed(string source, string destination)
+        {
+            //EpisodeDeleteFailed?.Invoke(this, new EpisodeEventArgs(source, "", destination));
         }
 
         #endregion

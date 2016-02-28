@@ -25,6 +25,15 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// Partial constructor
         /// </summary>
         /// <param name="name">Episode name</param>
+        public EpisodeEventArgs(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        /// Partial constructor
+        /// </summary>
+        /// <param name="name">Episode name</param>
         /// <param name="url">Episode address</param>
         public EpisodeEventArgs(string name, string url)
         {

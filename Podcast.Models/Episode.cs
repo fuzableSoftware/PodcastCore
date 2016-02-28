@@ -42,6 +42,16 @@ namespace Fuzable.Podcast.Entities
         public event EpisodeDownloadFailedHandler EpisodeDownloadFailed;
 
         /// <summary>
+        /// Episode deleted event
+        /// </summary>
+        public event EpisodeDownloadedHandler EpisodeDeleted;
+
+        /// <summary>
+        /// Episode delete failed event
+        /// </summary>
+        public event EpisodeDownloadFailedHandler EpisodeDeleteFailed;
+
+        /// <summary>
         /// Episode download synchronized event
         /// </summary>
         public event EpisodeSynchronizedHandler EpisodeSynchronized;
@@ -73,6 +83,16 @@ namespace Fuzable.Podcast.Entities
         }
 
         /// <summary>
+        /// Raises EpisodeDeleted event
+        /// </summary>
+        /// <param name="name">Name of episode</param>
+        /// <param name="path">Local path to episode</param>
+        protected virtual void OnEpisodeDeleted(string name, string path)
+        {
+            EpisodeDeleted?.Invoke(this, new EpisodeEventArgs(name, "", path));
+        }
+
+        /// <summary>
         /// Raises EpisodeDownloadFailed event
         /// </summary>
         /// <param name="name">Name of episode</param>
@@ -80,6 +100,15 @@ namespace Fuzable.Podcast.Entities
         protected virtual void OnEpisodeDownloadFailed(string name, string url)
         {
             EpisodeDownloadFailed?.Invoke(this, new EpisodeEventArgs(name, url));
+        }
+
+        /// <summary>
+        /// Raises EpisodeDeleteFailed event
+        /// </summary>
+        /// <param name="name">Name of episode</param>
+        protected virtual void OnEpisodeDeleteFailed(string name)
+        {
+            EpisodeDeleteFailed?.Invoke(this, new EpisodeEventArgs(name));
         }
 
         /// <summary>
@@ -151,6 +180,52 @@ namespace Fuzable.Podcast.Entities
                     OnEpisodeSynchronized(Title, Url);
                 }
             }
+        }
+
+        /// <summary>
+        /// Removes a downloaded episode
+        /// </summary>
+        public void Delete()
+        {
+            //if (File.Exists(FilePath))
+            //{
+            //    OnEpisodeSynchronized(Title, null);
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        if (Url == null) return;
+            //        OnEpisodeDownloading(Title, Url, FilePath);
+
+            //        if (EpisodeIsDownloaded(FilePath))
+            //        {
+            //            //we're done
+            //            OnEpisodeDownloaded(Title, Url, FilePath);
+            //            return;
+            //        }
+
+            //        //download it 
+            //        using (var client = new WebClient())
+            //        {
+            //            client.DownloadFile(Url, FilePath);
+            //        }
+            //        OnEpisodeDownloaded(Title, Url, FilePath);
+            //    }
+            //    catch (WebException)
+            //    {
+            //        OnEpisodeDownloadFailed(Title, Url);
+            //        //delete failed download
+            //        if (File.Exists(FilePath))
+            //        {
+            //            File.Delete(FilePath);
+            //        }
+            //    }
+            //    finally
+            //    {
+            //        OnEpisodeSynchronized(Title, Url);
+            //    }
+            //}
         }
 
         /// <summary>

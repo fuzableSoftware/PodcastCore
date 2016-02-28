@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Episode.cs" />
-    <Compile Include="Episodes\EpisodeCopyEventArgs.cs" />
     <Compile Include="Episodes\EpisodeEventArgs.cs" />
     <Compile Include="Episodes\EpisodeCopiedHandler.cs" />
     <Compile Include="Episodes\EpisodeDownloadedHandler.cs" />
@@ -50,6 +49,7 @@
     <Compile Include="Episodes\EpisodeDownloadFailedHandler.cs" />
     <Compile Include="Episodes\EpisodeCopyingHandler.cs" />
     <Compile Include="Episodes\EpisodeDownloadingHandler.cs" />
+    <Compile Include="Episodes\EpisodeEventHandler.cs" />
     <Compile Include="Episodes\EpisodeSynchronizedHandler.cs" />
     <Compile Include="Episodes\EpisodeSynchronizeFailedHandler.cs" />
     <Compile Include="Episodes\EpisodeSynchronizingHandler.cs" />
