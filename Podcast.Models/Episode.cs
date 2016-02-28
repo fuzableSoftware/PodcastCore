@@ -34,32 +34,32 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Episode downloading event
         /// </summary>
-        public event EpisodeDownloadingHandler EpisodeDownloading;
+        public event EpisodeEventHandler EpisodeDownloading;
 
         /// <summary>
         /// Episode downloaded event
         /// </summary>
-        public event EpisodeDownloadedHandler EpisodeDownloaded;
+        public event EpisodeEventHandler EpisodeDownloaded;
 
         /// <summary>
         /// Episode download failed event
         /// </summary>
-        public event EpisodeDownloadFailedHandler EpisodeDownloadFailed;
+        public event EpisodeEventHandler EpisodeDownloadFailed;
 
         /// <summary>
         /// Episode deleted event
         /// </summary>
-        public event EpisodeDownloadedHandler EpisodeDeleted;
+        public event EpisodeEventHandler EpisodeDeleted;
 
         /// <summary>
         /// Episode delete failed event
         /// </summary>
-        public event EpisodeDownloadFailedHandler EpisodeDeleteFailed;
+        public event EpisodeEventHandler EpisodeDeleteFailed;
 
         /// <summary>
         /// Episode download synchronized event
         /// </summary>
-        public event EpisodeSynchronizedHandler EpisodeSynchronized;
+        public event EpisodeEventHandler EpisodeSynchronized;
 
         #endregion
 

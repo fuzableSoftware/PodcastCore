@@ -81,23 +81,23 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         ///  Event raised when episode is synchronizing
         /// </summary>
-        public event EpisodeSynchronizingHandler EpisodeSynchronizing;
+        public event EpisodeEventHandler EpisodeSynchronizing;
 
         /// <summary>
         /// Event raised when episode is synchronized
         /// </summary>
-        public event EpisodeSynchronizedHandler EpisodeSynchronized;
+        public event EpisodeEventHandler EpisodeSynchronized;
 
         /// <summary>
         ///  Event raised when episode is synchronizing
         /// </summary>
-        public event EpisodeSynchronizeFailedHandler EpisodeSynchronizeFailed;
+        public event EpisodeEventHandler EpisodeSynchronizeFailed;
 
         /// <summary>
         ///  Event for copying podcast episodes
         /// </summary>
         /// 
-        public event EpisodeCopyingHandler EpisodeCopying;
+        public event EpisodeEventHandler EpisodeCopying;
 
         /// <summary>
         /// Episode processing event
@@ -107,7 +107,7 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Event indicating episode copy failed
         /// </summary>
-        public event EpisodeCopyFailedHandler EpisodeCopyFailed;
+        public event EpisodeEventHandler EpisodeCopyFailed;
         
         #endregion
 
@@ -203,6 +203,7 @@ namespace Fuzable.Podcast.Entities
                //process each episode to download
                 foreach (var episode in podcast.EpisodesToDownload)
                 {
+                    episode.EpisodeProcessing += Episode_EpisodeProcessing;
                     episode.EpisodeDownloading += Episode_EpisodeDownloading;
                     episode.EpisodeDownloaded += Episode_EpisodeDownloaded;
                     episode.EpisodeDownloadFailed += Episode_EpisodeDownloadFailed;
