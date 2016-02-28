@@ -298,7 +298,7 @@ namespace Fuzable.Podcast.Entities
                     }
 
                     //if the destination has leading zero, trim it
-                    if (files.Length < 100 && files.Length > 1)
+                    if (files.Length < 100 && files.Length > 1 && destination.StartsWith("0"))
                     {
                         destination = destination.Substring(1);
                     }

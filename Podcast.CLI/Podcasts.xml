@@ -242,9 +242,6 @@
           <Name>NFL Around the League</Name>
         </Podcast>
         <Podcast>
-          <Name>Doug Loves Movies</Name>
-        </Podcast>
-        <Podcast>
           <Name>Getting Doug with High</Name>
         </Podcast>
         <Podcast>
@@ -282,6 +279,12 @@
         </Podcast>
         <Podcast>
           <Name>Simple Programmer</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Microsoft DevRadio</Name>
+        </Podcast>
+        <Podcast>
+          <Name>SQL Server Radio</Name>
         </Podcast>
       </Podcasts>
     </Group>
