@@ -6,7 +6,7 @@
       <Value Profile="(Default)">F:\</Value>
     </Setting>
     <Setting Name="DownloadFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\Working\Cast2Car\Podcasts\</Value>
+      <Value Profile="(Default)">D:\Podcasts</Value>
     </Setting>
   </Settings>
 </SettingsFile>

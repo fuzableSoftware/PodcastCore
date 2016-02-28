@@ -11,8 +11,33 @@ namespace Podcast.CLI
     {
         private static void Main(string[] args)
         {
+            ChooseSyncOrCopy();
+        }
+
+        private static void ChooseSyncOrCopy()
+        {
+            Console.WriteLine("1: Synchronize");
+            Console.WriteLine("2: Copy to USB key");
+            var x = Console.ReadKey();
+            switch (x.KeyChar)
+            {
+                case '1':
+                    Console.WriteLine("");
+                    SynchronizeSubscription();
+                    break;
+                case '2':
+                    Console.WriteLine("");
+                    CopySubscription();
+                    break;
+                default:
+                    Console.WriteLine("Unknown option, closing");
+                    break;
+            }
+        }
+
+        private static void SynchronizeSubscription()
+        {
             var downloadFolder = Settings.Default.DownloadFolder;
-            //read podcasts.xml
             var subscriptions = new Subscription("podcast.xml");
 
             //attach to sync events
@@ -27,8 +52,14 @@ namespace Podcast.CLI
 
             //sync
             subscriptions.Synchronize(downloadFolder);
+        }
 
-            //atach to copy events
+        private static void CopySubscription()
+        {
+            var downloadFolder = Settings.Default.DownloadFolder;
+            var subscriptions = new Subscription("podcast.xml");
+            
+            //attach to copy events
             subscriptions.EpisodeCopying += Episode_Copying;
             subscriptions.EpisodeCopied += Episode_Copied;
             subscriptions.EpisodeCopyFailed += Episode_CopyFailed;
@@ -47,7 +78,6 @@ namespace Podcast.CLI
                 Console.WriteLine("Error: " + ex.Message);
                 Console.ReadLine();
             }
-            
         }
 
         private static void FolderCreated(object sender, FolderCreatedEventArgs e)

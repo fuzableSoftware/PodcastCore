@@ -37,7 +37,7 @@ namespace Podcast.CLI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Working\\Cast2Car\\Podcasts\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Podcasts")]
         public string DownloadFolder {
             get {
                 return ((string)(this["DownloadFolder"]));
