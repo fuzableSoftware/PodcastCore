@@ -200,7 +200,7 @@ namespace Fuzable.Podcast.Entities
                 podcast.ProcessFeed(this);
                 OnPodcastSynchronizing(podcast.Name, podcast.Url, podcast.EpisodesToDownload.Count, podcast.EpisodesToDelete.Count);
 
-               //process each episode
+               //process each episode to download
                 foreach (var episode in podcast.EpisodesToDownload)
                 {
                     episode.EpisodeDownloading += Episode_EpisodeDownloading;
@@ -210,6 +210,16 @@ namespace Fuzable.Podcast.Entities
                     episode.Download();
                 }
                 OnPodcastSynchronized(podcast.Name);
+
+                //process each episode to delete
+                foreach (var episode in podcast.EpisodesToDelete)
+                {
+                    //episode.EpisodeDeleting += Episode_EpisodeDeleting;
+                    //episode.EpisodeDeleted += Episode_EpisodeDeleted;
+                    //episode.EpisodeDeleteFailed += Episode_EpisodeDeleteFailed;
+                    episode.EpisodeSynchronized += Episode_EpisodeSynchronized;
+                    //episode.Remove();
+                }
             }
             var end = DateTime.Now;
             var lapsed = end - start;
