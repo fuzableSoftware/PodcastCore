@@ -507,7 +507,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="e">Information about the episode being downloaded</param>
         protected virtual void Episode_EpisodeDownloading(object sender, EpisodeEventArgs e)
         {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeEventArgs(e.Name, e.Url, e.Path));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeEventArgs(EpisodeEventArgs.Action.Downloading, e.Name, e.Url, e.Path));
         }
 
         /// <summary>
@@ -517,7 +517,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="e">Information about the episode being downloaded</param>
         protected virtual void Episode_EpisodeDownloaded(object sender, EpisodeEventArgs e)
         {
-            EpisodeSynchronizing?.Invoke(sender, new EpisodeEventArgs(e.Name, e.Url, e.Path));
+            EpisodeSynchronizing?.Invoke(sender, new EpisodeEventArgs(EpisodeEventArgs.Action.Downloaded, e.Name, e.Url, e.Path));
         }
 
         /// <summary>
@@ -527,7 +527,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="e">Information about the episode being downloaded</param>
         protected virtual void Episode_EpisodeDownloadFailed(object sender, EpisodeEventArgs e)
         {
-            EpisodeSynchronizeFailed?.Invoke(sender, new EpisodeEventArgs(e.Name, e.Url, e.Path));
+            EpisodeSynchronizeFailed?.Invoke(sender, new EpisodeEventArgs(EpisodeEventArgs.Action.Error, e.Name, e.Url, e.Path));
         }
 
         #endregion
@@ -539,7 +539,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="e">Information about the episode that was synchronized</param>
         protected virtual void Episode_EpisodeSynchronized(object sender, EpisodeEventArgs e)
         {
-            EpisodeSynchronized?.Invoke(sender, new EpisodeEventArgs(e.Name, e.Url, e.Path));
+            EpisodeSynchronized?.Invoke(sender, new EpisodeEventArgs(e.Activity, e.Name, e.Url, e.Path));
         }
 
         /// <summary>
@@ -550,7 +550,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="path">Episode local path</param>
         protected virtual void OnEpisodeSynchronizing(string name, string url, string path)
         {
-            EpisodeSynchronizing?.Invoke(this, new EpisodeEventArgs(name, url, path));
+            EpisodeSynchronizing?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Synchronizing, name, url, path));
         }
 
         /// <summary>
@@ -560,7 +560,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Destination the episode is being copied to</param>
         protected virtual void OnEpisodeCopying(string source, string destination)
         {
-            EpisodeCopying?.Invoke(this, new EpisodeEventArgs(source, "", destination));
+            EpisodeCopying?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Copying, source, "", destination));
         }
 
         /// <summary>
@@ -570,7 +570,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Destination the episode was copied to</param>
         protected virtual void OnEpisodeCopied(string source, string destination)
         {
-            EpisodeCopied?.Invoke(this, new EpisodeEventArgs(source, "", destination));
+            EpisodeCopied?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Copied, source, "", destination));
         }
 
         /// <summary>
@@ -590,7 +590,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Intended path to episode</param>
         protected virtual void OnEpisodeCopyFailed(string source, string destination)
         {
-            EpisodeCopyFailed?.Invoke(this, new EpisodeEventArgs(source, "", destination));
+            EpisodeCopyFailed?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Error, source, "", destination));
         }
 
         /// <summary>

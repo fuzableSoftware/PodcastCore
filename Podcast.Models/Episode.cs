@@ -68,7 +68,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="path">Episode local path</param>
         protected virtual void OnEpisodeDownloading(string name, string url, string path)
         {
-            EpisodeDownloading?.Invoke(this, new EpisodeEventArgs(name, url, path));
+            EpisodeDownloading?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Downloading, name, url, path));
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="path">Local path to episode</param>
         protected virtual void OnEpisodeDownloaded(string name, string url, string path)
         {
-            EpisodeDownloaded?.Invoke(this, new EpisodeEventArgs(name, url, path));
+            EpisodeDownloaded?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Downloaded, name, url, path));
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="path">Local path to episode</param>
         protected virtual void OnEpisodeDeleted(string name, string path)
         {
-            EpisodeDeleted?.Invoke(this, new EpisodeEventArgs(name, "", path));
+            EpisodeDeleted?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Deleted, name, "", path));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="url">Episode address</param>
         protected virtual void OnEpisodeDownloadFailed(string name, string url)
         {
-            EpisodeDownloadFailed?.Invoke(this, new EpisodeEventArgs(name, url));
+            EpisodeDownloadFailed?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Error, name, url));
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="name">Name of episode</param>
         protected virtual void OnEpisodeDeleteFailed(string name)
         {
-            EpisodeDeleteFailed?.Invoke(this, new EpisodeEventArgs(name));
+            EpisodeDeleteFailed?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Error, name));
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="url">Episode address</param>
         protected virtual void OnEpisodeSynchronized(string name, string url)
         {
-            EpisodeSynchronized?.Invoke(this, new EpisodeEventArgs(name, url));
+            EpisodeSynchronized?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Synchronized, name, url));
         }
 
         #endregion
@@ -157,7 +157,7 @@ namespace Fuzable.Podcast.Entities
                         //we're done
                         OnEpisodeDownloaded(Title, Url, FilePath);
                         return;
-                    } 
+                    }
 
                     //download it 
                     using (var client = new WebClient())
