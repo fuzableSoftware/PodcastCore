@@ -27,6 +27,11 @@ namespace Fuzable.Podcast.Entities
         #region Events
 
         /// <summary>
+        /// Episode processing event
+        /// </summary>
+        public event EpisodeEventHandler EpisodeProcessing;
+
+        /// <summary>
         /// Episode downloading event
         /// </summary>
         public event EpisodeDownloadingHandler EpisodeDownloading;
@@ -59,6 +64,18 @@ namespace Fuzable.Podcast.Entities
         #endregion
 
         #region Event Handlers
+
+        /// <summary>
+        /// Raises EpisodeProcessing event
+        /// </summary>
+        /// <param name="process">Action on episode</param>
+        /// <param name="name">Name of episode</param>
+        /// <param name="url">Episode address</param>
+        /// <param name="path">Episode local path</param>
+        protected virtual void OnEpisodeProcessing(EpisodeEventArgs.Action process, string name, string url, string path)
+        {
+            EpisodeProcessing?.Invoke(this, new EpisodeEventArgs(process, name, url, path));
+        }
 
         /// <summary>
         /// Raises EpisodeDownloading event
