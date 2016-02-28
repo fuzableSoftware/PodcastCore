@@ -100,9 +100,9 @@ namespace Fuzable.Podcast.Entities
         public event EpisodeCopyingHandler EpisodeCopying;
 
         /// <summary>
-        /// Event indicating episode has been copied
+        /// Episode processing event
         /// </summary>
-        public event EpisodeCopiedHandler EpisodeCopied;
+        public event EpisodeEventHandler EpisodeProcessing;
 
         /// <summary>
         /// Event indicating episode copy failed
@@ -511,6 +511,16 @@ namespace Fuzable.Podcast.Entities
         }
 
         /// <summary>
+        /// Catches episode processing event and handles it
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Information about the episode being processed</param>
+        protected virtual void Episode_EpisodeProcessing(object sender, EpisodeEventArgs e)
+        {
+            EpisodeProcessing?.Invoke(sender, new EpisodeEventArgs(e.Activity, e.Name, e.Url, e.Path));
+        }
+
+        /// <summary>
         /// Catches episode downloaded event and raises as synchronizing event
         /// </summary>
         /// <param name="sender">Event sender</param>
@@ -570,7 +580,8 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Destination the episode was copied to</param>
         protected virtual void OnEpisodeCopied(string source, string destination)
         {
-            EpisodeCopied?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Copied, source, "", destination));
+            Episode_EpisodeProcessing(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Copied, source, "", destination));
+
         }
 
         /// <summary>

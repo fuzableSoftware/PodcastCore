@@ -58,10 +58,10 @@ namespace Podcast.CLI
         {
             var downloadFolder = Settings.Default.DownloadFolder;
             var subscriptions = new Subscription("podcast.xml");
-            
+
             //attach to copy events
+            subscriptions.EpisodeProcessing += Episode_Processing;
             subscriptions.EpisodeCopying += Episode_Copying;
-            subscriptions.EpisodeCopied += Episode_Copied;
             subscriptions.EpisodeCopyFailed += Episode_CopyFailed;
             subscriptions.PodcastCopying += Podcast_Copying;
             subscriptions.PodcastCopied += Podcast_Copied;
@@ -96,16 +96,16 @@ namespace Podcast.CLI
         {
             if (e.EpisodesToDownload == -1)
             {
-            //unknown, feed not opened
-            Console.WriteLine($"Processing podcast feed for '{e.Name}'");
+                //unknown, feed not opened
+                Console.WriteLine($"Processing podcast feed for '{e.Name}'");
             }
             else
             {
-            Console.WriteLine($"Synchronizing podcast '{e.Name}' at {e.Url}...");
-            Console.WriteLine($"** {e.Name} may download {e.EpisodesToDownload} and remove up to {e.EpisodesToDelete} episodes **");
+                Console.WriteLine($"Synchronizing podcast '{e.Name}' at {e.Url}...");
+                Console.WriteLine($"** {e.Name} may download {e.EpisodesToDownload} and remove up to {e.EpisodesToDelete} episodes **");
             }
         }
-        
+
         private static void Podcast_Synchronized(object sender, PodcastDetailEventArgs e)
         {
             Console.WriteLine($"Finished synchronizing '{e.Name}'");
@@ -130,7 +130,7 @@ namespace Podcast.CLI
 
         private static void EpisodeSynchronizeFailed(object sender, EpisodeEventArgs e)
         {
-           Console.WriteLine($"Failed downloading episode '{e.Name}' from {e.Url}");
+            Console.WriteLine($"Failed downloading episode '{e.Name}' from {e.Url}");
         }
 
         private static void SubscriptionSynchronized(object sender, SubscriptionTimedEventArgs e)
@@ -184,5 +184,16 @@ namespace Podcast.CLI
             Console.WriteLine($"'{e.Name}' could not be copied to {e.Path}!");
         }
 
+        private static void Episode_Processing(object sender, EpisodeEventArgs e)
+        {
+            switch (e.Activity)
+            {
+                case EpisodeEventArgs.Action.Copying:
+                    Console.WriteLine(e.Name == null
+                                    ? $"File already exists at {e.Path}"
+                                    : $"File {e.Path} successfully copied to {e.Path}");
+                    break;
+            }
+        }
     }
 }
