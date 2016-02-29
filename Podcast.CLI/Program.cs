@@ -45,9 +45,7 @@ namespace Podcast.CLI
             subscriptions.SubscriptionSynchronized += SubscriptionSynchronized;
             subscriptions.PodcastSynchronizing += Podcast_Synchronizing;
             subscriptions.PodcastSynchronized += Podcast_Synchronized;
-            subscriptions.EpisodeSynchronizing += EpisodeSynchronizing;
-            subscriptions.EpisodeSynchronized += EpisodeSynchronized;
-            subscriptions.EpisodeSynchronizeFailed += EpisodeSynchronizeFailed;
+            subscriptions.EpisodeProcessing += Episode_Processing;
             subscriptions.FolderCreated += FolderCreated;
 
             //sync
@@ -60,13 +58,12 @@ namespace Podcast.CLI
             var subscriptions = new Subscription("podcast.xml");
 
             //attach to copy events
-            subscriptions.EpisodeProcessing += Episode_Processing;
-            subscriptions.EpisodeCopying += Episode_Copying;
-            subscriptions.EpisodeCopyFailed += Episode_CopyFailed;
             subscriptions.PodcastCopying += Podcast_Copying;
             subscriptions.PodcastCopied += Podcast_Copied;
             subscriptions.SubscriptionCopying += Subscription_Copying;
             subscriptions.SubscriptionCopied += Subscription_Copied;
+            subscriptions.EpisodeProcessing += Episode_Processing;
+            subscriptions.FolderCreated += FolderCreated;
 
             //copy 
             try
@@ -111,28 +108,47 @@ namespace Podcast.CLI
             Console.WriteLine($"Finished synchronizing '{e.Name}'");
         }
 
-        private static void EpisodeSynchronizing(object sender, EpisodeEventArgs e)
+        private static void Subscription_Copying(object sender, SubscriptionEventArgs e)
         {
-            Console.WriteLine($"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
+            Console.WriteLine($"Subscription copying to USB key, copying podcast {e.Index} of {e.Count}...");
         }
 
-        private static void EpisodeSynchronized(object sender, EpisodeEventArgs e)
+        private static void Podcast_Copying(object sender, PodcastDetailEventArgs e)
         {
-            if (e.Url == null)
+            Console.WriteLine($"Podcast '{e.Name}' is being copied to USB key...");
+        }
+        private static void Podcast_Copied(object sender, PodcastDetailEventArgs e)
+        {
+            Console.WriteLine($"Podcast '{e.Name}' has been copied to USB key");
+        }
+
+        private static void Episode_Processing(object sender, EpisodeEventArgs e)
+        {
+            switch (e.Activity)
             {
-                Console.WriteLine($"'{e.Name}' already downloaded");
-            }
-            else
-            {
-                Console.WriteLine($"Finished downloading episode '{e.Name}'");
+                case EpisodeEventArgs.Action.Synchronizing:
+                    Console.WriteLine($"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
+                    break;
+                case EpisodeEventArgs.Action.Synchronized:
+                    Console.WriteLine(e.Url == null
+                        ? $"'{e.Name}' already downloaded"
+                        : $"Finished downloading episode '{e.Name}'");
+                    break;
+                case EpisodeEventArgs.Action.Copying:
+                    Console.WriteLine(e.Name == null
+                                    ? $"File already exists at {e.Path}"
+                                    : $"File {e.Path} successfully copied to {e.Path}");
+                    break;
+                case EpisodeEventArgs.Action.Copied:
+                    Console.WriteLine(e.Name == null
+                                    ? $"File already exists at {e.Path}"
+                                    : $"File {e.Path} successfully copied to {e.Path}");
+                    break;
+                case EpisodeEventArgs.Action.Error:
+                    Console.WriteLine($"'{e.Name}' could not be downloaded from {e.Url} or copied to {e.Path}");
+                    break;
             }
         }
-
-        private static void EpisodeSynchronizeFailed(object sender, EpisodeEventArgs e)
-        {
-            Console.WriteLine($"Failed downloading episode '{e.Name}' from {e.Url}");
-        }
-
         private static void SubscriptionSynchronized(object sender, SubscriptionTimedEventArgs e)
         {
             Console.WriteLine($"Subscription with {e.Count} podcast(s) has finished synchronizing in {e.Duration.Seconds} seconds");
@@ -143,57 +159,11 @@ namespace Podcast.CLI
                 Environment.Exit(0);
             }
         }
-
-        private static void Subscription_Copying(object sender, SubscriptionEventArgs e)
-        {
-            Console.WriteLine($"Subscription copying to USB key, copying podcast {e.Index} of {e.Count}...");
-        }
-
         private static void Subscription_Copied(object sender, SubscriptionTimedEventArgs e)
         {
             Console.WriteLine($"{e.Count} podcasts in subscription have been copied to USB key in {e.Duration.Seconds} seconds");
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
-        }
-
-        private static void Podcast_Copied(object sender, PodcastDetailEventArgs e)
-        {
-            Console.WriteLine($"Podcast '{e.Name}' has been copied to USB key");
-        }
-
-        private static void Podcast_Copying(object sender, PodcastDetailEventArgs e)
-        {
-            Console.WriteLine($"Podcast '{e.Name}' is being copied to USB key...");
-        }
-
-        private static void Episode_Copying(object sender, EpisodeEventArgs e)
-        {
-            Console.WriteLine(e.Name == null
-                ? $"File already exists at {e.Path}"
-                : $"Copying {e.Name} to {e.Path}...");
-        }
-        private static void Episode_Copied(object sender, EpisodeEventArgs e)
-        {
-            Console.WriteLine(e.Name == null
-                ? $"File already exists at {e.Path}"
-                : $"File {e.Path} successfully copied to {e.Path}");
-        }
-
-        private static void Episode_CopyFailed(object sender, EpisodeEventArgs e)
-        {
-            Console.WriteLine($"'{e.Name}' could not be copied to {e.Path}!");
-        }
-
-        private static void Episode_Processing(object sender, EpisodeEventArgs e)
-        {
-            switch (e.Activity)
-            {
-                case EpisodeEventArgs.Action.Copying:
-                    Console.WriteLine(e.Name == null
-                                    ? $"File already exists at {e.Path}"
-                                    : $"File {e.Path} successfully copied to {e.Path}");
-                    break;
-            }
         }
     }
 }

@@ -94,21 +94,10 @@ namespace Fuzable.Podcast.Entities
         public event EpisodeEventHandler EpisodeSynchronizeFailed;
 
         /// <summary>
-        ///  Event for copying podcast episodes
-        /// </summary>
-        /// 
-        public event EpisodeEventHandler EpisodeCopying;
-
-        /// <summary>
         /// Episode processing event
         /// </summary>
         public event EpisodeEventHandler EpisodeProcessing;
-
-        /// <summary>
-        /// Event indicating episode copy failed
-        /// </summary>
-        public event EpisodeEventHandler EpisodeCopyFailed;
-        
+      
         #endregion
 
         #region Constructors
@@ -565,7 +554,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Destination the episode is being copied to</param>
         protected virtual void OnEpisodeCopying(string source, string destination)
         {
-            EpisodeCopying?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Copying, source, "", destination));
+            EpisodeProcessing?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Copying, source, "", destination));
         }
 
         /// <summary>
@@ -596,7 +585,7 @@ namespace Fuzable.Podcast.Entities
         /// <param name="destination">Intended path to episode</param>
         protected virtual void OnEpisodeCopyFailed(string source, string destination)
         {
-            EpisodeCopyFailed?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Error, source, "", destination));
+            EpisodeProcessing?.Invoke(this, new EpisodeEventArgs(EpisodeEventArgs.Action.Error, source, "", destination));
         }
 
         /// <summary>
