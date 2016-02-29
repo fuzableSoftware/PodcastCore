@@ -107,7 +107,7 @@ namespace Fuzable.Podcast.Entities
         {
             if (EpisodeWasDeleted(FilePath))
             {
-                OnEpisodeProcessing(EpisodeEventArgs.Action.Deleted, Title, FilePath, Url);
+                OnEpisodeProcessing(EpisodeEventArgs.Action.Deleted, Title, Url, FilePath);
             }
         }
 
@@ -148,7 +148,12 @@ namespace Fuzable.Podcast.Entities
 
         static string GetFilenameWithoutPrefix(string filename)
         {
-            return filename.Substring(4);
+            if (filename == null )
+            {
+                return null;
+            }
+            int i;
+            return int.TryParse(filename.Substring(1, 1), out i) ? filename.Substring(4) : filename;
         }
 
         static bool EpisodeIsDownloaded(string fullPath)
@@ -201,7 +206,7 @@ namespace Fuzable.Podcast.Entities
             //does file exist now?
             var partialFilename = GetFilenameWithoutPrefix(filename);
             var folder = new DirectoryInfo(path);
-            var files = folder.EnumerateFiles("???_" + partialFilename).ToList();
+            var files = folder.EnumerateFiles("*" + partialFilename).ToList();
             var numberOfFiles = files.Count();
             switch (numberOfFiles)
             {

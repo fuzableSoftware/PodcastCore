@@ -127,6 +127,9 @@ namespace Podcast.CLI
             switch (e.Activity)
             {
                 case EpisodeEventArgs.Action.Synchronizing:
+                    Console.WriteLine($"Synchronizing episode '{e.Name}' from {e.Url} to {e.Path}...");
+                    break;
+                case EpisodeEventArgs.Action.Downloading:
                     Console.WriteLine($"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
                     break;
                 case EpisodeEventArgs.Action.Deleted:

@@ -73,12 +73,6 @@
       <RemoveFromTitle>Beating The Book</RemoveFromTitle>
     </Podcast>
     <Podcast>
-      <Name>Doug Loves Movies</Name>
-      <Url>http://feeds.feedburner.com/DougLovesMovies</Url>
-      <Download>1</Download>
-      <Order>0</Order>
-    </Podcast>
-    <Podcast>
       <Name>Getting Doug with High</Name>
       <Url>http://dougbenson.videopodcastnetwork.libsynpro.com/rss</Url>
       <Download>3</Download>
