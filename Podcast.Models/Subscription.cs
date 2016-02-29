@@ -180,7 +180,6 @@ namespace Fuzable.Podcast.Entities
                     episode.EpisodeProcessing += Episode_EpisodeProcessing;
                     episode.Download();
                 }
-                OnPodcastSynchronized(podcast.Name);
 
                 //process each episode to delete
                 foreach (var episode in podcast.EpisodesToDelete)
@@ -188,7 +187,10 @@ namespace Fuzable.Podcast.Entities
                     episode.EpisodeProcessing += Episode_EpisodeProcessing;
                     episode.Delete();
                 }
+
+                OnPodcastSynchronized(podcast.Name);
             }
+
             var end = DateTime.Now;
             var lapsed = end - start;
             OnSubscriptionSynchronized(Podcasts.Count, lapsed);

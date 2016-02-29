@@ -70,9 +70,8 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// </summary>
         /// <param name="activity">Most recent Action for this episode</param>
         /// <param name="name">Episode name</param>
-        public EpisodeEventArgs(Action activity, string name)
+        public EpisodeEventArgs(Action activity, string name) : this(activity, name, "", "")
         {
-            Name = name;
         }
 
         /// <summary>
@@ -81,10 +80,8 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// <param name="activity">Most recent Action for this episode</param>
         /// <param name="name">Episode name</param>
         /// <param name="url">Episode address</param>
-        public EpisodeEventArgs(Action activity, string name, string url)
+        public EpisodeEventArgs(Action activity, string name, string url) : this(activity, name, url, "")
         {
-            Name = name;
-            Url = url;
         }
 
         /// <summary>
@@ -96,6 +93,7 @@ namespace Fuzable.Podcast.Entities.Episodes
         /// <param name="path">Episode local path</param>
         public EpisodeEventArgs(Action activity, string name, string url, string path)
         {
+            Activity = activity;
             Name = name;
             Url = url;
             Path = path;
