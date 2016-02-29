@@ -105,45 +105,10 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public void Delete()
         {
-            //if (File.Exists(FilePath))
-            //{
-            //    OnEpisodeSynchronized(Title, null);
-            //}
-            //else
-            //{
-            //    try
-            //    {
-            //        if (Url == null) return;
-            //        OnEpisodeDownloading(Title, Url, FilePath);
-
-            //        if (EpisodeIsDownloaded(FilePath))
-            //        {
-            //            //we're done
-            //            OnEpisodeDownloaded(Title, Url, FilePath);
-            //            return;
-            //        }
-
-            //        //download it 
-            //        using (var client = new WebClient())
-            //        {
-            //            client.DownloadFile(Url, FilePath);
-            //        }
-            //        OnEpisodeDownloaded(Title, Url, FilePath);
-            //    }
-            //    catch (WebException)
-            //    {
-            //        OnEpisodeDownloadFailed(Title, Url);
-            //        //delete failed download
-            //        if (File.Exists(FilePath))
-            //        {
-            //            File.Delete(FilePath);
-            //        }
-            //    }
-            //    finally
-            //    {
-            //        OnEpisodeSynchronized(Title, Url);
-            //    }
-            //}
+            if (EpisodeWasDeleted(FilePath))
+            {
+                OnEpisodeProcessing(EpisodeEventArgs.Action.Deleted, Title, FilePath, Url);
+            }
         }
 
         /// <summary>
@@ -215,6 +180,41 @@ namespace Fuzable.Podcast.Entities
                     var newPath = @Path.Combine(path, filename);
                     file.MoveTo(newPath);
                     //we updated the file, so tell the caller
+                    return true;
+            }
+            //more than 1 file? something's wrong 
+            Debug.Assert(numberOfFiles < 2, "too many files returned in similar name search");
+            return false;
+        }
+
+        static bool EpisodeWasDeleted(string fullPath)
+        {
+            if (fullPath == null)
+            {
+                return false;
+            }
+
+            //split apart path
+            var filename = Path.GetFileName(fullPath);
+            var path = Path.GetDirectoryName(fullPath);
+            if (path == null) return false;
+            //does file exist now?
+            var partialFilename = GetFilenameWithoutPrefix(filename);
+            var folder = new DirectoryInfo(path);
+            var files = folder.EnumerateFiles("???_" + partialFilename).ToList();
+            var numberOfFiles = files.Count();
+            switch (numberOfFiles)
+            {
+                case 0:
+                    //no files found with similar name
+                    //nothing to do 
+                    return false;
+                case 1:
+                    //1 file found with similar name
+                    //delete this file 
+                    var file = files[0];
+                    file.Delete();
+                    //we deleted the file, so tell the caller
                     return true;
             }
             //more than 1 file? something's wrong 

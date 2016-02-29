@@ -129,6 +129,9 @@ namespace Podcast.CLI
                 case EpisodeEventArgs.Action.Synchronizing:
                     Console.WriteLine($"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
                     break;
+                case EpisodeEventArgs.Action.Deleted:
+                    Console.WriteLine($"Episode '{e.Name}' deleted from {e.Path}...");
+                    break;
                 case EpisodeEventArgs.Action.Synchronized:
                     Console.WriteLine(e.Url == null
                         ? $"'{e.Name}' already downloaded"
