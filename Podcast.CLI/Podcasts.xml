@@ -197,16 +197,34 @@
       <Download>2</Download>
       <Order>0</Order>
     </Podcast>
-      <Podcast>
+    <Podcast>
       <Name>Entreprogrammers</Name>
       <Url>http://entreprogrammers.com/feed/</Url>
-      <Download>1</Download>
+      <Download>2</Download>
       <Order>0</Order>
     </Podcast>
-      <Podcast>
+    <Podcast>
       <Name>Simple Programmer</Name>
       <Url>http://simpleprogrammer.libsyn.com/rss</Url>
-      <Download>4</Download>
+      <Download>2</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>The History Chicks</Name>
+      <Url>http://feeds.feedburner.com/TheHistoryChicks/</Url>
+      <Download>2</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>Freakonomics Radio</Name>
+      <Url>http://feeds.feedburner.com/freakonomicsradio</Url>
+      <Download>2</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>How To Be Amazing</Name>
+      <Url>http://feeds.howtobeamazingshow.com/htbashow</Url>
+      <Download>1</Download>
       <Order>0</Order>
     </Podcast>
   </Podcasts>
@@ -279,6 +297,15 @@
         </Podcast>
         <Podcast>
           <Name>SQL Server Radio</Name>
+        </Podcast>
+        <Podcast>
+          <Name>The History Chicks</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Freakonomics Radio</Name>
+        </Podcast>
+        <Podcast>
+          <Name>How To Be Amazing</Name>
         </Podcast>
       </Podcasts>
     </Group>
