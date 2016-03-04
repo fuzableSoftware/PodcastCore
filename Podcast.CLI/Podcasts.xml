@@ -199,13 +199,13 @@
     </Podcast>
       <Podcast>
       <Name>Entreprogrammers</Name>
-      <Url>http://kpunk.libsyn.com//rss</Url>
+      <Url>http://entreprogrammers.com/feed/</Url>
       <Download>1</Download>
       <Order>0</Order>
     </Podcast>
       <Podcast>
       <Name>Simple Programmer</Name>
-      <Url>http://kpunk.libsyn.com//rss</Url>
+      <Url>http://simpleprogrammer.libsyn.com/rss</Url>
       <Download>4</Download>
       <Order>0</Order>
     </Podcast>
