@@ -9,7 +9,7 @@ namespace Podcast.CLI
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()//string[] args)
         {
             ChooseSyncOrCopy();
         }
@@ -41,15 +41,18 @@ namespace Podcast.CLI
             var subscriptions = new Subscription("podcast.xml");
 
             //attach to sync events
-            subscriptions.SubscriptionSynchronizing += SubscriptionSynchronizing;
-            subscriptions.SubscriptionSynchronized += SubscriptionSynchronized;
+            subscriptions.SubscriptionSynchronizing += Subscription_Synchronizing;
+            subscriptions.SubscriptionSynchronized += Subscription_Synchronized;
             subscriptions.PodcastSynchronizing += Podcast_Synchronizing;
             subscriptions.PodcastSynchronized += Podcast_Synchronized;
             subscriptions.EpisodeProcessing += Episode_Processing;
-            subscriptions.FolderCreated += FolderCreated;
+            subscriptions.FolderCreated += Folder_Created;
 
             //sync
             subscriptions.Synchronize(downloadFolder);
+
+            //return to start
+            ChooseSyncOrCopy();
         }
 
         private static void CopySubscription()
@@ -63,7 +66,7 @@ namespace Podcast.CLI
             subscriptions.SubscriptionCopying += Subscription_Copying;
             subscriptions.SubscriptionCopied += Subscription_Copied;
             subscriptions.EpisodeProcessing += Episode_Processing;
-            subscriptions.FolderCreated += FolderCreated;
+            subscriptions.FolderCreated += Folder_Created;
 
             //copy 
             try
@@ -75,18 +78,33 @@ namespace Podcast.CLI
                 Console.WriteLine("Error: " + ex.Message);
                 Console.ReadLine();
             }
+
+            //return to start
+            ChooseSyncOrCopy();
         }
 
-        private static void FolderCreated(object sender, FolderCreatedEventArgs e)
+        private static string DurationDescription(TimeSpan duration)
         {
-            Console.WriteLine($"Folder created at {e.Path}");
+            var desc = "";
+            if (duration.TotalMinutes > 1)
+            {
+                desc = $"{Convert.ToInt32(duration.TotalMinutes)} minutes and ";
+            }
+            desc += $"{Convert.ToInt32(duration.TotalSeconds)} seconds";
+            return desc;
         }
 
-        private static void SubscriptionSynchronizing(object sender, SubscriptionEventArgs e)
+
+        private static void Subscription_Synchronizing(object sender, SubscriptionEventArgs e)
         {
             Console.WriteLine(e.Count > 1
                 ? $"Synchronizing subscription containing {e.Count} podcasts"
                 : $"Synchronizing subscription containing {e.Count} podcast");
+        }
+
+        private static void Folder_Created(object sender, FolderCreatedEventArgs e)
+        {
+            Console.WriteLine($"Folder created at {e.Path}");
         }
 
         private static void Podcast_Synchronizing(object sender, PodcastDetailEventArgs e)
@@ -153,19 +171,13 @@ namespace Podcast.CLI
                     break;
             }
         }
-        private static void SubscriptionSynchronized(object sender, SubscriptionTimedEventArgs e)
+        private static void Subscription_Synchronized(object sender, SubscriptionTimedEventArgs e)
         {
-            Console.WriteLine($"Subscription with {e.Count} podcast(s) has finished synchronizing in {e.Duration.TotalMinutes} minutes and {e.Duration.TotalSeconds} seconds");
-            Console.WriteLine("Press X to abort or press any key to copy downloaded podcasts to USB key...");
-            var answer = Console.ReadKey();
-            if (answer.KeyChar == 'X')
-            {
-                Environment.Exit(0);
-            }
+            Console.WriteLine($"Subscription with {e.Count} podcasts has finished synchronizing in {DurationDescription(e.Duration)}");
         }
         private static void Subscription_Copied(object sender, SubscriptionTimedEventArgs e)
         {
-            Console.WriteLine($"{e.Count} podcasts in subscription have been copied to USB key in in {e.Duration.TotalMinutes} minutes and {e.Duration.TotalSeconds} seconds");
+            Console.WriteLine($"{e.Count} podcasts in subscription have been copied to USB key in {DurationDescription(e.Duration)}");
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
