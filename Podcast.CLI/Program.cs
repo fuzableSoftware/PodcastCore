@@ -133,7 +133,7 @@ namespace Podcast.CLI
                     Console.WriteLine($"Downloading episode '{e.Name}' from {e.Url} to {e.Path}...");
                     break;
                 case EpisodeEventArgs.Action.Deleted:
-                    Console.WriteLine($"Episode '{e.Name}' deleted from {e.Path}...");
+                    Console.WriteLine($"Episode '{e.Name}' deleted from {e.Path}");
                     break;
                 case EpisodeEventArgs.Action.Synchronized:
                     Console.WriteLine(e.Url == null
@@ -141,14 +141,12 @@ namespace Podcast.CLI
                         : $"Finished downloading episode '{e.Name}'");
                     break;
                 case EpisodeEventArgs.Action.Copying:
-                    Console.WriteLine(e.Name == null
-                                    ? $"File already exists at {e.Path}"
-                                    : $"File {e.Path} successfully copied to {e.Path}");
+                    Console.WriteLine($"File '{e.Name}' is copying to {e.Path}...");
                     break;
                 case EpisodeEventArgs.Action.Copied:
                     Console.WriteLine(e.Name == null
                                     ? $"File already exists at {e.Path}"
-                                    : $"File {e.Path} successfully copied to {e.Path}");
+                                    : $"File {e.Name} successfully copied to {e.Path}");
                     break;
                 case EpisodeEventArgs.Action.Error:
                     Console.WriteLine($"'{e.Name}' could not be downloaded from {e.Url} or copied to {e.Path}");
