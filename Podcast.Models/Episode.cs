@@ -170,7 +170,7 @@ namespace Fuzable.Podcast.Entities
             //does file exist now?
             var partialFilename = GetFilenameWithoutPrefix(filename);
             var folder = new DirectoryInfo(path);
-            var files = folder.EnumerateFiles("???_" + partialFilename).ToList();
+            var files = folder.EnumerateFiles("*" + partialFilename).ToList();
             var numberOfFiles = files.Count();
             switch (numberOfFiles)
             {
