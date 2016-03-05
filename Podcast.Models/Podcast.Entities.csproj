@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CopyTask.cs" />
     <Compile Include="Episode.cs" />
     <Compile Include="Episodes\EpisodeEventArgs.cs" />
     <Compile Include="Episodes\EpisodeEventHandler.cs" />

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Fuzable.Podcast.Entities.Episodes;
 using Fuzable.Podcast.Entities.Podcasts;
-using Fuzable.Podcast.Entities.Properties;
 using Fuzable.Podcast.Entities.Subscriptions;
 
 namespace Fuzable.Podcast.Entities
@@ -112,17 +111,6 @@ namespace Fuzable.Podcast.Entities
         /// <returns></returns>
         internal List<Podcast> GetPodcasts()
         {
-            //make sure we have somewhere to download to
-            try
-            {
-                VerifyFolderExists(DownloadFolder);
-            }
-            catch (Exception ex)
-            {
-                var error = new ApplicationException($"Error locating download folder '{DownloadFolder}'", ex);
-                throw error;
-            }
-
             //read podcasts.xml file and extract subscribed podcasts from and return
             var podcasts = new List<Podcast>();
 
@@ -165,6 +153,18 @@ namespace Fuzable.Podcast.Entities
         {
             var start = DateTime.Now;
             DownloadFolder = downloadFolder;
+
+            //ensure download folder is available
+            try
+            {
+                VerifyFolderExists(DownloadFolder);
+            }
+            catch (Exception ex)
+            {
+                var error = new ApplicationException($"Error locating download folder '{DownloadFolder}'", ex);
+                throw error;
+            }
+
             Podcasts = GetPodcasts();
             OnSubscriptionSynchronizing(Podcasts.Count);
             foreach (var podcast in Podcasts)
@@ -249,6 +249,7 @@ namespace Fuzable.Podcast.Entities
                 //reorder files if needed
                 if (Podcasts == null || Podcasts.Count == 0)
                 {
+                    DownloadFolder = downloadFolder;
                     Podcasts = GetPodcasts();
                 }
 
@@ -256,13 +257,18 @@ namespace Fuzable.Podcast.Entities
 
                 //count files as they are processed
                 var fileIndex = 0;
+
+                //build a list of files to copy
+                var tasks = new List<CopyTask>();
                 foreach (var file in files)
                 {
                     //get source path
                     var filename = Path.GetFileName(file) ?? "IDK";
 
                     //get destination path
-                    var podcastFolder = Path.Combine(destinationFolder, podcastName);
+                    var podcastFolder = Podcast.GetPodcastPath(destinationFolder, podcastName);
+                    VerifyFolderExists(podcastFolder);
+
                     //destination filename is used by player to organize
                     //default filename is number prefix containing download order
                     //if want downloaded last (first podcast) to be first, need to reverse order here
@@ -273,7 +279,7 @@ namespace Fuzable.Podcast.Entities
                         destination = (files.Length - fileIndex).ToString("000") + "_" + filename.Substring(4);
                     }
 
-                    //if the destination has leading zero, trim it
+                    //if the destination filename has leading zero, trim it
                     if (files.Length < 100 && files.Length > 1 && destination.StartsWith("0"))
                     {
                         destination = destination.Substring(1);
@@ -285,34 +291,54 @@ namespace Fuzable.Podcast.Entities
                     //append path to destination
                     destination = Path.Combine(podcastFolder, destination);
 
+                    //save off as a copytask
+                    tasks.Add(new CopyTask(file, destination));
+                }
+
+                //see if any files already exist but with a modified name
+                //quicker to rename than copy
+                //well, for the user...easier for me to just delete the destination files and replace them
+                //copytask has property that gets set on instantiation, checks destination for likely candidates
+                
+                //process will rename or copy as needed
+                foreach (var copyTask in tasks)
+                {
                     try
                     {
-                        if (!File.Exists(destination))
+                    OnEpisodeProcessing(EpisodeEventArgs.Action.Copying, copyTask.FileName, copyTask.Destination);
+                        if (copyTask.Copy())
                         {
-                            VerifyFolderExists(podcastFolder);
-                            OnEpisodeProcessing(EpisodeEventArgs.Action.Copying, file, destination);
-                            File.Copy(file, destination, false);
-                            OnEpisodeProcessing(EpisodeEventArgs.Action.Copied, file, destination);
+                            //copied
+                            OnEpisodeProcessing(EpisodeEventArgs.Action.Copied, copyTask.FileName, copyTask.Destination);
                         }
                         else
                         {
-                            OnEpisodeProcessing(EpisodeEventArgs.Action.Copied, null, destination);
+                            //renamed
+                            OnEpisodeProcessing(EpisodeEventArgs.Action.Updated, copyTask.FilenameAtDestination, copyTask.Destination);
                         }
                     }
                     catch (Exception)
                     {
-                        OnEpisodeProcessing(EpisodeEventArgs.Action.Error, filename, destination);
+                        OnEpisodeProcessing(EpisodeEventArgs.Action.Error, copyTask.FileName, copyTask.Destination);
 #if (DEBUG)
                         {
                             throw;
                         }
 #endif
                     }
-                    finally
-                    {
-                        fileIndex += 1;
-                    }
                 }
+
+                //remove files at destination that were not in the copy set
+                var destinationDirectory = Podcast.GetPodcastPath(destinationFolder, podcastName);
+                var destinationFiles = Directory.GetFiles(destinationDirectory);
+                var sourceFiles = tasks.Select(t => t.Destination).ToList();
+                var extraFiles = destinationFiles.Except(sourceFiles);
+                foreach (var file in extraFiles)
+                {
+                    File.Delete(file);
+                }
+                
+                //tell anybody listening that we're done
                 OnPodcastCopied(podcastName);
             }
             var end = DateTime.Now;

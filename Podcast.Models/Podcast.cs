@@ -166,5 +166,12 @@ namespace Fuzable.Podcast.Entities
                 throw error;
             }
         }
+
+        internal static string GetPodcastPath(string path, string podcastName)
+        {
+            var fullPath = "";
+            fullPath = Path.Combine(path, podcastName);
+            return fullPath;
+        }
     }
 }

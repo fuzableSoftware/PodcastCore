@@ -162,9 +162,10 @@ namespace Podcast.CLI
                     Console.WriteLine($"File '{e.Name}' is copying to {e.Path}...");
                     break;
                 case EpisodeEventArgs.Action.Copied:
-                    Console.WriteLine(e.Name == null
-                                    ? $"File already exists at {e.Path}"
-                                    : $"File {e.Name} successfully copied to {e.Path}");
+                    Console.WriteLine($"File '{e.Name}' successfully copied to {e.Path}");
+                    break;
+                case EpisodeEventArgs.Action.Updated:
+                    Console.WriteLine($"'{e.Path}' already exists");
                     break;
                 case EpisodeEventArgs.Action.Error:
                     Console.WriteLine($"'{e.Name}' could not be downloaded from {e.Url} or copied to {e.Path}");
@@ -178,8 +179,6 @@ namespace Podcast.CLI
         private static void Subscription_Copied(object sender, SubscriptionTimedEventArgs e)
         {
             Console.WriteLine($"{e.Count} podcasts in subscription have been copied to USB key in {DurationDescription(e.Duration)}");
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
         }
     }
 }

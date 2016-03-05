@@ -146,14 +146,14 @@ namespace Fuzable.Podcast.Entities
             return filename;
         }
 
-        static string GetFilenameWithoutPrefix(string filename)
+        internal static string GetFilenameWithoutPrefix(string filename)
         {
             if (filename == null )
             {
                 return null;
             }
             int i;
-            return int.TryParse(filename.Substring(1, 1), out i) ? filename.Substring(4) : filename;
+            return int.TryParse(filename.Substring(1, 1), out i) ? filename.Substring(3) : filename;
         }
 
         static bool EpisodeIsDownloaded(string fullPath)

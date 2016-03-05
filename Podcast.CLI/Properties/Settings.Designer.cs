@@ -25,7 +25,7 @@ namespace Podcast.CLI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("F:\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("E:\\")]
         public string DestinationFolder {
             get {
                 return ((string)(this["DestinationFolder"]));

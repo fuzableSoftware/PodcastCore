@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DestinationFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">F:\</Value>
+      <Value Profile="(Default)">E:\</Value>
     </Setting>
     <Setting Name="DownloadFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:\Podcasts</Value>

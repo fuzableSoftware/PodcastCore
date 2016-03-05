@@ -43,7 +43,9 @@ namespace Fuzable.Podcast.Entities.Episodes
             /// <summary>
             /// The episode has been copied to the USB key
             /// </summary>
-            Copied
+            Copied,
+            ///The episode already existed and was renamed instead of copied 
+            Updated
         }
 
         /// <summary>
