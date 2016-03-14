@@ -41,23 +41,14 @@ namespace Fuzable.Podcast.Entities
             EpisodeProcessing?.Invoke(this, new EpisodeEventArgs(process, name, url, path));
         }
  
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="title">Podcast title</param>
-        /// <param name="url">Podcast URL</param>
-        /// <param name="filepath">Podcast path</param>
-        public Episode(string title, string url, string filepath)
+        internal Episode(string title, string url, string filepath)
         {
             Title = title;
             Url = url;
             FilePath = filepath;
         }
 
-        /// <summary>
-        /// Downloads an episode
-        /// </summary>
-        public void Download()
+        internal void Download()
         {
             if (File.Exists(FilePath))
             {
@@ -100,10 +91,7 @@ namespace Fuzable.Podcast.Entities
             }
         }
 
-        /// <summary>
-        /// Removes a downloaded episode
-        /// </summary>
-        public void Delete()
+        internal void Delete()
         {
             if (EpisodeWasDeleted(FilePath))
             {
@@ -111,15 +99,7 @@ namespace Fuzable.Podcast.Entities
             }
         }
 
-        /// <summary>
-        /// generate episode filename from title, intended download folder, download index (order)
-        /// </summary>
-        /// <param name="title">Episode title</param>
-        /// <param name="downloadFolder">Folder to download to</param>
-        /// <param name="index">Order episide title</param>
-        /// <param name="remove">string to remove from titles, set by podcast</param>
-        /// <returns></returns>
-        public static string GenerateEpisodeFilename(string title, string downloadFolder, int index, string remove = "")
+        internal static string GenerateEpisodeFilename(string title, string downloadFolder, int index, string remove = "")
         {
             //split on colons, remove any spacing
             var parts = title.Split(':').Select(p => p.Trim());
@@ -156,7 +136,7 @@ namespace Fuzable.Podcast.Entities
             return int.TryParse(filename.Substring(1, 1), out i) ? filename.Substring(3) : filename;
         }
 
-        static bool EpisodeIsDownloaded(string fullPath)
+        internal static bool EpisodeIsDownloaded(string fullPath)
         {
             if (fullPath == null)
             {
@@ -195,7 +175,7 @@ namespace Fuzable.Podcast.Entities
             return false;
         }
 
-        static bool EpisodeWasDeleted(string fullPath)
+        internal static bool EpisodeWasDeleted(string fullPath)
         {
             if (fullPath == null)
             {
@@ -224,6 +204,9 @@ namespace Fuzable.Podcast.Entities
                     file.Delete();
                     //we deleted the file, so tell the caller
                     return true;
+                default:
+                    Debugger.Break();
+                    break;
             }
             //more than 1 file? something's wrong 
             Debug.Assert(numberOfFiles < 2, "too many files returned in similar name search");
