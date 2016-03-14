@@ -180,26 +180,24 @@ namespace Fuzable.Podcast.Entities
             //check that the destination folder is (probably) a USB key and has some free space
             var folders = VerifyDownloadFolder(downloadFolder, destinationFolder, group);
 
+            //get podcasts from subscription if needed
+            if (Podcasts == null || Podcasts.Count == 0)
+            {
+                Podcasts = GetPodcasts();
+            }
+
             //copy files in each folder to destination
             //if file exists, skip
             var index = 0;
             foreach (var folder in folders)
             {
-                index += 1;
                 OnSubscriptionCopying(index, folders.Length);
-
+                index += 1;
                 var podcastName = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                 OnPodcastCopying(podcastName);
 
                 //get files
                 var files = Directory.GetFiles(folder);
-
-                //get podcasts from subscription if needed
-                if (Podcasts == null || Podcasts.Count == 0)
-                {
-                    Podcasts = GetPodcasts();
-                }
-
                 var podcast = (Podcasts.Find(p => p.Name == podcastName));
 
                 //count files as they are processed
@@ -209,37 +207,21 @@ namespace Fuzable.Podcast.Entities
                 var tasks = new List<CopyTask>();
                 foreach (var file in files)
                 {
-                    fileIndex ++;
+                    fileIndex++;
+
                     //get source path
                     var filename = Path.GetFileName(file) ?? "IDK";
 
-                    //get destination path
+                    //get destination folder, ensure it exists
                     var podcastFolder = Podcast.GetPodcastPath(destinationFolder, podcastName);
                     VerifyFolderExists(podcastFolder);
 
                     //destination filename is used by player to organize
                     //default filename is number prefix containing download order
                     //if want downloaded last (first podcast) to be first, need to reverse order here
-                    var destination = filename;
-                    if (podcast?.Order == Podcast.EpisodeOrder.Chronological)
-                    {
-                        //reset destination to the reverse number order, same prefix
-                        destination = (files.Length - fileIndex).ToString("000") + "_" + filename.Substring(4);
-                    }
+                    string destination = GetCopyDestination(files, podcast, fileIndex, filename, podcastFolder);
 
-                    //if the destination filename has leading zero, trim it
-                    if (files.Length < 100 && files.Length > 1 && destination.StartsWith("0"))
-                    {
-                        destination = destination.Substring(1);
-                    }
-
-                    //replace underscore with space
-                    destination = destination.Replace('_', ' ');
-
-                    //append path to destination
-                    destination = Path.Combine(podcastFolder, destination);
-
-                    //save off as a copytask
+                    //save off as a copytask to do later
                     tasks.Add(new CopyTask(file, destination));
                 }
 
@@ -293,6 +275,29 @@ namespace Fuzable.Podcast.Entities
             var end = DateTime.Now;
             var lapsed = end - start;
             OnSubscriptionCopied(index, lapsed);
+        }
+
+        private static string GetCopyDestination(string[] files, Podcast podcast, int fileIndex, string filename, string podcastFolder)
+        {
+            var destination = filename;
+            if (podcast?.Order == Podcast.EpisodeOrder.Chronological)
+            {
+                //reset destination to the reverse number order, same prefix
+                destination = (files.Length - fileIndex).ToString("000") + "_" + filename.Substring(4);
+            }
+
+            //if the destination filename has leading zero, trim it
+            if (files.Length < 100 && files.Length > 1 && destination.StartsWith("0"))
+            {
+                destination = destination.Substring(1);
+            }
+
+            //replace underscore with space
+            destination = destination.Replace('_', ' ');
+
+            //append path to destination
+            destination = Path.Combine(podcastFolder, destination);
+            return destination;
         }
 
         private static string[] VerifyDownloadFolder(string downloadFolder, string destinationFolder, string group)
