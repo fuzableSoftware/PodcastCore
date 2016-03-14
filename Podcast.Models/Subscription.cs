@@ -196,7 +196,7 @@ namespace Fuzable.Podcast.Entities
                 var podcastName = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                 OnPodcastCopying(podcastName);
 
-                //get files
+                //get files, podcast info
                 var files = Directory.GetFiles(folder);
                 var podcast = (Podcasts.Find(p => p.Name == podcastName));
 
@@ -219,7 +219,7 @@ namespace Fuzable.Podcast.Entities
                     //destination filename is used by player to organize
                     //default filename is number prefix containing download order
                     //if want downloaded last (first podcast) to be first, need to reverse order here
-                    string destination = GetCopyDestination(files, podcast, fileIndex, filename, podcastFolder);
+                    var destination = GetCopyDestination(files, podcast, fileIndex, filename, podcastFolder);
 
                     //save off as a copytask to do later
                     tasks.Add(new CopyTask(file, destination));
@@ -229,65 +229,72 @@ namespace Fuzable.Podcast.Entities
                 //quicker to rename than copy
                 //well, for the user...easier for me to just delete the destination files and replace them
                 //copytask has property that gets set on instantiation, checks destination for likely candidates
-
-                //process will rename or copy as needed
-                foreach (var copyTask in tasks)
-                {
-                    try
-                    {
-                        OnEpisodeProcessing(EpisodeEventArgs.Action.Copying, copyTask.FileName, copyTask.Destination);
-                        if (copyTask.Copy())
-                        {
-                            //copied
-                            OnEpisodeProcessing(EpisodeEventArgs.Action.Copied, copyTask.FileName, copyTask.Destination);
-                        }
-                        else
-                        {
-                            //renamed
-                            OnEpisodeProcessing(EpisodeEventArgs.Action.Updated, copyTask.FilenameAtDestination, copyTask.Destination);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        OnEpisodeProcessing(EpisodeEventArgs.Action.Error, copyTask.FileName, copyTask.Destination);
-#if (DEBUG)
-                        {
-                            throw;
-                        }
-#endif
-                    }
-                }
+                //will rename or copy as needed
+                ProcessCopyTasks(tasks);
 
                 //remove files at destination that were not in the copy set
-                var destinationDirectory = Podcast.GetPodcastPath(destinationFolder, podcastName);
-                var destinationFiles = Directory.GetFiles(destinationDirectory);
-                var sourceFiles = tasks.Select(t => t.Destination).ToList();
-                var extraFiles = destinationFiles.Except(sourceFiles);
-                foreach (var file in extraFiles)
-                {
-                    OnEpisodeProcessing(EpisodeEventArgs.Action.Deleted, Path.GetFileName(file), file);
-                    File.Delete(file);
-                }
+                ProcessDeletes(destinationFolder, podcastName, tasks);
 
                 //tell anybody listening that we're done
                 OnPodcastCopied(podcastName);
             }
-            var end = DateTime.Now;
-            var lapsed = end - start;
-            OnSubscriptionCopied(index, lapsed);
+            OnSubscriptionCopied(index, DateTime.Now - start);
         }
 
-        private static string GetCopyDestination(string[] files, Podcast podcast, int fileIndex, string filename, string podcastFolder)
+        private void ProcessDeletes(string destinationFolder, string podcastName, List<CopyTask> tasks)
+        {
+            var destinationDirectory = Podcast.GetPodcastPath(destinationFolder, podcastName);
+            var destinationFiles = Directory.GetFiles(destinationDirectory);
+            var sourceFiles = tasks.Select(t => t.Destination).ToList();
+            var extraFiles = destinationFiles.Except(sourceFiles);
+            foreach (var file in extraFiles)
+            {
+                OnEpisodeProcessing(EpisodeEventArgs.Action.Deleted, Path.GetFileName(file), file);
+                File.Delete(file);
+            }
+        }
+
+        private void ProcessCopyTasks(IEnumerable<CopyTask> tasks)
+        {
+            foreach (var copyTask in tasks)
+            {
+                try
+                {
+                    OnEpisodeProcessing(EpisodeEventArgs.Action.Copying, copyTask.FileName, copyTask.Destination);
+                    if (copyTask.Copy())
+                    {
+                        //copied
+                        OnEpisodeProcessing(EpisodeEventArgs.Action.Copied, copyTask.FileName, copyTask.Destination);
+                    }
+                    else
+                    {
+                        //renamed
+                        OnEpisodeProcessing(EpisodeEventArgs.Action.Updated, copyTask.FilenameAtDestination, copyTask.Destination);
+                    }
+                }
+                catch (Exception)
+                {
+                    OnEpisodeProcessing(EpisodeEventArgs.Action.Error, copyTask.FileName, copyTask.Destination);
+#if (DEBUG)
+                    {
+                        throw;
+                    }
+#endif
+                }
+            }
+        }
+
+        private static string GetCopyDestination(IReadOnlyCollection<string> files, Podcast podcast, int fileIndex, string filename, string podcastFolder)
         {
             var destination = filename;
             if (podcast?.Order == Podcast.EpisodeOrder.Chronological)
             {
                 //reset destination to the reverse number order, same prefix
-                destination = (files.Length - fileIndex).ToString("000") + "_" + filename.Substring(4);
+                destination = (files.Count - fileIndex).ToString("000") + "_" + filename.Substring(4);
             }
 
             //if the destination filename has leading zero, trim it
-            if (files.Length < 100 && files.Length > 1 && destination.StartsWith("0"))
+            if (files.Count < 100 && files.Count > 1 && destination.StartsWith("0"))
             {
                 destination = destination.Substring(1);
             }
