@@ -38,7 +38,7 @@ namespace Podcast.CLI
         private static void SynchronizeSubscription()
         {
             var downloadFolder = Settings.Default.DownloadFolder;
-            var subscriptions = new Subscription("podcast.xml");
+            var subscriptions = new Subscription();
 
             //attach to sync events
             subscriptions.SubscriptionSynchronizing += Subscription_Synchronizing;
@@ -58,7 +58,7 @@ namespace Podcast.CLI
         private static void CopySubscription()
         {
             var downloadFolder = Settings.Default.DownloadFolder;
-            var subscriptions = new Subscription("podcast.xml");
+            var subscriptions = new Subscription();
 
             //attach to copy events
             subscriptions.PodcastCopying += Podcast_Copying;
@@ -93,7 +93,6 @@ namespace Podcast.CLI
             desc += $"{Convert.ToInt32(duration.TotalSeconds)} seconds";
             return desc;
         }
-
 
         private static void Subscription_Synchronizing(object sender, SubscriptionEventArgs e)
         {

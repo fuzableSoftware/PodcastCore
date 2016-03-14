@@ -20,14 +20,9 @@ namespace Fuzable.Podcast.Entities
         public List<Podcast> Podcasts { get; set; }
 
         /// <summary>
-        /// Filename used to manage subscriptions
-        /// </summary>
-        public string SubscriptionFile { get; }
-
-        /// <summary>
         /// Folder to sync podcasts to
         /// </summary>
-        public string DownloadFolder { get; set; }
+        public string DownloadFolder { get; internal set; }
 
         #region Events
 
@@ -82,27 +77,6 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public event EpisodeEventHandler EpisodeProcessing;
       
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        internal Subscription()
-        {
-            SubscriptionFile = "podcasts/xml";
-        }
-
-        /// <summary>
-        /// Constructor specifying subscription file
-        /// </summary>
-        /// <param name="subscriptionFile"></param>
-        public Subscription(string subscriptionFile)
-        {
-            SubscriptionFile = subscriptionFile;
-        }
-
         #endregion
 
         internal List<Podcast> GetPodcasts()
@@ -201,6 +175,8 @@ namespace Fuzable.Podcast.Entities
         public void Copy(string downloadFolder, string destinationFolder, string group = null)
         {
             var start = DateTime.Now;
+            DownloadFolder = downloadFolder;
+            
             //check that the destination folder is (probably) a USB key and has some free space
             var folders = VerifyDownloadFolder(downloadFolder, destinationFolder, group);
 
@@ -215,12 +191,12 @@ namespace Fuzable.Podcast.Entities
                 var podcastName = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                 OnPodcastCopying(podcastName);
 
+                //get files
                 var files = Directory.GetFiles(folder);
 
-                //reorder files if needed
+                //get podcasts from subscription if needed
                 if (Podcasts == null || Podcasts.Count == 0)
                 {
-                    DownloadFolder = downloadFolder;
                     Podcasts = GetPodcasts();
                 }
 
@@ -233,6 +209,7 @@ namespace Fuzable.Podcast.Entities
                 var tasks = new List<CopyTask>();
                 foreach (var file in files)
                 {
+                    fileIndex ++;
                     //get source path
                     var filename = Path.GetFileName(file) ?? "IDK";
 
