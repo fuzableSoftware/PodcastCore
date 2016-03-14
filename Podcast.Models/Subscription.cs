@@ -105,10 +105,6 @@ namespace Fuzable.Podcast.Entities
 
         #endregion
 
-        /// <summary>
-        /// Returns podcasts in subscription file
-        /// </summary>
-        /// <returns></returns>
         internal List<Podcast> GetPodcasts()
         {
             //read podcasts.xml file and extract subscribed podcasts from and return
@@ -206,32 +202,7 @@ namespace Fuzable.Podcast.Entities
         {
             var start = DateTime.Now;
             //check that the destination folder is (probably) a USB key and has some free space
-            var x = new DriveInfo(destinationFolder);
-            if (!x.IsReady || x.DriveType != DriveType.Removable || x.AvailableFreeSpace <= 0)
-            {
-                //drive not ready
-                throw new IOException("Destination is not the right type or is not ready");
-            }
-
-            //does the download folder exist?
-            if (!Directory.Exists(downloadFolder))
-            {
-                throw new FileNotFoundException("Specified download folder does not exist");
-            }
-
-            //does the destination folder exist?
-            if (!Directory.Exists(destinationFolder))
-            {
-                throw new FileNotFoundException("Specified destination folder does not exist");
-            }
-
-            var folders = Group.GetFolders(group, downloadFolder);
-            
-            //does group file size exceed max?
-            if (Group.ExceedsMaximumSize(group, folders))
-            {
-                throw new ArgumentException("specified group exceeds maximum size");
-            }
+            var folders = VerifyDownloadFolder(downloadFolder, destinationFolder, group);
 
             //copy files in each folder to destination
             //if file exists, skip
@@ -299,13 +270,13 @@ namespace Fuzable.Podcast.Entities
                 //quicker to rename than copy
                 //well, for the user...easier for me to just delete the destination files and replace them
                 //copytask has property that gets set on instantiation, checks destination for likely candidates
-                
+
                 //process will rename or copy as needed
                 foreach (var copyTask in tasks)
                 {
                     try
                     {
-                    OnEpisodeProcessing(EpisodeEventArgs.Action.Copying, copyTask.FileName, copyTask.Destination);
+                        OnEpisodeProcessing(EpisodeEventArgs.Action.Copying, copyTask.FileName, copyTask.Destination);
                         if (copyTask.Copy())
                         {
                             //copied
@@ -338,13 +309,45 @@ namespace Fuzable.Podcast.Entities
                     OnEpisodeProcessing(EpisodeEventArgs.Action.Deleted, Path.GetFileName(file), file);
                     File.Delete(file);
                 }
-                
+
                 //tell anybody listening that we're done
                 OnPodcastCopied(podcastName);
             }
             var end = DateTime.Now;
             var lapsed = end - start;
             OnSubscriptionCopied(index, lapsed);
+        }
+
+        private static string[] VerifyDownloadFolder(string downloadFolder, string destinationFolder, string group)
+        {
+            var x = new DriveInfo(destinationFolder);
+            if (!x.IsReady || x.DriveType != DriveType.Removable || x.AvailableFreeSpace <= 0)
+            {
+                //drive not ready
+                throw new IOException("Destination is not the right type or is not ready");
+            }
+
+            //does the download folder exist?
+            if (!Directory.Exists(downloadFolder))
+            {
+                throw new FileNotFoundException("Specified download folder does not exist");
+            }
+
+            //does the destination folder exist?
+            if (!Directory.Exists(destinationFolder))
+            {
+                throw new FileNotFoundException("Specified destination folder does not exist");
+            }
+
+            var folders = Group.GetFolders(group, downloadFolder);
+
+            //does group file size exceed max?
+            if (Group.ExceedsMaximumSize(group, folders))
+            {
+                throw new ArgumentException("specified group exceeds maximum size");
+            }
+
+            return folders;
         }
 
         #region Event Handlers
