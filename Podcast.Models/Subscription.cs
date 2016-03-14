@@ -335,6 +335,7 @@ namespace Fuzable.Podcast.Entities
                 var extraFiles = destinationFiles.Except(sourceFiles);
                 foreach (var file in extraFiles)
                 {
+                    OnEpisodeProcessing(EpisodeEventArgs.Action.Deleted, Path.GetFileName(file), file);
                     File.Delete(file);
                 }
                 
