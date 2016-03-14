@@ -1,8 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Fuzable.Podcast.Entities.Subscriptions;
 
 namespace Fuzable.Podcast.Entities
 {

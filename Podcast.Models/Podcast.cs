@@ -133,7 +133,7 @@ namespace Fuzable.Podcast.Entities
                 var counter = 0;
                 foreach (var item in items)
                 {
-                    var filePath = "";
+                    string filePath;
                     if (Download == 1 || Download == 0)
                     {
                         //if downloading all available or only one, don't use a number prefix
@@ -169,8 +169,7 @@ namespace Fuzable.Podcast.Entities
 
         internal static string GetPodcastPath(string path, string podcastName)
         {
-            var fullPath = "";
-            fullPath = Path.Combine(path, podcastName);
+            var fullPath = Path.Combine(path, podcastName);
             return fullPath;
         }
     }
