@@ -22,7 +22,7 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Filename used to manage subscriptions
         /// </summary>
-        public string SubscriptionFile { get; set; }
+        public string SubscriptionFile { get; }
 
         /// <summary>
         /// Folder to sync podcasts to
@@ -89,7 +89,7 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Default constructor
         /// </summary>
-        public Subscription()
+        internal Subscription()
         {
             SubscriptionFile = "podcasts/xml";
         }

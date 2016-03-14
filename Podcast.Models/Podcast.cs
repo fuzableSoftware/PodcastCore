@@ -64,16 +64,7 @@ namespace Fuzable.Podcast.Entities
         /// </summary>
         public List<Episode> EpisodesToDelete { get; }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="name">Podcast name</param>
-        /// <param name="url">Podcast URL</param>
-        /// <param name="download">Number of episodes to keep</param>
-        /// <param name="order">one of EpisodeOrder</param>
-        /// <param name="remove">string to remove from episode titles</param>
-        /// <param name="exclude">episodes starting with this string will be excluded</param>
-        public Podcast(string name, string url, int download, EpisodeOrder order, string remove, string exclude)
+        internal Podcast(string name, string url, int download, EpisodeOrder order, string remove, string exclude)
         {
             Name = name;
             Url = url;
@@ -85,11 +76,7 @@ namespace Fuzable.Podcast.Entities
             ExcludeTitle = exclude;
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="name">Name of podcast</param>
-        public Podcast(string name)
+        internal Podcast(string name)
         {
             Name = name;
         }
