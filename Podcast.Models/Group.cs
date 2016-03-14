@@ -7,9 +7,6 @@ using Fuzable.Podcast.Entities.Properties;
 
 namespace Fuzable.Podcast.Entities
 {
-    /// <summary>
-    /// A group of podcasts to copy
-    /// </summary>
     internal class Group
     {
         public string Name { get; set; }
