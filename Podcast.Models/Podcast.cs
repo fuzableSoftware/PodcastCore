@@ -58,11 +58,11 @@ namespace Fuzable.Podcast.Entities
         /// <summary>
         /// Episodes to download during sync
         /// </summary>
-        public List<Episode> EpisodesToDownload { get; set; }
+        public List<Episode> EpisodesToDownload { get;}
         /// <summary>
         /// Episodes to delete during sync
         /// </summary>
-        public List<Episode> EpisodesToDelete { get; set; }
+        public List<Episode> EpisodesToDelete { get; }
 
         /// <summary>
         /// Constructor
@@ -94,10 +94,7 @@ namespace Fuzable.Podcast.Entities
             Name = name;
         }
 
-        /// <summary>
-        /// Process a podcast's feed
-        /// </summary>
-        public void ProcessFeed(Subscription subscription)
+        internal void ProcessFeed(Subscription subscription)
         {
             try
             {
