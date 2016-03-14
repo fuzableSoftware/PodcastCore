@@ -10,18 +10,12 @@ namespace Fuzable.Podcast.Entities
     /// <summary>
     /// A group of podcasts to copy
     /// </summary>
-    public class Group
+    internal class Group
     {
-        /// <summary>
-        /// Name of podcast copy group
-        /// </summary>
         public string Name { get; set; }
-        /// <summary>
-        /// List of podcasts to copy in this group
-        /// </summary>
         public List<Podcast> Podcasts { get; set; }
 
-        internal static string[] GetFolders(string group, string downloadFolder)
+        public static string[] GetFolders(string group, string downloadFolder)
         {
             if (group == null)
             {
@@ -55,7 +49,7 @@ namespace Fuzable.Podcast.Entities
             }
         }
 
-        internal static bool ExceedsMaximumSize(string group, string[] downloadFolders)
+        public static bool ExceedsMaximumSize(string group, string[] downloadFolders)
         {
             var max = Settings.Default.MaximumGroupSize;
             if (group == null)
