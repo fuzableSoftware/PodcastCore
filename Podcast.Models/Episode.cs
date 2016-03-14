@@ -186,6 +186,9 @@ namespace Fuzable.Podcast.Entities
                     file.MoveTo(newPath);
                     //we updated the file, so tell the caller
                     return true;
+                default:
+                    Debugger.Break();
+                    break;
             }
             //more than 1 file? something's wrong 
             Debug.Assert(numberOfFiles < 2, "too many files returned in similar name search");

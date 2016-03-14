@@ -121,6 +121,7 @@
       <Url>http://feeds.feedburner.com/TheBritishHistoryPodcast</Url>
       <Download>0</Download>
       <Order>1</Order>
+      <ExcludeTitle>BHP Pub Quiz</ExcludeTitle>
     </Podcast>
     <Podcast>
       <Name>The History Of Rome</Name>
@@ -162,26 +163,26 @@
     <Podcast>
       <Name>This Week on Channel 9</Name>
       <Url>https://s.ch9.ms/Shows/This+Week+On+Channel+9/feed/mp3</Url>
-      <Download>4</Download>
+      <Download>2</Download>
       <Order>0</Order>
     </Podcast>
     <Podcast>
       <Name>Windows Weekly</Name>
       <Url>http://feeds.twit.tv/ww.xml</Url>
-      <Download>4</Download>
+      <Download>1</Download>
       <Order>0</Order>
       <RemoveFromTitle>WW</RemoveFromTitle>
     </Podcast>
     <Podcast>
       <Name>WTF with Marc Maron</Name>
       <Url>http://wtfpod.libsyn.com/rss</Url>
-      <Download>3</Download>
+      <Download>1</Download>
       <Order>0</Order>
     </Podcast>
     <Podcast>
       <Name>Dubstep.fm Archives</Name>
       <Url>http://www.dubstep.fm/archive.xml</Url>
-      <Download>3</Download>
+      <Download>1</Download>
       <Order>0</Order>
       <RemoveFromTitle>DUBSTEP.FM ARCHIVE - </RemoveFromTitle>
     </Podcast>
@@ -224,6 +225,48 @@
     <Podcast>
       <Name>How To Be Amazing</Name>
       <Url>http://feeds.howtobeamazingshow.com/htbashow</Url>
+      <Download>1</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>RunAs Radio</Name>
+      <Url>http://www.pwop.com/feed.aspx?show=runasradio</Url>
+      <Download>1</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>Hanselminutes</Name>
+      <Url>http://feeds.podtrac.com/9dPm65vdpLL1</Url>
+      <Download>1</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>DotNet Rocks!</Name>
+      <Url>http://feeds.feedburner.com/netRocksFullMp3Downloads</Url>
+      <Download>4</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>Slate Money</Name>
+      <Url>http://feeds.feedburner.com/SlateMoney</Url>
+      <Download>1</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>Slate's the Gist</Name>
+      <Url>http://feeds.feedburner.com/TheGistWithMikePesca</Url>
+      <Download>1</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>Slate's Political Gabfest</Name>
+      <Url>http://feeds.feedburner.com/SlatePoliticalGabfest</Url>
+      <Download>1</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>Slate's Double X</Name>
+      <Url>http://feeds.feedburner.com/DoubleXPodcasts</Url>
       <Download>1</Download>
       <Order>0</Order>
     </Podcast>
@@ -306,6 +349,27 @@
         </Podcast>
         <Podcast>
           <Name>How To Be Amazing</Name>
+        </Podcast>
+        <Podcast>
+          <Name>RunAs Radio</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Hanselminutes</Name>
+        </Podcast>
+        <Podcast>
+          <Name>DotNet Rocks!</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Slate Money</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Slate's the Gist</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Slate's Political Gabfest</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Slate's Double X</Name>
         </Podcast>
       </Podcasts>
     </Group>
