@@ -270,6 +270,24 @@
       <Download>1</Download>
       <Order>0</Order>
     </Podcast>
+    <Podcast>
+      <Name>Godless Spellchecker</Name>
+      <Url>http://gspellchecker.libsyn.com/rss</Url>
+      <Download>2</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>In Our Time</Name>
+      <Url>http://www.bbc.co.uk/programmes/b006qykl/episodes/downloads.rss</Url>
+      <Download>3</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>OneCast</Name>
+      <Url>http://feeds.soundcloud.com/users/soundcloud:users:198446974/sounds.rss</Url>
+      <Download>3</Download>
+      <Order>0</Order>
+    </Podcast>
   </Podcasts>
   <Groups>
     <Group>
@@ -280,9 +298,6 @@
         </Podcast>
         <Podcast>
           <Name>BackStory</Name>
-        </Podcast>
-        <Podcast>
-          <Name>Azure Friday</Name>
         </Podcast>
         <Podcast>
           <Name>Talkin' Cowboys</Name>
@@ -336,9 +351,6 @@
           <Name>Simple Programmer</Name>
         </Podcast>
         <Podcast>
-          <Name>Microsoft DevRadio</Name>
-        </Podcast>
-        <Podcast>
           <Name>SQL Server Radio</Name>
         </Podcast>
         <Podcast>
@@ -370,6 +382,15 @@
         </Podcast>
         <Podcast>
           <Name>Slate's Double X</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Godless Spellchecker</Name>
+        </Podcast>
+        <Podcast>
+          <Name>In Our Time</Name>
+        </Podcast>
+        <Podcast>
+          <Name>OneCast</Name>
         </Podcast>
       </Podcasts>
     </Group>
