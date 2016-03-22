@@ -19,31 +19,27 @@ namespace Fuzable.Podcast.Entities
                 //get folders in download folder
                 return Directory.GetDirectories(downloadFolder);
             }
-            else
-            {
-                //get for group
-                //read podcasts.xml file and extract groups podcasts from
-                var folders = new List<Podcast>();
+            //get for group
+            //read podcasts.xml file and extract groups podcasts from
+            var folders = new List<Podcast>();
 
-                try
-                {
-                    var settingsDoc = XDocument.Load($@"{Environment.CurrentDirectory}\{"Podcasts.xml"}");
-                    var items = from item in settingsDoc.Root?.Elements("Groups").Descendants("Group").Descendants("Podcasts").Descendants("Podcast")
-                                select new
-                                {
-                                    Name = item.Element("Name")?.Value
-                                };
-                    folders.AddRange(items.Select(item => new Podcast(item.Name)));
-                }
-                catch (Exception ex)
-                {
-                    var error = new ApplicationException("Error retrieving groups", ex);
-                    throw error;
-                }
-                //filter
-                var includedFolders = folders.Select(s => Path.Combine(downloadFolder, s.Name)).ToArray();
-                return includedFolders;
+            try
+            {
+                var root = XElement.Load($@"{Environment.CurrentDirectory}\{"Podcasts.xml"}");
+                var items = from item in root.Descendants("Group")
+                    where (string) item.Element("Name") == @group
+                    select item.Element("Podcasts");
+
+                folders.AddRange(items.Descendants("Name").Select(podcast => new Podcast(podcast.Value)));
             }
+            catch (Exception ex)
+            {
+                var error = new ApplicationException("Error retrieving groups", ex);
+                throw error;
+            }
+            //filter
+            var includedFolders = folders.Select(s => Path.Combine(downloadFolder, s.Name)).ToArray();
+            return includedFolders;
         }
 
         public static bool ExceedsMaximumSize(string group, string[] downloadFolders)

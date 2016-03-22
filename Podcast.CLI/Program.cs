@@ -17,7 +17,8 @@ namespace Podcast.CLI
         private static void ChooseSyncOrCopy()
         {
             Console.WriteLine("1: Synchronize");
-            Console.WriteLine("2: Copy to USB key");
+            Console.WriteLine("2: Copy 'SELECTIONS' to USB key");
+            Console.WriteLine("3: Copy 'HERS' to USB key");
             var x = Console.ReadKey();
             switch (x.KeyChar)
             {
@@ -28,6 +29,10 @@ namespace Podcast.CLI
                 case '2':
                     Console.WriteLine("");
                     CopySubscription();
+                    break;
+                case '3':
+                    Console.WriteLine("");
+                    CopySubscription("Hers");
                     break;
                 default:
                     Console.WriteLine("Unknown option, closing");
@@ -55,7 +60,7 @@ namespace Podcast.CLI
             ChooseSyncOrCopy();
         }
 
-        private static void CopySubscription()
+        private static void CopySubscription(string name = "Selections")
         {
             var downloadFolder = Settings.Default.DownloadFolder;
             var subscriptions = new Subscription();
@@ -71,7 +76,7 @@ namespace Podcast.CLI
             //copy 
             try
             {
-                subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder, "Selections");
+                subscriptions.Copy(downloadFolder, Settings.Default.DestinationFolder, name);
             }
             catch (Exception ex)
             {

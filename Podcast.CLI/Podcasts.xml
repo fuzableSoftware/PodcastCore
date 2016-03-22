@@ -288,8 +288,76 @@
       <Download>3</Download>
       <Order>0</Order>
     </Podcast>
+    <Podcast>
+      <Name>Ladies in Tech</Name>
+      <Url>http://ladiesintech.com/feed/</Url>
+      <Download>3</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>Anomaly</Name>
+      <Url>http://feeds.feedburner.com/libsyn/npdO</Url>
+      <Download>3</Download>
+      <Order>0</Order>
+    </Podcast>
+    <Podcast>
+      <Name>This Week in Software Testing</Name>
+      <Url>http://feeds.feedburner.com/SoftwareTestingPodcast</Url>
+      <Download>4</Download>
+      <Order>0</Order>
+    </Podcast>
   </Podcasts>
   <Groups>
+    <Group>
+      <Name>Hers</Name>
+      <Podcasts>
+        <Podcast>
+          <Name>This Week in Software Testing</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Philosophy Bites</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Stuff You Should Know</Name>
+        </Podcast>
+        <Podcast>
+          <Name>The Naked Scientist</Name>
+        </Podcast>
+        <Podcast>
+          <Name>WTF with Marc Maron</Name>
+        </Podcast>
+        <Podcast>
+          <Name>KPunk</Name>
+        </Podcast>
+        <Podcast>
+          <Name>StarTalk Radio</Name>
+        </Podcast>
+        <Podcast>
+          <Name>The History Chicks</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Ladies in Tech</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Anomaly</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Judge John Hodgman</Name>
+        </Podcast>
+        <Podcast>
+          <Name>The Naked Scientist</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Freakonomics Radio</Name>
+        </Podcast>
+        <Podcast>
+          <Name>Godless Spellchecker</Name>
+        </Podcast>
+        <Podcast>
+          <Name>WTF with Marc Maron</Name>
+        </Podcast>
+      </Podcasts>
+    </Group>
     <Group>
       <Name>Selections</Name>
       <Podcasts>
