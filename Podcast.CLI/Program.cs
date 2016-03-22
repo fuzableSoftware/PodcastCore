@@ -19,6 +19,7 @@ namespace Podcast.CLI
             Console.WriteLine("1: Synchronize");
             Console.WriteLine("2: Copy 'SELECTIONS' to USB key");
             Console.WriteLine("3: Copy 'HERS' to USB key");
+            Console.WriteLine("4: Copy 'fuzableTek' to USB key");
             var x = Console.ReadKey();
             switch (x.KeyChar)
             {
@@ -33,6 +34,10 @@ namespace Podcast.CLI
                 case '3':
                     Console.WriteLine("");
                     CopySubscription("Hers");
+                    break;
+                case '4':
+                    Console.WriteLine("");
+                    CopySubscription("fuzableTek");
                     break;
                 default:
                     Console.WriteLine("Unknown option, closing");
