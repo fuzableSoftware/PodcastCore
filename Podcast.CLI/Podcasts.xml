@@ -193,18 +193,6 @@
       <Order>0</Order>
     </Podcast>
     <Podcast>
-      <Name>KPunk</Name>
-      <Url>http://kpunk.libsyn.com//rss</Url>
-      <Download>2</Download>
-      <Order>0</Order>
-    </Podcast>
-    <Podcast>
-      <Name>Entreprogrammers</Name>
-      <Url>http://entreprogrammers.libsyn.com/rss</Url>
-      <Download>2</Download>
-      <Order>0</Order>
-    </Podcast>
-    <Podcast>
       <Name>Simple Programmer</Name>
       <Url>http://simpleprogrammer.libsyn.com/rss</Url>
       <Download>2</Download>
@@ -283,12 +271,6 @@
       <Order>0</Order>
     </Podcast>
     <Podcast>
-      <Name>OneCast</Name>
-      <Url>http://feeds.soundcloud.com/users/soundcloud:users:198446974/sounds.rss</Url>
-      <Download>3</Download>
-      <Order>0</Order>
-    </Podcast>
-    <Podcast>
       <Name>Ladies in Tech</Name>
       <Url>http://ladiesintech.com/feed/</Url>
       <Download>4</Download>
@@ -333,9 +315,6 @@
           <Name>The Stack Exchange Podcast</Name>
         </Podcast>
         <Podcast>
-          <Name>Entreprogrammers</Name>
-        </Podcast>
-        <Podcast>
           <Name>This Week on Channel 9</Name>
         </Podcast>
         <Podcast>
@@ -369,9 +348,6 @@
         </Podcast>
         <Podcast>
           <Name>WTF with Marc Maron</Name>
-        </Podcast>
-        <Podcast>
-          <Name>KPunk</Name>
         </Podcast>
         <Podcast>
           <Name>StarTalk Radio</Name>
@@ -457,9 +433,6 @@
           <Name>The Nerdist</Name>
         </Podcast>
         <Podcast>
-          <Name>Entreprogrammers</Name>
-        </Podcast>
-        <Podcast>
           <Name>The History Chicks</Name>
         </Podcast>
         <Podcast>
@@ -488,9 +461,6 @@
         </Podcast>
         <Podcast>
           <Name>In Our Time</Name>
-        </Podcast>
-        <Podcast>
-          <Name>OneCast</Name>
         </Podcast>
       </Podcasts>
     </Group>
