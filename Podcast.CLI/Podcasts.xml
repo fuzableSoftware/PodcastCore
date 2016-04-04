@@ -178,6 +178,7 @@
       <Url>http://wtfpod.libsyn.com/rss</Url>
       <Download>1</Download>
       <Order>0</Order>
+      <RemoveFromTitle>Episode </RemoveFromTitle>
     </Podcast>
     <Podcast>
       <Name>Dubstep.fm Archives</Name>
@@ -275,6 +276,7 @@
       <Url>http://feeds.feedburner.com/libsyn/npdO</Url>
       <Download>3</Download>
       <Order>0</Order>
+      <RemoveFromTitle>Anomaly</RemoveFromTitle>
     </Podcast>
     <Podcast>
       <Name>This Week in Software Testing</Name>
