@@ -193,12 +193,6 @@
       <Order>0</Order>
     </Podcast>
     <Podcast>
-      <Name>Simple Programmer</Name>
-      <Url>http://simpleprogrammer.libsyn.com/rss</Url>
-      <Download>2</Download>
-      <Order>0</Order>
-    </Podcast>
-    <Podcast>
       <Name>The History Chicks</Name>
       <Url>http://feeds.feedburner.com/TheHistoryChicks/</Url>
       <Download>2</Download>
@@ -316,9 +310,6 @@
         </Podcast>
         <Podcast>
           <Name>This Week on Channel 9</Name>
-        </Podcast>
-        <Podcast>
-          <Name>Simple Programmer</Name>
         </Podcast>
         <Podcast>
           <Name>RunAs Radio</Name>
