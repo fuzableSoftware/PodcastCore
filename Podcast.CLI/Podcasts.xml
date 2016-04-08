@@ -266,12 +266,6 @@
       <Order>0</Order>
     </Podcast>
     <Podcast>
-      <Name>Ladies in Tech</Name>
-      <Url>http://ladiesintech.com/feed/</Url>
-      <Download>3</Download>
-      <Order>0</Order>
-    </Podcast>
-    <Podcast>
       <Name>Anomaly</Name>
       <Url>http://feeds.feedburner.com/libsyn/npdO</Url>
       <Download>3</Download>
@@ -347,9 +341,6 @@
         </Podcast>
         <Podcast>
           <Name>The History Chicks</Name>
-        </Podcast>
-        <Podcast>
-          <Name>Ladies in Tech</Name>
         </Podcast>
         <Podcast>
           <Name>Anomaly</Name>
